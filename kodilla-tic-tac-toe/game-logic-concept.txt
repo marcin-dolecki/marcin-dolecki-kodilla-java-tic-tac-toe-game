@@ -1,0 +1,161 @@
+	* * * * * *
+|q|w|e| * |x|o|x| *
+|a|s|d|	* | | | | *
+|z|x|c|	* | | | | *
+ 	*	  *
+	* * * * * *
+
+	TIC TAC TOE GAME
+
+Player 1
+
+Keymap:		* * * * * *
+|q|w|e| 	* |x|o|x| *
+|a|s|d|		* | | | | *
+|z|x|c|		* | | | | *
+ 		*	  *
+		* * * * * *
+
+To end the game press esc
+
+
+
+
+1. Po uruchomieniu gry wyświetla się komunikat:
+
+TIC TAC TOE GAME
+
+2 player game [press 1]
+Game with computer [press 2]
+
+2. Po wciśnieciu przez użytkownika klawisza 1 lub 2, wyświetla się Player 1. Pozniej wyświetli się Player 2 lub Computer. Player 1 zawsze ma x a drugi player lub compute ma o.
+
+TIC TAC TOE GAME
+
+Current player: Player 1
+* * * * * *
+* |x|o|x| *
+* | | | | *
+* | | | | *
+*	  *
+* * * * * *
+
+Keymap:
+|q|w|e|
+|a|s|d|
+|z|x|c|
+
+To end the game press esc
+
+3. Po przyciśnieciu któregos z dozwolonych przycisków nastepny użytkownik
+
+TIC TAC TOE GAME
+
+Current player: Player 2
+* * * * * *
+* |x|o|x| *
+* | | | | *
+* | | | | *
+*	  *
+* * * * * *
+
+Keymap:
+|q|w|e|
+|a|s|d|
+|z|x|c|
+
+To end the game press esc
+
+4. W przypadku klikniecia klawisza innego niż dozwolone komunikat:
+
+TIC TAC TOE GAME
+
+Wrong key. Press one from the keymap.
+
+Current player: Player 2
+* * * * * *
+* |x|o|x| *
+* | | | | *
+* | | | | *
+*	  *
+* * * * * *
+
+Keymap:
+|q|w|e|
+|a|s|d|
+|z|x|c|
+
+To end the game press esc
+
+5. Po probie zaznaczenia pola juz wypełnionego, wyswietli sie komunikat:
+
+TIC TAC TOE GAME
+
+Field already checked. Select another free field.
+
+Current player: Player 2
+* * * * * *
+* |x|o|x| *
+* | | | | *
+* | | | | *
+*	  *
+* * * * * *
+
+Keymap:
+|q|w|e|
+|a|s|d|
+|z|x|c|
+
+To end the game press esc
+
+6. W przypadku wygrania przez któregoś z użytkowników:
+
+TIC TAC TOE GAME
+
+Congratulations Player 1! You won!
+
+* * * * * *
+* |x| | | *
+* | |x| | *
+* |o|o|x| *
+*	  *
+* * * * * *
+
+Keymap:
+|q|w|e|
+|a|s|d|
+|z|x|c|
+
+To start a new game press enter
+
+To end the game press esc
+
+7. W przypadku nie wygrania przez nikogo:
+
+TIC TAC TOE GAME
+
+Nobody won. Better luck next time!
+
+* * * * * *
+* |x|o|o| *
+* |o|x|x| *
+* |x|x|o| *
+*	  *
+* * * * * *
+
+Keymap:
+|q|w|e|
+|a|s|d|
+|z|x|c|
+
+To start a new game press enter
+
+To end the game press esc
+
+8. Po kliknieciu enter powinnismy zacząc te samą grę. wiec jeśli gralismy z graczem to z graczem a jesli z komputerem to z komputerem.
+
+9. Po kliknięciu esc, powinnismy zobaczyć komunikat z poczatku:
+
+2 player game [press 1]
+Game with computer [press 2]
+

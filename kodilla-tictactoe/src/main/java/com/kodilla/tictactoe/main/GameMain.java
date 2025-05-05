@@ -1,42 +1,43 @@
 package com.kodilla.tictactoe.main;
-
-import com.kodilla.tictactoe.components.GameBoard;
+import java.util.Scanner;
 import com.kodilla.tictactoe.components.GameLogic;
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
 
 public class GameMain {
-    public static void main(String[] args) throws Exception{
-//        GameLogic gameLogic = new GameLogic();
-//        String lastMoveStatus;
-//
-//        lastMoveStatus = gameLogic.processMove("q","x");
-//        //            System.out.println("Now it's the other player's turn.");
-//        //            System.out.println("This field is already taken.");
-//        System.out.println(lastMoveStatus);
-//        lastMoveStatus = gameLogic.processMove("s","o");
-//        System.out.println(lastMoveStatus);
-//        lastMoveStatus = gameLogic.processMove("d","o");
-//        System.out.println(lastMoveStatus);
-//        lastMoveStatus = gameLogic.processMove("a","x");
-//        System.out.println(lastMoveStatus);
-//        lastMoveStatus = gameLogic.processMove("a","o");
-//        System.out.println(lastMoveStatus);
-//        gameLogic.printBoard();
+    public static void main(String[] args) throws Exception {
+        boolean endTheGame = false;
+        Scanner scanner = new Scanner(System.in);
+        String input = "";
 
-        Terminal terminal = TerminalBuilder.terminal();
-        System.out.println("Naciśnij dowolny klawisz. Wciśnij 'q', aby wyjść.");
+        while (!endTheGame) {
+            System.out.println("Welcome to TicTacToe Game!");
+            GameLogic gameLogic = new GameLogic();
+            String lastMoveStatus;
+            boolean isGameFinished = false;
+            boolean isPlayer1 = true;
 
-        while (true) {
-            int ch = terminal.reader().read(); // odczyt pojedynczego znaku
+            while (!isGameFinished) {
+                String player = isPlayer1 ? "Player 1" : "Player 2";
+                String symbol = isPlayer1 ? "x" : "o";
 
-            if (ch == -1) continue;
+                System.out.println(player);
+                gameLogic.printBoard();
+                System.out.println("Choose your move and press enter to continue");
+                input = scanner.nextLine();
+                lastMoveStatus = gameLogic.processMove(input, symbol);
 
-            System.out.println("Naciśnięto: " + (char) ch);
-
-            if (ch == 'q') break;
+                if (lastMoveStatus.equals("Game completed")) {
+                    System.out.println("Game completed!");
+                    isGameFinished = true;
+                } else if (lastMoveStatus.equals("Added move")) {
+                    isPlayer1 = !isPlayer1;
+                } else {
+                    System.out.println(lastMoveStatus);
+                }
+            }
+            System.out.println("Would you like to play again? (y/n)");
+            input = scanner.nextLine();
+            endTheGame = !input.equalsIgnoreCase("y");
         }
-
-        terminal.close();
+        System.out.println("Bye bye!");
     }
 }

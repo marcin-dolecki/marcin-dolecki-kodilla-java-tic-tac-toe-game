@@ -5,7 +5,6 @@ public class GameLogic {
     private String lastFigure;
     private byte counter;
 
-
     public GameLogic() {
     }
 
@@ -14,7 +13,7 @@ public class GameLogic {
             return "Wrong figure";
         } else if (gameBoard.getValue(key) != null) {
             return "Wrong field";
-        } else {
+        } else if (value != null) {
             gameBoard.addMove(key, value);
             lastFigure = value;
             counter++;
@@ -22,6 +21,8 @@ public class GameLogic {
                 return "Game completed";
             }
             return "Added move";
+        } else {
+            return "Something went wrong";
         }
     }
 

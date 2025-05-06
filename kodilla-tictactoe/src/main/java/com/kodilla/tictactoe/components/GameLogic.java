@@ -24,8 +24,11 @@ public class GameLogic {
             gameBoard.addMove(key, value);
             lastFigure = value;
             counter++;
+            if (isTheGameWon()) {
+                return "Won";
+            }
             if (counter == 9) {
-                return "Game completed";
+                return "Draw";
             }
             return "Added move";
         }
@@ -33,5 +36,35 @@ public class GameLogic {
 
     public void printBoard() {
         gameBoard.printBoard();
+    }
+
+    public boolean isTheGameWon() {
+        List<List<String>> combinations = Arrays.asList(
+                Arrays.asList("q", "a", "z"),
+                Arrays.asList("w", "s", "x"),
+                Arrays.asList("e", "d", "c"),
+                Arrays.asList("q", "w", "e"),
+                Arrays.asList("a", "s", "d"),
+                Arrays.asList("z", "x", "c"),
+                Arrays.asList("q", "s", "c"),
+                Arrays.asList("e", "s", "z")
+        );
+
+        for (List<String> keys : combinations) {
+            String firstValue = gameBoard.getValue(keys.get(0));
+            boolean allEquals = true;
+
+            for (String key : keys) {
+                if (gameBoard.getValue(key) == null || !gameBoard.getValue(key).equals(firstValue)) {
+                    allEquals = false;
+                    break;
+                }
+            }
+
+            if (allEquals) {
+                return true;
+            }
+        }
+        return false;
     }
 }

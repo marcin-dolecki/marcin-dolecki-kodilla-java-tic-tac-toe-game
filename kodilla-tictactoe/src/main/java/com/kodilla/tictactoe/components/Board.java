@@ -6,19 +6,25 @@ import java.util.Objects;
 
 public class Board {
     private final Map<Integer, Figure> board;
+    private final int boardSideSize;
     private final int boardSize;
 
     public Board(final int boardSideSize) {
+        this.boardSideSize = boardSideSize;
         this.boardSize = boardSideSize * boardSideSize;
         this.board = new HashMap<>();
 
-        for (int i = 1; i < boardSize; i++) {
+        for (int i = 1; i <= boardSize; i++) {
             board.put(i, Figure.EMPTY);
         }
     }
 
     public Figure getValue(int key) {
         return board.get(key);
+    }
+
+    public int getBoardSideSize() {
+        return boardSideSize;
     }
 
     public void setValue(int key, Figure value) {

@@ -2,6 +2,7 @@ package com.kodilla.tictactoe.components;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Board {
     private final Map<Integer, Figure> board;
@@ -22,5 +23,18 @@ public class Board {
 
     public void setValue(int key, Figure value) {
         board.put(key, value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board1 = (Board) o;
+        return boardSize == board1.boardSize && Objects.equals(board, board1.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(board, boardSize);
     }
 }

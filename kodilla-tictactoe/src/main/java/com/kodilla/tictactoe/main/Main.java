@@ -6,7 +6,7 @@ import com.kodilla.tictactoe.components.ShowBoard;
 
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board(3);
+        Board board = new Board(10);
 
         board.setValue(1, 1, Figure.X);
         board.setValue(1, 2, Figure.O);

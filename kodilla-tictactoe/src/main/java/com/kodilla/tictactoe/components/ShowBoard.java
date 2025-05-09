@@ -3,20 +3,18 @@ package com.kodilla.tictactoe.components;
 public interface ShowBoard {
     static String showBoard(Board board) {
         int boardSideSize = board.getBoardSideSize();
-        int key = 1;
         int legendIndex = 1;
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int i = 1; i <= boardSideSize; i++) {
-            for (int j = 1; j <= boardSideSize; j++) {
-                stringBuilder.append("|").append(formatCell(board.getValue(key)));
-                key++;
+        for (int row = 0; row < boardSideSize; row++) {
+            for (int col = 0; col < boardSideSize; col++) {
+                stringBuilder.append("|").append(formatCell(board.getValue(row, col)));
             }
 
             stringBuilder.append("|    ");
 
-            for (int j = 1; j <= boardSideSize; j++) {
+            for (int col = 0; col < boardSideSize; col++) {
                 stringBuilder.append("|").append(legendIndex);
                 legendIndex++;
             }

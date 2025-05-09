@@ -15,6 +15,6 @@ public class Main {
 //        board.setValue(55, Figure.X);
 //        board.setValue(100, Figure.O);
 
-        ShowBoard.showBoard(board);
+        System.out.println(ShowBoard.showBoard(board));
     }
 }

@@ -1,26 +1,29 @@
 package com.kodilla.tictactoe.components;
 
 public interface ShowBoard {
-    static void showBoard(Board board) {
+    static String showBoard(Board board) {
         int boardSideSize = board.getBoardSideSize();
         int key = 1;
         int legendIndex = 1;
 
+        StringBuilder stringBuilder = new StringBuilder();
+
         for (int i = 1; i <= boardSideSize; i++) {
             for (int j = 1; j <= boardSideSize; j++) {
-                System.out.printf("|%s", formatCell(board.getValue(key)));
+                stringBuilder.append("|").append(formatCell(board.getValue(key)));
                 key++;
             }
 
-            System.out.print("|    ");
+            stringBuilder.append("|    ");
 
             for (int j = 1; j <= boardSideSize; j++) {
-                System.out.printf("|%d", legendIndex);
+                stringBuilder.append("|").append(legendIndex);
                 legendIndex++;
             }
 
-            System.out.println("|");
+            stringBuilder.append("|\n");
         }
+        return stringBuilder.toString();
     }
 
     static String formatCell(Figure value) {

@@ -1,9 +1,8 @@
 package com.kodilla.tictactoe.main;
 
-import com.kodilla.tictactoe.components.Board;
-import com.kodilla.tictactoe.components.Figure;
-import com.kodilla.tictactoe.components.GameLogic;
-import com.kodilla.tictactoe.components.ShowBoard;
+import com.kodilla.tictactoe.components.*;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,13 +16,18 @@ public class Main {
 //        board.setValue(55, Figure.X);
 //        board.setValue(100, Figure.O);
 
+        Scanner scanner = new Scanner(System.in);
 
 
-        GameLogic gameLogic = new GameLogic(3, 3);
+
+        GameLogic gameLogic = new GameLogic(10, 5);
 
         gameLogic.makeMove(1, 1, Figure.X);
         gameLogic.makeMove(2, 2, Figure.O);
 
         System.out.println(ShowBoard.showBoard(gameLogic.getBoard()));
+        String input = scanner.nextLine();
+        InputValidationReturn validationReturn = InputValidation.inputValidation(input, 10);
+        System.out.println(validationReturn);
     }
 }

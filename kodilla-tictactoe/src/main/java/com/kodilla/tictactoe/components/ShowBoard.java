@@ -24,7 +24,7 @@ public interface ShowBoard {
         return stringBuilder.toString();
     }
 
-    static String formatCell(Figure value) {
+    private static String formatCell(Figure value) {
         return value == Figure.EMPTY ? " " : value.name();
     }
 }

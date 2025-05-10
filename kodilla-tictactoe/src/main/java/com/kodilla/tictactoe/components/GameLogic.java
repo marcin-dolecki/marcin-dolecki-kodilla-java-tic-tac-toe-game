@@ -40,7 +40,6 @@ public class GameLogic {
     }
 
     private boolean checkDirection(int row, int col, Figure figure, int rowDirection, int colDirection) {
-//        int count = 1;
         int count = 0;
         count += countInDirection(row, col, figure, rowDirection, colDirection);
         count += countInDirection(row, col, figure, -rowDirection, -colDirection);
@@ -49,8 +48,6 @@ public class GameLogic {
 
     private int countInDirection(int row, int col, Figure figure, int rowDirection, int colDirection) {
         int count = 0;
-//        row += rowDirection;
-//        col += colDirection;
 
         while (row >= 0 && row < boardSideSize && col >= 0 && col < boardSideSize && board.getValue(row, col) == figure) {
             count++;

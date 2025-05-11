@@ -26,8 +26,10 @@ public class Main {
         gameLogic.makeMove(2, 2, Figure.O);
 
         System.out.println(ShowBoard.showBoard(gameLogic.getBoard()));
-        String input = scanner.nextLine();
-        InputValidationReturn validationReturn = InputValidation.inputValidation(input, 10);
-        System.out.println(validationReturn);
+//        String input = scanner.nextLine();
+        int input = scanner.nextInt();
+//        InputValidationReturn validationReturn = InputValidation.inputValidation(input, 10);
+//        System.out.println(validationReturn);
+        System.out.println(input);
     }
 }

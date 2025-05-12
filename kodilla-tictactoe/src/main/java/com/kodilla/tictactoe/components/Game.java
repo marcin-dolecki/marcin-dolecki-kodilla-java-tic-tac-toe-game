@@ -68,6 +68,59 @@ public class Game {
         currentPlayer = player1;
     }
 
-    
+    private void playGame() {
+        ui.showMessage("=== TIC TAC TOE ===");
+        ui.displayBoard(gameLogic.getBoard());
+
+        while (true) {
+            ui.showMessage("(Type 'q' to quit, 'r' to restart)");
+
+            int[] move;
+            if (againstComputer && currentPlayer == player2) {
+                move = ComputerPlayer.getRandomMove(gameLogic.getBoard(), boardSideSize);
+                ui.showMessage("The computer selects " + move[0] + " " + move[1]);
+            }
+            else {
+                String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
+
+                if (input.equalsIgnoreCase("q")) {
+                    System.exit(0);
+                }
+
+                if (input.equalsIgnoreCase("r")) {
+                    return;
+                }
+
+                InputValidationReturn isInputValid = InputValidation.inputValidation(input, boardSideSize);
+                switch (isInputValid) {
+                    case INVALID_PATTERN:
+                        ui.showMessage("Invalid pattern. Try again.");
+                        continue;
+                    case OUT_OF_BOUNDS:
+                        ui.showMessage("Your selection is out of the range. Try again.");
+                        continue;
+                    case OK:
+                        String[] numbers = input.split(" ");
+                        int row = Integer.parseInt(numbers[0]);
+                        int col = Integer.parseInt(numbers[1]);
+                        move = new int[]{row, col};
+                        break;
+                }
+            }
+
+            LogicReturn isMoveMade = gameLogic.makeMove(row, col, currentPlayer.getFigure());
+            switch (isMoveMade) {
+                case FIELD_TAKEN:
+                    ui.showMessage("The field you selected is already taken. Try again.");
+                    continue;
+                case MOVE_ADDED:
+                    break;
+            }
+
+            ui.displayBoard(gameLogic.getBoard());
+
+            
+        }
+    }
 
 }

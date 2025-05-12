@@ -13,7 +13,9 @@ public class Game {
 
     public void start() {
         while (true) {
-
+            showMainMenu();
+            playGame();
+            if (!askPlayAgain()) break;
         }
         ui.showMessage("Game finished. See you soon!");
     }
@@ -72,6 +74,9 @@ public class Game {
         ui.showMessage("=== TIC TAC TOE ===");
         ui.displayBoard(gameLogic.getBoard());
 
+        int row = 0;
+        int col = 0;
+
         while (true) {
             ui.showMessage("(Type 'q' to quit, 'r' to restart)");
 
@@ -101,8 +106,8 @@ public class Game {
                         continue;
                     case OK:
                         String[] numbers = input.split(" ");
-                        int row = Integer.parseInt(numbers[0]);
-                        int col = Integer.parseInt(numbers[1]);
+                        row = Integer.parseInt(numbers[0]);
+                        col = Integer.parseInt(numbers[1]);
                         move = new int[]{row, col};
                         break;
                 }
@@ -119,8 +124,37 @@ public class Game {
 
             ui.displayBoard(gameLogic.getBoard());
 
-            
+            if (gameLogic.checkWin(row, col, currentPlayer.getFigure())) {
+                ui.showMessage("Congratulations! Player " + currentPlayer.getFigure().toString() + " has won!");
+                break;
+            }
+
+            if (gameLogic.isDraw()) {
+                ui.showMessage("Draw! Better luck next time!");
+                break;
+            }
+
+            switchPlayer();
         }
     }
 
+    private void switchPlayer() {
+        currentPlayer = (currentPlayer == player1) ? player2 : player1;
+    }
+
+    private boolean askPlayAgain() {
+        ui.showMessage("(Do you want to play again? Type 'r' to play, 'q' to quit)");
+
+        while (true) {
+            String input = ui.getTextInput("Enter your choice: ");
+            switch (input.toLowerCase()) {
+                case "r":
+                    return true;
+                case "q":
+                    return false;
+                default:
+                    ui.showMessage("Invalid choice. Try again.");
+            }
+        }
+    }
 }

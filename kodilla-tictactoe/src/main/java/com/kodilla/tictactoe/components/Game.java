@@ -6,6 +6,7 @@ public class Game {
     private UserInterface ui;
     private boolean againstComputer = false;
     private int boardSideSize, winMoveLength;
+    private boolean directRestart;
 
     public Game(UserInterface ui) {
         this.ui = ui;
@@ -13,8 +14,10 @@ public class Game {
 
     public void start() {
         while (true) {
+            directRestart = false;
             showMainMenu();
             playGame();
+            if (directRestart) continue;
             if (!askPlayAgain()) break;
         }
         ui.showMessage("Game finished. See you soon!");
@@ -89,10 +92,12 @@ public class Game {
                 String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
 
                 if (input.equalsIgnoreCase("q")) {
+                    ui.showMessage("Game stopped. See you soon!");
                     System.exit(0);
                 }
 
                 if (input.equalsIgnoreCase("r")) {
+                    directRestart = true;
                     return;
                 }
 

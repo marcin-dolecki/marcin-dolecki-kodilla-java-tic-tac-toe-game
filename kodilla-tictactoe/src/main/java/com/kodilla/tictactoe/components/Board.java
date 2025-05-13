@@ -19,7 +19,7 @@ public class Board {
     }
 
     public Figure getValue(int row, int col) {
-        return board[row][col];
+        return board[row-1][col-1];
     }
 
     public int getBoardSideSize() {

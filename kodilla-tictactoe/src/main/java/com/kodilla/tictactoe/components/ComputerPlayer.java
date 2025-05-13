@@ -7,8 +7,8 @@ public interface ComputerPlayer {
         int row, col;
 
         do {
-            row = random.nextInt(boardSideSize);
-            col = random.nextInt(boardSideSize);
+            row = random.nextInt(boardSideSize) + 1;
+            col = random.nextInt(boardSideSize) + 1;
         } while (board.getValue(row, col) != Figure.EMPTY);
         return new int[]{row, col};
     }

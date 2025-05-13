@@ -17,8 +17,12 @@ public class Game {
             directRestart = false;
             showMainMenu();
             playGame();
-            if (directRestart) continue;
-            if (!askPlayAgain()) break;
+            if (directRestart) {
+                continue;
+            }
+            if (!askPlayAgain()) {
+                break;
+            }
         }
         ui.showMessage("Game finished. See you soon!");
     }
@@ -86,6 +90,7 @@ public class Game {
             int[] move;
             if (againstComputer && currentPlayer == player2) {
                 move = ComputerPlayer.getRandomMove(gameLogic.getBoard(), boardSideSize);
+                // change random move to kind of interface
                 ui.showMessage("The computer selects " + move[0] + " " + move[1]);
             }
             else {
@@ -98,6 +103,8 @@ public class Game {
 
                 if (input.equalsIgnoreCase("r")) {
                     directRestart = true;
+                    // try to do something with try catch
+                    // maybe would be good to have class responsible for restart
                     return;
                 }
 
@@ -120,6 +127,7 @@ public class Game {
 
             LogicReturn isMoveMade = gameLogic.makeMove(row, col, currentPlayer.getFigure());
             switch (isMoveMade) {
+                // move the field taking to the input validation but the whole input validation implement in Board
                 case FIELD_TAKEN:
                     ui.showMessage("The field you selected is already taken. Try again.");
                     continue;

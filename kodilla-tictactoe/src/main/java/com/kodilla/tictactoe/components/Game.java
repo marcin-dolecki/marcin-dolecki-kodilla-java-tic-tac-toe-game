@@ -90,8 +90,10 @@ public class Game {
             int[] move;
             if (againstComputer && currentPlayer == player2) {
                 move = ComputerPlayer.getRandomMove(gameLogic.getBoard(), boardSideSize);
+                row = move[0];
+                col = move[1];
                 // change random move to kind of interface
-                ui.showMessage("The computer selects " + move[0] + " " + move[1]);
+                ui.showMessage("The computer selects " + row + " " + col);
             }
             else {
                 String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
@@ -120,7 +122,6 @@ public class Game {
                         String[] numbers = input.split(" ");
                         row = Integer.parseInt(numbers[0]);
                         col = Integer.parseInt(numbers[1]);
-                        move = new int[]{row, col};
                         break;
                 }
             }

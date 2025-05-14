@@ -1,4 +1,4 @@
-package com.kodilla.tictactoe.components;
+package com.kodilla.tictactoe.enums;
 
 public enum InputValidationReturn {
     OUT_OF_BOUNDS,

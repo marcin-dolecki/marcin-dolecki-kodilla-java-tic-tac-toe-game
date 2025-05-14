@@ -1,8 +1,7 @@
-package com.kodilla.tictactoe.components;
+package com.kodilla.tictactoe.classes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.kodilla.tictactoe.enums.Figure;
+import com.kodilla.tictactoe.enums.LogicReturn;
 
 public class GameLogic {
     private final Board board;

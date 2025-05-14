@@ -1,8 +1,11 @@
-package com.kodilla.tictactoe.components;
+package com.kodilla.tictactoe.classes;
+
+import com.kodilla.tictactoe.interfaces.UserInterface;
+import com.kodilla.tictactoe.enums.Figure;
 
 import java.util.Scanner;
 
-public class ConsoleInterface implements UserInterface {
+public class ConsoleDisplay implements UserInterface {
     private Scanner scanner = new Scanner(System.in);
 
     @Override

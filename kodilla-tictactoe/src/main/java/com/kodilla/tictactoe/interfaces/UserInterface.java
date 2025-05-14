@@ -1,4 +1,6 @@
-package com.kodilla.tictactoe.components;
+package com.kodilla.tictactoe.interfaces;
+
+import com.kodilla.tictactoe.classes.Board;
 
 public interface UserInterface {
     void displayBoard(Board board);

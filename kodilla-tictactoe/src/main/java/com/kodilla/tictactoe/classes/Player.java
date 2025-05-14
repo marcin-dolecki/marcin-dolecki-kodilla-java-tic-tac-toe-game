@@ -1,4 +1,6 @@
-package com.kodilla.tictactoe.components;
+package com.kodilla.tictactoe.classes;
+
+import com.kodilla.tictactoe.enums.Figure;
 
 import java.util.Objects;
 

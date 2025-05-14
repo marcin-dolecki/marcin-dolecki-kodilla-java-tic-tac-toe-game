@@ -1,15 +1,22 @@
-package com.kodilla.tictactoe.components;
+package com.kodilla.tictactoe.classes;
+
+import com.kodilla.tictactoe.interfaces.*;
+import com.kodilla.tictactoe.enums.Figure;
+import com.kodilla.tictactoe.enums.InputValidationReturn;
+import com.kodilla.tictactoe.enums.LogicReturn;
 
 public class Game {
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private UserInterface ui;
+    private ComputerPlayerInterface cpi;
     private boolean againstComputer = false;
     private int boardSideSize, winMoveLength;
     private boolean directRestart;
 
-    public Game(UserInterface ui) {
+    public Game(UserInterface ui, ComputerPlayerInterface cpi) {
         this.ui = ui;
+        this.cpi = cpi;
     }
 
     public void start() {
@@ -89,7 +96,7 @@ public class Game {
 
             int[] move;
             if (againstComputer && currentPlayer == player2) {
-                move = ComputerPlayer.getRandomMove(gameLogic.getBoard(), boardSideSize);
+                move = cpi.getMove(gameLogic.getBoard(), boardSideSize);
                 row = move[0];
                 col = move[1];
                 // change random move to kind of interface

@@ -1,4 +1,6 @@
-package com.kodilla.tictactoe.components;
+package com.kodilla.tictactoe.interfaces;
+
+import com.kodilla.tictactoe.enums.InputValidationReturn;
 
 public interface InputValidation {
     static InputValidationReturn inputValidation(String input, int boardSideSize) {

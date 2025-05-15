@@ -1,9 +1,9 @@
-package com.kodilla.tictactoe.interfaces;
+package com.kodilla.tictactoe.classes;
 
 import com.kodilla.tictactoe.enums.InputValidationReturn;
 
-public interface InputValidation {
-    static InputValidationReturn inputValidation(String input, int boardSideSize) {
+public class InputValidator {
+    public static InputValidationReturn validateInput(String input, int boardSideSize) {
         if (!input.matches("^\\d+ \\d+$")) {
             return InputValidationReturn.INVALID_PATTERN;
         }

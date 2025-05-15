@@ -99,10 +99,8 @@ public class Game {
                 move = cpi.getMove(gameLogic.getBoard(), boardSideSize);
                 row = move[0];
                 col = move[1];
-                // change random move to kind of interface
                 ui.showMessage("The computer selects " + row + " " + col);
-            }
-            else {
+            } else {
                 String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
 
                 if (input.equalsIgnoreCase("q")) {
@@ -117,7 +115,7 @@ public class Game {
                     return;
                 }
 
-                InputValidationReturn isInputValid = InputValidation.inputValidation(input, boardSideSize);
+                InputValidationReturn isInputValid = InputValidator.validateInput(input, boardSideSize);
                 switch (isInputValid) {
                     case INVALID_PATTERN:
                         ui.showMessage("Invalid pattern. Try again.");

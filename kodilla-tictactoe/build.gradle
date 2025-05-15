@@ -28,7 +28,7 @@ dependencies {
 }
 
 application {
-	mainClass = 'com.kodilla.tictactoe.main.GameMain'
+	mainClass = 'com.kodilla.tictactoe.core.Main'
 }
 
 tasks.named('test') {

@@ -1,7 +1,7 @@
-package com.kodilla.tictactoe.classes;
+package com.kodilla.tictactoe.logic;
 
-import com.kodilla.tictactoe.enums.Figure;
-import com.kodilla.tictactoe.enums.LogicReturn;
+import com.kodilla.tictactoe.model.Figure;
+import com.kodilla.tictactoe.model.Board;
 
 public class GameLogic {
     private final Board board;

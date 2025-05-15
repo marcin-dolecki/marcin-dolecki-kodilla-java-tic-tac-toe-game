@@ -1,7 +1,7 @@
-package com.kodilla.tictactoe.classes;
+package com.kodilla.tictactoe.ui;
 
-import com.kodilla.tictactoe.interfaces.UserInterface;
-import com.kodilla.tictactoe.enums.Figure;
+import com.kodilla.tictactoe.model.Figure;
+import com.kodilla.tictactoe.model.Board;
 
 import java.util.Scanner;
 

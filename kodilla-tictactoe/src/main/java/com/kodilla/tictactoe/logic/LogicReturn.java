@@ -1,4 +1,4 @@
-package com.kodilla.tictactoe.enums;
+package com.kodilla.tictactoe.logic;
 
 public enum LogicReturn {
     WRONG_INPUT,

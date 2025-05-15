@@ -1,7 +1,8 @@
-package com.kodilla.tictactoe.classes;
+package com.kodilla.tictactoe.logic;
 
-import com.kodilla.tictactoe.enums.Figure;
-import com.kodilla.tictactoe.interfaces.ComputerPlayerInterface;
+import com.kodilla.tictactoe.model.Figure;
+import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
+import com.kodilla.tictactoe.model.Board;
 
 import java.util.Random;
 

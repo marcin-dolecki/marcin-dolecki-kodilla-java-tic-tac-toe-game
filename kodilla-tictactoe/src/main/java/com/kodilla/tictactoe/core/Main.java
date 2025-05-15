@@ -1,9 +1,9 @@
-package com.kodilla.tictactoe.main;
+package com.kodilla.tictactoe.core;
 
-import com.kodilla.tictactoe.classes.ConsoleDisplay;
-import com.kodilla.tictactoe.classes.Game;
-import com.kodilla.tictactoe.classes.RandomMove;
-import com.kodilla.tictactoe.interfaces.*;
+import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
+import com.kodilla.tictactoe.ui.ConsoleDisplay;
+import com.kodilla.tictactoe.logic.RandomMove;
+import com.kodilla.tictactoe.ui.UserInterface;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,6 +1,4 @@
-package com.kodilla.tictactoe.classes;
-
-import com.kodilla.tictactoe.enums.InputValidationReturn;
+package com.kodilla.tictactoe.logic;
 
 public class InputValidator {
     public static InputValidationReturn validateInput(String input, int boardSideSize) {

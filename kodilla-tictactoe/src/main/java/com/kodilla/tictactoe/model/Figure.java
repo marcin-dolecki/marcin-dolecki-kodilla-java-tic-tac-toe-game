@@ -1,4 +1,4 @@
-package com.kodilla.tictactoe.enums;
+package com.kodilla.tictactoe.model;
 
 public enum Figure {
     EMPTY,

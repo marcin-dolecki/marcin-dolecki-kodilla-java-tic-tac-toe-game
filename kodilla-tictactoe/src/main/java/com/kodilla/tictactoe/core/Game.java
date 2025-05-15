@@ -1,9 +1,13 @@
-package com.kodilla.tictactoe.classes;
+package com.kodilla.tictactoe.core;
 
-import com.kodilla.tictactoe.interfaces.*;
-import com.kodilla.tictactoe.enums.Figure;
-import com.kodilla.tictactoe.enums.InputValidationReturn;
-import com.kodilla.tictactoe.enums.LogicReturn;
+import com.kodilla.tictactoe.logic.GameLogic;
+import com.kodilla.tictactoe.logic.InputValidator;
+import com.kodilla.tictactoe.model.Figure;
+import com.kodilla.tictactoe.logic.InputValidationReturn;
+import com.kodilla.tictactoe.logic.LogicReturn;
+import com.kodilla.tictactoe.model.Player;
+import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
+import com.kodilla.tictactoe.ui.UserInterface;
 
 public class Game {
     private GameLogic gameLogic;

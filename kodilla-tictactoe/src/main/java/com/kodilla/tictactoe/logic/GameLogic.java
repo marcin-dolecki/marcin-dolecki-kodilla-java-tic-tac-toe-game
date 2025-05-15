@@ -9,10 +9,10 @@ public class GameLogic {
     private final int winMoveLength;
     private int movesMade;
 
-    public GameLogic(int boardSideSize, int winMoveLength) {
-        this.boardSideSize = boardSideSize;
+    public GameLogic(Board board, int winMoveLength) {
+        this.board = board;
         this.winMoveLength = winMoveLength;
-        this.board = new Board(boardSideSize);
+        this.boardSideSize = board.getBoardSideSize();
         this.movesMade = 0;
     }
 
@@ -32,10 +32,6 @@ public class GameLogic {
 
     public boolean isDraw() {
         return movesMade == boardSideSize * boardSideSize;
-    }
-
-    public Board getBoard() {
-        return board;
     }
 
     private boolean checkDirection(int row, int col, Figure figure, int rowDirection, int colDirection) {

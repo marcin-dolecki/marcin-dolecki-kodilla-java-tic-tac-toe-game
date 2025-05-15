@@ -2,6 +2,7 @@ package com.kodilla.tictactoe.core;
 
 import com.kodilla.tictactoe.logic.GameLogic;
 import com.kodilla.tictactoe.logic.InputValidator;
+import com.kodilla.tictactoe.model.Board;
 import com.kodilla.tictactoe.model.Figure;
 import com.kodilla.tictactoe.logic.InputValidationReturn;
 import com.kodilla.tictactoe.logic.LogicReturn;
@@ -10,6 +11,7 @@ import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.UserInterface;
 
 public class Game {
+    private Board board;
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private UserInterface ui;
@@ -82,7 +84,8 @@ public class Game {
             break;
         }
 
-        gameLogic = new GameLogic(boardSideSize, winMoveLength);
+        board = new Board(boardSideSize);
+        gameLogic = new GameLogic(board, winMoveLength);
         player1 = new Player(Figure.X);
         player2 = new Player(Figure.O);
         currentPlayer = player1;
@@ -90,7 +93,7 @@ public class Game {
 
     private void playGame() {
         ui.showMessage("=== TIC TAC TOE ===");
-        ui.displayBoard(gameLogic.getBoard());
+        ui.displayBoard(board);
 
         int row = 0;
         int col = 0;
@@ -100,7 +103,7 @@ public class Game {
 
             int[] move;
             if (againstComputer && currentPlayer == player2) {
-                move = cpi.getMove(gameLogic.getBoard(), boardSideSize);
+                move = cpi.getMove(board, boardSideSize);
                 row = move[0];
                 col = move[1];
                 ui.showMessage("The computer selects " + row + " " + col);
@@ -145,7 +148,7 @@ public class Game {
                     break;
             }
 
-            ui.displayBoard(gameLogic.getBoard());
+            ui.displayBoard(board);
 
             if (gameLogic.checkWin(row, col, currentPlayer.getFigure())) {
                 ui.showMessage("Congratulations! Player " + currentPlayer.getFigure().toString() + " has won!");

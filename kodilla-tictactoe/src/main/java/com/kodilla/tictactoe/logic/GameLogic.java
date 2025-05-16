@@ -59,6 +59,8 @@ public class GameLogic {
 
     private LogicReturn mapBoardErrorToLogicReturn(BoardErrorReason reason) {
         switch (reason) {
+            case NULL_FIGURE:
+                return LogicReturn.NULL_FIGURE;
             case FIELD_TAKEN:
                 return LogicReturn.FIELD_TAKEN;
             case OUT_OF_BOUNDS:

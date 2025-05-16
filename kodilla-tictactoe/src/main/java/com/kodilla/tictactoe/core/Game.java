@@ -142,6 +142,9 @@ public class Game {
             LogicReturn isMoveMade = gameLogic.makeMove(row, col, currentPlayer.getFigure());
 
             switch (isMoveMade) {
+                case NULL_FIGURE:
+                    ui.showMessage("Figure is null. Try again.");
+                    continue;
                 case FIELD_TAKEN:
                     ui.showMessage("The field you selected is already taken. Try again.");
                     continue;
@@ -150,16 +153,19 @@ public class Game {
                     continue;
                 case UNKNOWN_ERROR:
                     ui.showMessage("Unknown error. Try again.");
+                    continue;
                 case MOVE_ADDED:
                     break;
             }
 
             if (gameLogic.checkWin(row, col, currentPlayer.getFigure())) {
+                ui.displayBoard(board);
                 ui.showMessage("Congratulations! Player " + currentPlayer.getFigure().toString() + " has won!");
                 break;
             }
 
             if (gameLogic.isDraw()) {
+                ui.displayBoard(board);
                 ui.showMessage("Draw! Better luck next time!");
                 break;
             }

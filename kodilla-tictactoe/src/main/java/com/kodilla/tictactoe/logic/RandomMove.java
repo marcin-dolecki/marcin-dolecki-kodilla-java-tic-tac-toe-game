@@ -14,8 +14,8 @@ public class RandomMove implements ComputerPlayerInterface {
         int row, col;
 
         do {
-            row = random.nextInt(boardSideSize) + 1;
-            col = random.nextInt(boardSideSize) + 1;
+            row = random.nextInt(boardSideSize);
+            col = random.nextInt(boardSideSize);
         } while (board.getValue(row, col) != Figure.EMPTY);
 
         return new int[]{row, col};

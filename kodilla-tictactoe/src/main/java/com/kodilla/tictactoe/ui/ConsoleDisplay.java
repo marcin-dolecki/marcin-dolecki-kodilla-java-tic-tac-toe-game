@@ -25,7 +25,7 @@ public class ConsoleDisplay implements UserInterface {
             if (row + 1 < 10) stringBuilder.append(" ");
 
             for (int col = 0; col < boardSideSize; col++) {
-                stringBuilder.append("|").append(formatCell(board.getValue(row+1, col+1)));
+                stringBuilder.append("|").append(formatCell(board.getValue(row, col)));
             }
             stringBuilder.append("|\n");
         }

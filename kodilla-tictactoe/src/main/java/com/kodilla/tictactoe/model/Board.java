@@ -22,7 +22,7 @@ public class Board {
     }
 
     public Figure getValue(int row, int col) {
-        return board[row-1][col-1];
+        return board[row][col];
     }
 
     public int getBoardSideSize() {
@@ -30,13 +30,13 @@ public class Board {
     }
 
     public void setValue(int row, int col, Figure value) {
-        if (row < 1 || row > boardSideSize || col < 1 || col > boardSideSize) {
+        if (row < 0 || row >= boardSideSize || col < 0 || col >= boardSideSize) {
             throw new BoardUpdateException(BoardErrorReason.OUT_OF_BOUNDS);
         }
         if (!isEmpty(row, col)) {
             throw new BoardUpdateException(BoardErrorReason.FIELD_TAKEN);
         }
-        board[row-1][col-1] = value;
+        board[row][col] = value;
     }
 
     public boolean isEmpty(int row, int col) {

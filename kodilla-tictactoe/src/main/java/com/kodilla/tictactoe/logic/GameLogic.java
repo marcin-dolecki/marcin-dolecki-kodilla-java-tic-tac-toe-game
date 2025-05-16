@@ -49,7 +49,7 @@ public class GameLogic {
         row += rowDirection;
         col += colDirection;
 
-        while (row > 0 && row <= boardSideSize && col > 0 && col <= boardSideSize && board.getValue(row, col) == figure) {
+        while (row >= 0 && row < boardSideSize && col >= 0 && col < boardSideSize && board.getValue(row, col) == figure) {
             count++;
             row += rowDirection;
             col += colDirection;

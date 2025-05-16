@@ -4,7 +4,5 @@ public enum LogicReturn {
     OUT_OF_BOUNDS,
     FIELD_TAKEN,
     UNKNOWN_ERROR,
-    MOVE_ADDED,
-    DRAW,
-    WON
+    MOVE_ADDED
 }

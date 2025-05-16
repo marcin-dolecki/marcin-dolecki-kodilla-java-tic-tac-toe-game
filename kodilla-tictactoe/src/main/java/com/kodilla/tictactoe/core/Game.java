@@ -49,7 +49,7 @@ public class Game {
             ui.showMessage("2 - Player vs computer");
 
             String input = ui.getTextInput("Enter your choice: ");
-            
+
             switch (input) {
                 case "1":
                     againstComputer = false;
@@ -107,8 +107,8 @@ public class Game {
             int[] move;
             if (againstComputer && currentPlayer == player2) {
                 move = cpi.getMove(board, boardSideSize);
-                row = move[0];
-                col = move[1];
+                row = move[0] - 1;
+                col = move[1] - 1;
                 ui.showMessage("The computer selects " + row + " " + col);
             } else {
                 String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
@@ -133,8 +133,8 @@ public class Game {
                         continue;
                     case OK:
                         String[] numbers = input.split(" ");
-                        row = Integer.parseInt(numbers[0]);
-                        col = Integer.parseInt(numbers[1]);
+                        row = Integer.parseInt(numbers[0]) - 1;
+                        col = Integer.parseInt(numbers[1]) - 1;
                         break;
                 }
             }

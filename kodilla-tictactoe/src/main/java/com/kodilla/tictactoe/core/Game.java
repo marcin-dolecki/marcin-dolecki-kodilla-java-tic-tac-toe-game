@@ -42,12 +42,14 @@ public class Game {
 
     private void showMainMenu() {
         ui.showMessage("=== TIC TAC TOE ===");
-        ui.showMessage("Select the game mode:");
-        ui.showMessage("1 - Player vs player");
-        ui.showMessage("2 - Player vs computer");
 
         while (true) {
+            ui.showMessage("Select the game mode:");
+            ui.showMessage("1 - Player vs player");
+            ui.showMessage("2 - Player vs computer");
+
             String input = ui.getTextInput("Enter your choice: ");
+            
             switch (input) {
                 case "1":
                     againstComputer = false;
@@ -62,12 +64,13 @@ public class Game {
             break;
         }
 
-        ui.showMessage("Select the board size:");
-        ui.showMessage("1 - 3x3 square - classic");
-        ui.showMessage("2 - 10x10 square - 5 figures win");
-
         while (true) {
+            ui.showMessage("Select the board size:");
+            ui.showMessage("1 - 3x3 square - classic");
+            ui.showMessage("2 - 10x10 square - 5 figures win");
+
             String input = ui.getTextInput("Enter your choice: ");
+
             switch (input) {
                 case "1":
                     boardSideSize = 3;
@@ -93,12 +96,12 @@ public class Game {
 
     private void playGame() {
         ui.showMessage("=== TIC TAC TOE ===");
-        ui.displayBoard(board);
 
         int row = 0;
         int col = 0;
 
         while (true) {
+            ui.displayBoard(board);
             ui.showMessage("(Type 'q' to quit, 'r' to restart)");
 
             int[] move;
@@ -123,12 +126,10 @@ public class Game {
                 }
 
                 InputValidationReturn isInputValid = InputValidator.validateInput(input, boardSideSize);
+
                 switch (isInputValid) {
                     case INVALID_PATTERN:
                         ui.showMessage("Invalid pattern. Try again.");
-                        continue;
-                    case OUT_OF_BOUNDS:
-                        ui.showMessage("Your selection is out of the range. Try again.");
                         continue;
                     case OK:
                         String[] numbers = input.split(" ");
@@ -139,16 +140,19 @@ public class Game {
             }
 
             LogicReturn isMoveMade = gameLogic.makeMove(row, col, currentPlayer.getFigure());
+
             switch (isMoveMade) {
-                // move the field taking to the input validation but the whole input validation implement in Board
                 case FIELD_TAKEN:
                     ui.showMessage("The field you selected is already taken. Try again.");
                     continue;
+                case OUT_OF_BOUNDS:
+                    ui.showMessage("Your selection is out of the range. Try again.");
+                    continue;
+                case UNKNOWN_ERROR:
+                    ui.showMessage("Unknown error. Try again.");
                 case MOVE_ADDED:
                     break;
             }
-
-            ui.displayBoard(board);
 
             if (gameLogic.checkWin(row, col, currentPlayer.getFigure())) {
                 ui.showMessage("Congratulations! Player " + currentPlayer.getFigure().toString() + " has won!");

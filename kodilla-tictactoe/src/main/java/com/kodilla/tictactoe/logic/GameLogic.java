@@ -17,10 +17,13 @@ public class GameLogic {
     }
 
     public LogicReturn makeMove(int row, int col, Figure figure) {
-        if (board.getValue(row, col) != Figure.EMPTY) return LogicReturn.FIELD_TAKEN;
-        board.setValue(row, col, figure);
-        movesMade++;
-        return LogicReturn.MOVE_ADDED;
+        try {
+            board.setValue(row, col, figure);
+            movesMade++;
+            return LogicReturn.MOVE_ADDED;
+        } catch (BoardUpdateException e) {
+            return mapBoardErrorToLogicReturn(e.getReason());
+        }
     }
 
     public boolean checkWin(int row, int col, Figure figure) {
@@ -52,5 +55,16 @@ public class GameLogic {
             col += colDirection;
         }
         return count;
+    }
+
+    private LogicReturn mapBoardErrorToLogicReturn(BoardErrorReason reason) {
+        switch (reason) {
+            case FIELD_TAKEN:
+                return LogicReturn.FIELD_TAKEN;
+            case OUT_OF_BOUNDS:
+                return LogicReturn.OUT_OF_BOUNDS;
+            default:
+                return LogicReturn.UNKNOWN_ERROR;
+        }
     }
 }

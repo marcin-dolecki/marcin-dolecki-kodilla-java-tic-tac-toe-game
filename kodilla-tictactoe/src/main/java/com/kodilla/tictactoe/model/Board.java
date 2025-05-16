@@ -1,5 +1,8 @@
 package com.kodilla.tictactoe.model;
 
+import com.kodilla.tictactoe.logic.BoardErrorReason;
+import com.kodilla.tictactoe.logic.BoardUpdateException;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -27,7 +30,17 @@ public class Board {
     }
 
     public void setValue(int row, int col, Figure value) {
+        if (row < 1 || row > boardSideSize || col < 1 || col > boardSideSize) {
+            throw new BoardUpdateException(BoardErrorReason.OUT_OF_BOUNDS);
+        }
+        if (!isEmpty(row, col)) {
+            throw new BoardUpdateException(BoardErrorReason.FIELD_TAKEN);
+        }
         board[row-1][col-1] = value;
+    }
+
+    public boolean isEmpty(int row, int col) {
+        return getValue(row, col) == Figure.EMPTY;
     }
 
     @Override

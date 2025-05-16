@@ -1,8 +1,9 @@
 package com.kodilla.tictactoe.logic;
 
 public enum LogicReturn {
-    WRONG_INPUT,
+    OUT_OF_BOUNDS,
     FIELD_TAKEN,
+    UNKNOWN_ERROR,
     MOVE_ADDED,
     DRAW,
     WON

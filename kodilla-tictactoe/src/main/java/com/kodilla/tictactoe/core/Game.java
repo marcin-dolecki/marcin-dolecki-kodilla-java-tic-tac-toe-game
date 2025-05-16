@@ -90,7 +90,7 @@ public class Game {
         board = new Board(boardSideSize);
         gameLogic = new GameLogic(board, winMoveLength);
         player1 = new Player(Figure.X);
-        player2 = new Player(Figure.O);
+        player2 = new Player(Figure.O, true);
         currentPlayer = player1;
     }
 
@@ -105,7 +105,7 @@ public class Game {
             ui.showMessage("(Type 'q' to quit, 'r' to restart)");
 
             int[] move;
-            if (againstComputer && currentPlayer == player2) {
+            if (againstComputer && currentPlayer.isComputerPlayer()) {
                 move = cpi.getMove(board, boardSideSize);
                 row = move[0];
                 col = move[1];

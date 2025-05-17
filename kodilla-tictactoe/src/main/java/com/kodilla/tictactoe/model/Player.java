@@ -1,5 +1,7 @@
 package com.kodilla.tictactoe.model;
 
+import com.kodilla.tictactoe.logic.GameValidationException;
+
 import static com.kodilla.tictactoe.util.ValidationUtils.validateFigure;
 
 import java.util.Objects;
@@ -9,27 +11,22 @@ import java.util.Objects;
  * A player is associated with a {@link Figure} (X or O)
  * and may be a human or a computer-controlled player.
  */
-public class Player {
+public final class Player {
     private final Figure figure;
     private final boolean isComputerPlayer;
 
     /**
      * Creates a player with a specified figure and computer control flag.
-     *
      * @param figure the figure (X or O) assigned to the player
      * @param isComputerPlayer true if the player is controlled by the computer, false otherwise
+     * @throws GameValidationException if the figure is null
      */
-    public Player(Figure figure, boolean isComputerPlayer) {
+    public Player(final Figure figure, final boolean isComputerPlayer) {
         validateFigure(figure);
         this.figure = figure;
         this.isComputerPlayer = isComputerPlayer;
     }
 
-    /**
-     * Creates a human player with the specified figure.
-     *
-     * @param figure
-     */
     public Player(Figure figure) {
         this(figure, false);
     }

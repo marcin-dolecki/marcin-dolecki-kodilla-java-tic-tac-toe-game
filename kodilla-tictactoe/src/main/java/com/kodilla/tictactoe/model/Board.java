@@ -1,7 +1,8 @@
 package com.kodilla.tictactoe.model;
 
-import com.kodilla.tictactoe.logic.BoardErrorReason;
-import com.kodilla.tictactoe.logic.BoardUpdateException;
+import com.kodilla.tictactoe.logic.ErrorReason;
+import com.kodilla.tictactoe.logic.GameValidationException;
+import static com.kodilla.tictactoe.util.ValidationUtils.validateFigure;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -56,19 +57,13 @@ public class Board {
 
     private void validateCoords(int row, int col) {
         if (row < 0 || row >= boardSideSize || col < 0 || col >= boardSideSize) {
-            throw new BoardUpdateException(BoardErrorReason.OUT_OF_BOUNDS);
+            throw new GameValidationException(ErrorReason.OUT_OF_BOUNDS);
         }
     }
 
     private void validateEmpty(int row, int col) {
         if (!isEmpty(row, col)) {
-            throw new BoardUpdateException(BoardErrorReason.FIELD_TAKEN);
-        }
-    }
-
-    private void validateFigure(Figure figure) {
-        if (figure == null) {
-            throw new BoardUpdateException(BoardErrorReason.NULL_FIGURE);
+            throw new GameValidationException(ErrorReason.FIELD_TAKEN);
         }
     }
 

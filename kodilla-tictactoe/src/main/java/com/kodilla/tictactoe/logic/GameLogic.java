@@ -21,7 +21,7 @@ public class GameLogic {
             board.setValue(row, col, figure);
             movesMade++;
             return LogicReturn.MOVE_ADDED;
-        } catch (BoardUpdateException e) {
+        } catch (GameValidationException e) {
             return mapBoardErrorToLogicReturn(e.getReason());
         }
     }
@@ -57,7 +57,7 @@ public class GameLogic {
         return count;
     }
 
-    private LogicReturn mapBoardErrorToLogicReturn(BoardErrorReason reason) {
+    private LogicReturn mapBoardErrorToLogicReturn(ErrorReason reason) {
         switch (reason) {
             case NULL_FIGURE:
                 return LogicReturn.NULL_FIGURE;

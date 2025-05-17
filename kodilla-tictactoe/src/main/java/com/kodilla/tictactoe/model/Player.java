@@ -1,5 +1,7 @@
 package com.kodilla.tictactoe.model;
 
+import static com.kodilla.tictactoe.util.ValidationUtils.validateFigure;
+
 import java.util.Objects;
 
 /**
@@ -18,6 +20,7 @@ public class Player {
      * @param isComputerPlayer true if the player is controlled by the computer, false otherwise
      */
     public Player(Figure figure, boolean isComputerPlayer) {
+        validateFigure(figure);
         this.figure = figure;
         this.isComputerPlayer = isComputerPlayer;
     }

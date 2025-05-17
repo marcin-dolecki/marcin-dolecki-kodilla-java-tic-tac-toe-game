@@ -2,7 +2,7 @@ package com.kodilla.tictactoe.model;
 
 import com.kodilla.tictactoe.logic.ErrorReason;
 import com.kodilla.tictactoe.logic.GameValidationException;
-import static com.kodilla.tictactoe.util.ValidationUtils.validateFigure;
+import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -57,7 +57,7 @@ public final class Board {
      * @throws GameValidationException if any of the validations fail
      */
     public void setValue(int row, int col, Figure figure) {
-        validateFigure(figure);
+        requireNonNull(figure, ErrorReason.NULL_FIGURE);
         validateCoords(row, col);
         validateEmpty(row, col);
         board[row][col] = figure;

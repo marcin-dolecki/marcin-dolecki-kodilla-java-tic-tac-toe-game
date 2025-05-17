@@ -125,7 +125,7 @@ public class Game {
                     return;
                 }
 
-                InputValidationReturn isInputValid = InputValidator.validateInput(input, boardSideSize);
+                InputValidationReturn isInputValid = InputValidator.validateInput(input);
 
                 switch (isInputValid) {
                     case INVALID_PATTERN:

@@ -1,8 +1,9 @@
 package com.kodilla.tictactoe.model;
 
+import com.kodilla.tictactoe.logic.ErrorReason;
 import com.kodilla.tictactoe.logic.GameValidationException;
 
-import static com.kodilla.tictactoe.util.ValidationUtils.validateFigure;
+import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
 import java.util.Objects;
 
@@ -22,7 +23,7 @@ public final class Player {
      * @throws GameValidationException if the figure is null
      */
     public Player(final Figure figure, final boolean isComputerPlayer) {
-        validateFigure(figure);
+        requireNonNull(figure, ErrorReason.NULL_FIGURE);
         this.figure = figure;
         this.isComputerPlayer = isComputerPlayer;
     }

@@ -8,9 +8,10 @@ public final class ValidationUtils {
     private ValidationUtils() {
     }
 
-    public static void validateFigure(Figure figure) {
-        if (figure == null) {
-            throw new GameValidationException(ErrorReason.NULL_FIGURE);
+    public static <T> T requireNonNull(T object, ErrorReason reason) {
+        if (object == null) {
+            throw new GameValidationException(reason);
         }
+        return object;
     }
 }

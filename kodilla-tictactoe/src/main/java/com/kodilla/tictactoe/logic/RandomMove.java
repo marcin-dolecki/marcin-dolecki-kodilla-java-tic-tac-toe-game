@@ -5,17 +5,20 @@ import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.model.Board;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomMove implements ComputerPlayerInterface {
-    Random random = new Random();
 
     @Override
     public int[] getMove(Board board, int boardSideSize) {
-        int row, col;
+        if (board.isFull()) {
+            throw new GameValidationException(ErrorReason.BOARD_FULL);
+        }
 
+        int row, col;
         do {
-            row = random.nextInt(boardSideSize);
-            col = random.nextInt(boardSideSize);
+            row = ThreadLocalRandom.current().nextInt(boardSideSize);
+            col = ThreadLocalRandom.current().nextInt(boardSideSize);
         } while (board.getValue(row, col) != Figure.EMPTY);
 
         return new int[]{row, col};

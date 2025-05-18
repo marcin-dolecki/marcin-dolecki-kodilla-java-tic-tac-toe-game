@@ -1,9 +1,10 @@
 package com.kodilla.tictactoe.logic;
 
 public enum ErrorReason {
+    BOARD_FULL,
     FIELD_TAKEN,
-    OUT_OF_BOUNDS,
     NULL_FIGURE,
     NULL_BOARD,
-    NULL_INPUT
+    NULL_INPUT,
+    OUT_OF_BOUNDS
 }

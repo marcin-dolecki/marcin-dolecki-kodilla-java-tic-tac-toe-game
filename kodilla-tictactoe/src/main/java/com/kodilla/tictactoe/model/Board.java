@@ -14,6 +14,7 @@ import java.util.Objects;
 public final class Board {
     private final Figure[][] board;
     private final int boardSideSize;
+    private int moveCount;
 
     /**
      * Creates an empty board of the given size.
@@ -73,6 +74,14 @@ public final class Board {
     public boolean isEmpty(int row, int col) {
         validateCoords(row, col);
         return getValue(row, col) == Figure.EMPTY;
+    }
+
+    /**
+     * Checks whether the board is fully filled.
+     * @return true if the board is full, false otherwise
+     */
+    public boolean isFull() {
+        return moveCount == boardSideSize * boardSideSize;
     }
 
     /**

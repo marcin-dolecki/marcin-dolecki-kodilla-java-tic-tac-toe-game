@@ -7,10 +7,14 @@ import com.kodilla.tictactoe.model.Board;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
+
 public class RandomMove implements ComputerPlayerInterface {
 
     @Override
     public int[] getMove(Board board, int boardSideSize) {
+        requireNonNull(board, ErrorReason.NULL_BOARD);
+
         if (board.isFull()) {
             throw new GameValidationException(ErrorReason.BOARD_FULL);
         }

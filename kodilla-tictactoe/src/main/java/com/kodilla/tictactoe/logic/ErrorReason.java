@@ -6,5 +6,7 @@ public enum ErrorReason {
     NULL_FIGURE,
     NULL_BOARD,
     NULL_INPUT,
+    NULL_MESSAGE,
+    NULL_PROMPT,
     OUT_OF_BOUNDS
 }

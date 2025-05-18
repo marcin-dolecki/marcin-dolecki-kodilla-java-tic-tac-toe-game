@@ -3,41 +3,44 @@ package com.kodilla.tictactoe.logic;
 import com.kodilla.tictactoe.model.Figure;
 import com.kodilla.tictactoe.model.Board;
 
-public class GameLogic {
+import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
+
+public final class GameLogic {
     private final Board board;
     private final int boardSideSize;
     private final int winMoveLength;
-    private int movesMade;
 
-    public GameLogic(Board board, int winMoveLength) {
+    public GameLogic(final Board board, final int winMoveLength) {
+        requireNonNull(board, ErrorReason.NULL_BOARD);
         this.board = board;
         this.winMoveLength = winMoveLength;
         this.boardSideSize = board.getBoardSideSize();
-        this.movesMade = 0;
     }
 
     public LogicReturn makeMove(int row, int col, Figure figure) {
         try {
             board.setValue(row, col, figure);
-            movesMade++;
             return LogicReturn.MOVE_ADDED;
         } catch (GameValidationException e) {
             return mapBoardErrorToLogicReturn(e.getReason());
         }
     }
 
-    public boolean checkWin(int row, int col, Figure figure) {
-        return checkDirection(row, col, figure, 0, 1) ||
-                checkDirection(row, col, figure, 1, 0) ||
-                checkDirection(row, col, figure, 1, 1) ||
-                checkDirection(row, col, figure, 1, -1);
+    public boolean isWin(int row, int col, Figure figure) {
+        requireNonNull(figure, ErrorReason.NULL_FIGURE);
+
+        return checkDirection(row, col, figure, 0, 1) ||    // horizontally —
+                checkDirection(row, col, figure, 1, 0) ||   // vertically |
+                checkDirection(row, col, figure, 1, 1) ||   // obliquely \
+                checkDirection(row, col, figure, 1, -1);    // obliquely /
     }
 
     public boolean isDraw() {
-        return movesMade == boardSideSize * boardSideSize;
+        return board.isFull();
     }
 
     private boolean checkDirection(int row, int col, Figure figure, int rowDirection, int colDirection) {
+
         int count = 1;
         count += countInDirection(row, col, figure, rowDirection, colDirection);
         count += countInDirection(row, col, figure, -rowDirection, -colDirection);

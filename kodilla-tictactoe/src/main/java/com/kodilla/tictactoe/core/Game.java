@@ -158,7 +158,7 @@ public class Game {
                     break;
             }
 
-            if (gameLogic.checkWin(row, col, currentPlayer.getFigure())) {
+            if (gameLogic.isWin(row, col, currentPlayer.getFigure())) {
                 ui.displayBoard(board);
                 ui.showMessage("Congratulations! Player " + currentPlayer.getFigure().toString() + " has won!");
                 break;

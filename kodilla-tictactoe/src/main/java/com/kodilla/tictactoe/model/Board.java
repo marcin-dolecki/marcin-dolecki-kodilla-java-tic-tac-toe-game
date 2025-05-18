@@ -23,6 +23,7 @@ public final class Board {
     public Board(final int boardSideSize) {
         this.boardSideSize = boardSideSize;
         this.board = new Figure[boardSideSize][boardSideSize];
+        this.moveCount = 0;
 
         for (int row = 0; row < boardSideSize; row++) {
             Arrays.fill(board[row], Figure.EMPTY);
@@ -61,6 +62,7 @@ public final class Board {
         requireNonNull(figure, ErrorReason.NULL_FIGURE);
         validateCoords(row, col);
         validateEmpty(row, col);
+        moveCount++;
         board[row][col] = figure;
     }
 

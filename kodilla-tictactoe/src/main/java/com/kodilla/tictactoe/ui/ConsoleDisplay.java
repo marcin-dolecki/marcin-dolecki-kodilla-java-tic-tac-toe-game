@@ -37,11 +37,13 @@ public final class ConsoleDisplay implements UserInterface {
 
     @Override
     public void showMessage(String message) {
+        requireNonNull(message, ErrorReason.NULL_MESSAGE);
         System.out.println(message);
     }
 
     @Override
     public String getTextInput(String prompt) {
+        requireNonNull(prompt, ErrorReason.NULL_PROMPT);
         System.out.println(prompt);
         return scanner.nextLine();
     }

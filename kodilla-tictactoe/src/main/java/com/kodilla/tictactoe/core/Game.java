@@ -174,6 +174,66 @@ public class Game {
         }
     }
 
+    private int[] handleHumanMove() {
+        while (true) {
+            String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
+
+            if (input.equalsIgnoreCase("q")) {
+                ui.showMessage("Game stopped. See you soon!");
+                System.exit(0);
+            }
+
+            if (input.equalsIgnoreCase("r")) {
+                directRestart = true;
+                // try to do something with try catch
+                // maybe would be good to have class responsible for restart
+                return null;
+            }
+
+            InputValidationReturn validation = InputValidator.validateInput(input);
+
+            if (validation == InputValidationReturn.INVALID_PATTERN) {
+                ui.showMessage("Invalid pattern. Try again.");
+                continue;
+            }
+
+            String[] numbers = input.split(" ");
+            int row = Integer.parseInt(numbers[0]) - 1;
+            int col = Integer.parseInt(numbers[1]) - 1;
+
+            return new int[]{row, col};
+        }
+    }
+
+    private int[] handleComputerMove() {
+        int[] move = cpi.getMove(board, boardSideSize);
+        ui.showMessage("The computer selects " + move[0] + " " + move[1]);
+
+        return move;
+    }
+
+    private boolean isMoveValidAndMade(int row, int col) {
+        LogicReturn result = gameLogic.makeMove(row, col, currentPlayer.getFigure());
+
+        switch (result) {
+            case MOVE_ADDED:
+                return true;
+            case FIELD_TAKEN:
+                ui.showMessage("The field you selected is already taken. Try again.");
+                break;
+            case OUT_OF_BOUNDS:
+                ui.showMessage("Your selection is out of the range. Try again.");
+                break;
+            case NULL_FIGURE:
+                ui.showMessage("Figure is null. Try again.");
+                break;
+            case UNKNOWN_ERROR:
+                ui.showMessage("Unknown error. Try again.");
+                break;
+        }
+        return false;
+    }
+
     private void switchPlayer() {
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
     }

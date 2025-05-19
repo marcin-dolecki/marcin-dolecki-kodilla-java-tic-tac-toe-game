@@ -47,4 +47,9 @@ public final class ConsoleDisplay implements UserInterface {
         System.out.println(prompt);
         return scanner.nextLine();
     }
+
+    @Override
+    public void shutdown() {
+        scanner.close();
+    }
 }

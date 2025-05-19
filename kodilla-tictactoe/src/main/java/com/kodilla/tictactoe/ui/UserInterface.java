@@ -6,4 +6,7 @@ public interface UserInterface {
     void displayBoard(Board board);
     void showMessage(String message);
     String getTextInput(String prompt);
+    default void shutdown() {
+        // no-op
+    }
 }

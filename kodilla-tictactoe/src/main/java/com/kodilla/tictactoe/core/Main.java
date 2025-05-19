@@ -1,5 +1,6 @@
 package com.kodilla.tictactoe.core;
 
+import com.kodilla.tictactoe.logic.ExitRequestedException;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.ConsoleDisplay;
 import com.kodilla.tictactoe.logic.RandomMove;
@@ -10,6 +11,12 @@ public class Main {
         UserInterface ui = new ConsoleDisplay();
         ComputerPlayerInterface cpi = new RandomMove();
         Game game = new Game(ui, cpi);
-        game.start();
+
+        try {
+            game.start();
+        } catch (ExitRequestedException ignored) {
+        } finally {
+            ui.shutdown();
+        }
     }
 }

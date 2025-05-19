@@ -4,7 +4,6 @@ import com.kodilla.tictactoe.model.Figure;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.model.Board;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;

@@ -7,15 +7,17 @@ import com.kodilla.tictactoe.model.Player;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.UserInterface;
 
-public class Game {
+public final class Game {
     private Board board;
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
-    private UserInterface ui;
-    private ComputerPlayerInterface cpi;
+    private final UserInterface ui;
+    private final ComputerPlayerInterface cpi;
     private boolean againstComputer = false;
     private int boardSideSize, winMoveLength;
     private boolean directRestart;
+    private static final String QUIT = "q";
+    private static final String RESTART = "r";
 
     public Game(UserInterface ui, ComputerPlayerInterface cpi) {
         this.ui = ui;
@@ -39,7 +41,14 @@ public class Game {
 
     private void showMainMenu() {
         ui.showMessage("=== TIC TAC TOE ===");
+        selectGameMode();
+        selectBoardSize();
+        board = new Board(boardSideSize);
+        gameLogic = new GameLogic(board, winMoveLength);
+        initializePlayers();
+    }
 
+    private void selectGameMode() {
         while (true) {
             ui.showMessage("Select the game mode:");
             ui.showMessage("1 - Player vs player");
@@ -50,17 +59,17 @@ public class Game {
             switch (input) {
                 case "1":
                     againstComputer = false;
-                    break;
+                    return;
                 case "2":
                     againstComputer = true;
-                    break;
+                    return;
                 default:
                     ui.showMessage("Invalid choice. Try again.");
-                    continue;
             }
-            break;
         }
+    }
 
+    private void selectBoardSize() {
         while (true) {
             ui.showMessage("Select the board size:");
             ui.showMessage("1 - 3x3 square - classic");
@@ -72,26 +81,18 @@ public class Game {
                 case "1":
                     boardSideSize = 3;
                     winMoveLength = 3;
-                    break;
+                    return;
                 case "2":
                     boardSideSize = 10;
                     winMoveLength = 5;
-                    break;
+                    return;
                 default:
                     ui.showMessage("Invalid choice. Try again.");
-                    continue;
             }
-            break;
         }
-
-        board = new Board(boardSideSize);
-        gameLogic = new GameLogic(board, winMoveLength);
-        player1 = new Player(Figure.X);
-        player2 = new Player(Figure.O, true);
-        currentPlayer = player1;
     }
 
-    private void playGame() {
+    private void playGame() throws ExitRequestedException {
         ui.showMessage("=== TIC TAC TOE ===");
 
         while (true) {
@@ -102,8 +103,7 @@ public class Game {
             switch (action.getType()) {
                 case QUIT:
                     ui.showMessage("Game stopped. See you soon!");
-                    System.exit(0);
-                    return;
+                    throw new ExitRequestedException();
                 case RESTART:
                     directRestart = true;
                     return;
@@ -128,11 +128,11 @@ public class Game {
 
             String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
 
-            if (input.equalsIgnoreCase("q")) {
+            if (input.equalsIgnoreCase(QUIT)) {
                 return InputAction.quit();
             }
 
-            if (input.equalsIgnoreCase("r")) {
+            if (input.equalsIgnoreCase(RESTART)) {
                 return InputAction.restart();
             }
 
@@ -199,6 +199,12 @@ public class Game {
         return false;
     }
 
+    private void initializePlayers() {
+        player1 = new Player(Figure.X);
+        player2 = new Player(Figure.O, true);
+        currentPlayer = player1;
+    }
+
     private void switchPlayer() {
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
     }
@@ -209,9 +215,9 @@ public class Game {
         while (true) {
             String input = ui.getTextInput("Enter your choice: ");
             switch (input.toLowerCase()) {
-                case "r":
+                case RESTART:
                     return true;
-                case "q":
+                case QUIT:
                     return false;
                 default:
                     ui.showMessage("Invalid choice. Try again.");

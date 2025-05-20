@@ -92,6 +92,12 @@ public final class Game {
         }
     }
 
+    private void initializePlayers() {
+        player1 = new Player(Figure.X);
+        player2 = new Player(Figure.O, true);
+        currentPlayer = player1;
+    }
+
     private void playGame() throws ExitRequestedException {
         ui.showMessage("=== TIC TAC TOE ===");
 
@@ -197,12 +203,6 @@ public final class Game {
         }
 
         return false;
-    }
-
-    private void initializePlayers() {
-        player1 = new Player(Figure.X);
-        player2 = new Player(Figure.O, true);
-        currentPlayer = player1;
     }
 
     private void switchPlayer() {

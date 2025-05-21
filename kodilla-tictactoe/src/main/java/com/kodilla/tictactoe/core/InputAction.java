@@ -1,5 +1,7 @@
 package com.kodilla.tictactoe.core;
 
+import java.util.Objects;
+
 public final class InputAction {
     public enum Type {MOVE, RESTART, QUIT}
 
@@ -35,5 +37,18 @@ public final class InputAction {
 
     public int getCol() {
         return col;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InputAction that = (InputAction) o;
+        return row == that.row && col == that.col && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, row, col);
     }
 }

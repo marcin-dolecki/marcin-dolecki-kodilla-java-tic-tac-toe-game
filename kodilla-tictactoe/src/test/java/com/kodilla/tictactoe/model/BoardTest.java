@@ -30,22 +30,12 @@ class BoardTest {
     }
 
     @Test
-    void shouldSetValueOnEmptyField() {
-        board.setValue(1, 1, Figure.X);
-
-        assertEquals(Figure.X, board.getValue(1, 1));
-        assertFalse(board.isEmpty(1, 1));
-    }
-
-    @Test
-    void shouldThrowWhenSettingValueOnTakenField() {
-        board.setValue(0, 0, Figure.X);
-
-        GameValidationException exception =  assertThrows(GameValidationException.class, () ->
-                board.setValue(0, 0, Figure.X)
+    void shouldThrowWhenSettingNullFigure() {
+        GameValidationException exception = assertThrows(GameValidationException.class, () ->
+                board.setValue(1, 1, null)
         );
 
-        assertEquals(ErrorReason.FIELD_TAKEN, exception.getReason());
+        assertEquals(ErrorReason.NULL_FIGURE, exception.getReason());
     }
 
     @ParameterizedTest
@@ -61,5 +51,73 @@ class BoardTest {
         );
 
         assertEquals(ErrorReason.OUT_OF_BOUNDS, exception.getReason());
+    }
+
+    @Test
+    void shouldThrowWhenSettingValueOnTakenField() {
+        board.setValue(0, 0, Figure.X);
+
+        GameValidationException exception =  assertThrows(GameValidationException.class, () ->
+                board.setValue(0, 0, Figure.X)
+        );
+
+        assertEquals(ErrorReason.FIELD_TAKEN, exception.getReason());
+    }
+
+    @Test
+    void shouldSetValueOnEmptyField() {
+        board.setValue(1, 1, Figure.X);
+
+        assertEquals(Figure.X, board.getValue(1, 1));
+        assertFalse(board.isEmpty(1, 1));
+    }
+
+    @Test
+    void shouldValidateEmptyCorrectly() {
+        assertTrue(board.isEmpty(1, 1));
+
+        board.setValue(1, 1, Figure.X);
+
+        assertFalse(board.isEmpty(1, 1));
+    }
+
+    @Test
+    void shouldReturnTrueWhenBoardIsFull() {
+        IntStream.range(0, boardSideSize).forEach(row ->
+            IntStream.range(0, boardSideSize).forEach(col ->
+                board.setValue(row, col, Figure.X)
+            )
+        );
+
+        assertTrue(board.isFull());
+    }
+
+    @Test
+    void shouldReturnFalseWhenBoardIsNotFull() {
+        board.setValue(0, 0, Figure.X);
+
+        assertFalse(board.isFull());
+    }
+
+    @Test
+    void boardsWithSameContentsShouldBeEqual() {
+        Board board1 = new Board(boardSideSize);
+        Board board2 = new Board(boardSideSize);
+
+        board1.setValue(0, 0, Figure.X);
+        board2.setValue(0, 0, Figure.X);
+
+        assertEquals(board1, board2);
+    }
+
+    @Test
+    void boardsWithDifferentContentsShouldNotBeEqual() {
+        Board board1 = new Board(boardSideSize);
+        Board board2 = new Board(boardSideSize);
+
+        board1.setValue(0, 0, Figure.X);
+        board2.setValue(1, 1, Figure.X);
+
+        assertNotEquals(board1, board2);
     }
 }

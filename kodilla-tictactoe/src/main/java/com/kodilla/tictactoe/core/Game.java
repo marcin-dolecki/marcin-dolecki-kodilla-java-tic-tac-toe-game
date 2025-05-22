@@ -12,16 +12,16 @@ public final class Game {
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private final UserInterface ui;
-    private final ComputerPlayerInterface cpi;
+    private final ComputerPlayerInterface computerPlayerInterface;
     private boolean againstComputer = false;
     private int boardSideSize, winMoveLength;
     private boolean directRestart;
     private static final String QUIT = "q";
     private static final String RESTART = "r";
 
-    public Game(UserInterface ui, ComputerPlayerInterface cpi) {
+    public Game(UserInterface ui, ComputerPlayerInterface computerPlayerInterface) {
         this.ui = ui;
-        this.cpi = cpi;
+        this.computerPlayerInterface = computerPlayerInterface;
     }
 
     public void start() {
@@ -161,7 +161,7 @@ public final class Game {
         ui.displayBoard(board);
         ui.showMessage("(Type 'q' to quit, 'r' to restart)");
         
-        int[] move = cpi.getMove(board, boardSideSize);
+        int[] move = computerPlayerInterface.getMove(board, boardSideSize);
         ui.showMessage("The computer selects " + move[0] + " " + move[1]);
 
         return InputAction.move(move[0], move[1]);

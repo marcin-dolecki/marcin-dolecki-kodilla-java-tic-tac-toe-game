@@ -25,6 +25,7 @@ dependencies {
 	testImplementation 'org.junit.jupiter:junit-jupiter'
 	testImplementation("org.mockito:mockito-junit-jupiter:5.17.0")
 	implementation 'org.jline:jline:3.25.1'
+	testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 
 application {
@@ -33,4 +34,12 @@ application {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	doFirst {
+		def mockitoInlineJar = configurations.testRuntimeClasspath.find {
+			it.name.contains("mockito-inline")
+		}
+		if (mockitoInlineJar) {
+			jvmArgs += ["-javaagent:${mockitoInlineJar}"]
+		}
+	}
 }

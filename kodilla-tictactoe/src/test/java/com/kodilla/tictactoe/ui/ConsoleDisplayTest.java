@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ConsoleDisplayTest {
     private final InputStream originalIn = System.in;
@@ -70,5 +70,17 @@ class ConsoleDisplayTest {
         ConsoleDisplay consoleDisplay = new ConsoleDisplay();
 
         assertDoesNotThrow(() -> consoleDisplay.displayBoard(mockBoard));
+    }
+
+    @Test
+    void shouldCallGetValueForEveryCellOnDisplayBoard() {
+        Board mockBoard = Mockito.mock(Board.class);
+        when(mockBoard.getBoardSideSize()).thenReturn(3);
+        when(mockBoard.getValue(anyInt(), anyInt())).thenReturn(Figure.EMPTY);
+
+        ConsoleDisplay consoleDisplay = new ConsoleDisplay();
+        consoleDisplay.displayBoard(mockBoard);
+
+        verify(mockBoard, times(3 * 3)).getValue(anyInt(), anyInt());
     }
 }

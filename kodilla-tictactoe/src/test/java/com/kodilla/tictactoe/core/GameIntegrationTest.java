@@ -50,16 +50,16 @@ class GameIntegrationTest {
     @Test
     void shouldPlayPvPAndWin() throws ExitRequestedException {
         when(ui.getTextInput(anyString()))
-            // menu
-            .thenReturn("1").thenReturn("1")
-            // moves
-            .thenReturn("1 1")
-            .thenReturn("2 1")
-            .thenReturn("1 2")
-            .thenReturn("2 2")
-            .thenReturn("1 3")
-            // quit after win
-            .thenReturn("q");
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("2 1")
+                .thenReturn("1 2")
+                .thenReturn("2 2")
+                .thenReturn("1 3")
+                // quit after win
+                .thenReturn("q");
         injectDeps();
 
         try {
@@ -102,5 +102,35 @@ class GameIntegrationTest {
         o.verify(ui).getTextInput("Enter your choice: ");
         o.verify(ui).showMessage("Game finished. See you soon!");
         verifyNoMoreInteractions(ui);
+    }
+
+    @Test
+    void shouldPlayPvPAndDraw() {
+        when(ui.getTextInput(anyString()))
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("1 2")
+                .thenReturn("2 1")
+                .thenReturn("2 2")
+                .thenReturn("3 2")
+                .thenReturn("3 1")
+                .thenReturn("1 3")
+                .thenReturn("2 3")
+                .thenReturn("3 3")
+                // quit after draw
+                .thenReturn("q");
+
+        injectDeps();
+
+        try {
+            game.start();
+        } catch (ExitRequestedException e) {
+            // unexpected behavior as game should finish without throwing exception
+        }
+
+        InOrder o = inOrder(ui);
+        o.verify(ui).showMessage("Draw! Better luck next time!");
     }
 }

@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.assertj.core.api.Fail.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -48,16 +50,57 @@ class GameIntegrationTest {
     @Test
     void shouldPlayPvPAndWin() throws ExitRequestedException {
         when(ui.getTextInput(anyString()))
-            .thenReturn("1").thenReturn("1") // menu
-            .thenReturn("1 1").thenReturn("2 1").thenReturn("1 2").thenReturn("2 2").thenReturn("1 3") // moves
-            .thenReturn("q").thenReturn("q"); // end
+            // menu
+            .thenReturn("1").thenReturn("1")
+            // moves
+            .thenReturn("1 1")
+            .thenReturn("2 1")
+            .thenReturn("1 2")
+            .thenReturn("2 2")
+            .thenReturn("1 3")
+            // quit after win
+            .thenReturn("q");
         injectDeps();
-        game.start();
+
+        try {
+            game.start();
+//            fail("Expected ExitRequestedException to be thrown");
+        } catch (ExitRequestedException e) {
+            // expected behaviour - user clicked q
+            assertEquals("Exit requested by the user", e.getMessage());
+        }
+
         InOrder o = inOrder(ui);
         o.verify(ui).showMessage("=== TIC TAC TOE ===");
-        o.verify(ui, atLeastOnce()).getTextInput(anyString());
-        // message after win
-        o.verify(ui).showMessage(contains("has won"));
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("1 - Player vs player");
+        o.verify(ui).showMessage("2 - Player vs computer");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("Select the board size:");
+        o.verify(ui).showMessage("1 - 3x3 square - classic");
+        o.verify(ui).showMessage("2 - 10x10 square - 5 figures win");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("=== TIC TAC TOE ===");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player O - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player O - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Congratulations! Player X has won!");
+        o.verify(ui).showMessage("(Do you want to play again? Type 'r' to play, 'q' to quit)");
+        o.verify(ui).getTextInput("Enter your choice: ");
         o.verify(ui).showMessage("Game finished. See you soon!");
+        verifyNoMoreInteractions(ui);
     }
 }

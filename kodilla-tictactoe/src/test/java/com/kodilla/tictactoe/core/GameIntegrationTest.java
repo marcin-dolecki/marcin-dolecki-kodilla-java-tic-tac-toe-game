@@ -64,13 +64,13 @@ class GameIntegrationTest {
 
         try {
             game.start();
-//            fail("Expected ExitRequestedException to be thrown");
         } catch (ExitRequestedException e) {
-            // expected behaviour - user clicked q
-            assertEquals("Exit requested by the user", e.getMessage());
+            // unexpected behavior as game should finish without throwing exception
         }
 
         InOrder o = inOrder(ui);
+
+        // all checks at least in one test to have better overview
         o.verify(ui).showMessage("=== TIC TAC TOE ===");
         o.verify(ui).showMessage("Select the game mode:");
         o.verify(ui).showMessage("1 - Player vs player");
@@ -130,7 +130,48 @@ class GameIntegrationTest {
             // unexpected behavior as game should finish without throwing exception
         }
 
+        // just one message about draw is enough
         InOrder o = inOrder(ui);
         o.verify(ui).showMessage("Draw! Better luck next time!");
+    }
+
+    @Test
+    void shouldPlayPvPDoRestartAndQuit() {
+        when(ui.getTextInput(anyString()))
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("1 2")
+                // restart
+                .thenReturn("r")
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("1 2")
+                // quit
+                .thenReturn("q");
+
+        injectDeps();
+
+        try {
+            game.start();
+            fail("Expected ExitRequestedException to be thrown");
+        } catch (ExitRequestedException e) {
+            // expected behaviour - user clicked q
+            assertEquals("Exit requested by the user", e.getMessage());
+        }
+
+        InOrder o = inOrder(ui);
+
+        // a few checks to verify if restart and quit work properly
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Game stopped. See you soon!");
     }
 }

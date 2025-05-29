@@ -146,21 +146,11 @@ class GameIntegrationTest {
 
     @Test
     void shouldPlayPvPAndDraw() throws ExitRequestedException{
-        when(ui.getTextInput(anyString()))
-                // menu
-                .thenReturn("1").thenReturn("1")
-                // moves
-                .thenReturn("1 1")
-                .thenReturn("1 2")
-                .thenReturn("2 1")
-                .thenReturn("2 2")
-                .thenReturn("3 2")
-                .thenReturn("3 1")
-                .thenReturn("1 3")
-                .thenReturn("2 3")
-                .thenReturn("3 3")
-                // quit after draw
-                .thenReturn("q");
+        when(ui.getTextInput(anyString())).thenReturn(
+                "1","1", // menu
+                "1 1", "1 2", "2 1", "2 2", "3 2", "3 1", "1 3", "2 3", "3 3", // moves
+                "q" // quit
+        );
 
         injectDeps();
 
@@ -174,6 +164,50 @@ class GameIntegrationTest {
 
         // just one message about draw is enough
         o.verify(ui).showMessage("Draw! Better luck next time!");
+    }
+
+    @Test
+    void shouldPlayPvPDrawRestartAndQuit() throws ExitRequestedException {
+        when(ui.getTextInput(anyString()))
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("1 2")
+                .thenReturn("2 1")
+                .thenReturn("2 2")
+                .thenReturn("3 2")
+                .thenReturn("3 1")
+                .thenReturn("1 3")
+                .thenReturn("2 3")
+                .thenReturn("3 3")
+                // restart after draw
+                .thenReturn("r")
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("2 1")
+                // quit
+                .thenReturn("q");
+
+        injectDeps();
+
+        try {
+            game.start();
+            fail("Expected ExitRequestedException to be thrown");
+        } catch (ExitRequestedException e) {
+            // expected behaviour - user clicked q
+            assertEquals("Exit requested by the user", e.getMessage());
+        }
+
+        InOrder o = inOrder(ui);
+
+        // a few checks to verify if won, restart and quit work properly
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("Draw! Better luck next time!");
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("Game stopped. See you soon!");
     }
 
     @Test
@@ -214,5 +248,61 @@ class GameIntegrationTest {
         o.verify(ui).getTextInput("Player X - provide row and column number: ");
         o.verify(ui).displayBoard(any(Board.class));
         o.verify(ui).showMessage("Game stopped. See you soon!");
+    }
+
+    @Test
+    void shouldPlayPvCAndWin() throws ExitRequestedException {
+        when(ui.getTextInput(anyString())).thenReturn(
+                "2","1", // menu
+                "1 1", "1 2", "1 3", // moves
+                "q" // quit after win
+        );
+
+        when(computerPlayerInterface.getMove(any(), eq(3))).thenReturn(
+                new int[]{2,1}, new int[]{2,2} // moves
+        );
+
+        injectDeps();
+
+        try {
+            game.start();
+        } catch (ExitRequestedException e) {
+            // unexpected behavior as game should finish without throwing exception
+        }
+
+        InOrder o = inOrder(ui);
+
+        // all checks to have better overview
+        o.verify(ui).showMessage("=== TIC TAC TOE ===");
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("1 - Player vs player");
+        o.verify(ui).showMessage("2 - Player vs computer");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("Select the board size:");
+        o.verify(ui).showMessage("1 - 3x3 square - classic");
+        o.verify(ui).showMessage("2 - 10x10 square - 5 figures win");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("=== TIC TAC TOE ===");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).showMessage("The computer selects 2 1");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).showMessage("The computer selects 2 2");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Congratulations! Player X has won!");
+        o.verify(ui).showMessage("(Do you want to play again? Type 'r' to play, 'q' to quit)");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("Game finished. See you soon!");
+        verifyNoMoreInteractions(ui);
     }
 }

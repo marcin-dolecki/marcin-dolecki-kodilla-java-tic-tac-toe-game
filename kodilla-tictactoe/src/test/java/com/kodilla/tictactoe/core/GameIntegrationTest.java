@@ -105,7 +105,47 @@ class GameIntegrationTest {
     }
 
     @Test
-    void shouldPlayPvPAndDraw() {
+    void shouldPlayPvPWinRestartAndQuit() throws ExitRequestedException {
+        when(ui.getTextInput(anyString()))
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("2 1")
+                .thenReturn("1 2")
+                .thenReturn("2 2")
+                .thenReturn("1 3")
+                // restart after win
+                .thenReturn("r")
+                // menu
+                .thenReturn("1").thenReturn("1")
+                // moves
+                .thenReturn("1 1")
+                .thenReturn("2 1")
+                // quit
+                .thenReturn("q");
+
+        injectDeps();
+
+        try {
+            game.start();
+            fail("Expected ExitRequestedException to be thrown");
+        } catch (ExitRequestedException e) {
+            // expected behaviour - user clicked q
+            assertEquals("Exit requested by the user", e.getMessage());
+        }
+
+        InOrder o = inOrder(ui);
+
+        // a few checks to verify if won, restart and quit work properly
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("Congratulations! Player X has won!");
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("Game stopped. See you soon!");
+    }
+
+    @Test
+    void shouldPlayPvPAndDraw() throws ExitRequestedException{
         when(ui.getTextInput(anyString()))
                 // menu
                 .thenReturn("1").thenReturn("1")
@@ -130,13 +170,14 @@ class GameIntegrationTest {
             // unexpected behavior as game should finish without throwing exception
         }
 
-        // just one message about draw is enough
         InOrder o = inOrder(ui);
+
+        // just one message about draw is enough
         o.verify(ui).showMessage("Draw! Better luck next time!");
     }
 
     @Test
-    void shouldPlayPvPDoRestartAndQuit() {
+    void shouldPlayPvPDoRestartAndQuit() throws ExitRequestedException {
         when(ui.getTextInput(anyString()))
                 // menu
                 .thenReturn("1").thenReturn("1")

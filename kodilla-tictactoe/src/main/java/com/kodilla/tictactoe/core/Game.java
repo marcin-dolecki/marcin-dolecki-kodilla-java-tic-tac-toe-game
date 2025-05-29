@@ -134,6 +134,8 @@ public final class Game {
 
             String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
 
+            InputValidationReturn validation = InputValidator.validateInput(input);
+
             if (input.equalsIgnoreCase(QUIT)) {
                 return InputAction.quit();
             }
@@ -142,7 +144,7 @@ public final class Game {
                 return InputAction.restart();
             }
 
-            InputValidationReturn validation = InputValidator.validateInput(input);
+//            InputValidationReturn validation = InputValidator.validateInput(input);
 
             if (validation == InputValidationReturn.INVALID_PATTERN) {
                 ui.showMessage("Invalid pattern. Try again.");

@@ -2,6 +2,7 @@ package com.kodilla.tictactoe.core;
 
 import com.kodilla.tictactoe.logic.ExitRequestedException;
 import com.kodilla.tictactoe.logic.GameLogic;
+import com.kodilla.tictactoe.logic.GameValidationException;
 import com.kodilla.tictactoe.model.Board;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.UserInterface;
@@ -248,6 +249,35 @@ class GameIntegrationTest {
         o.verify(ui).getTextInput("Player X - provide row and column number: ");
         o.verify(ui).displayBoard(any(Board.class));
         o.verify(ui).showMessage("Game stopped. See you soon!");
+    }
+
+    @Test
+    void shouldPlayPvPFieldTakenOutOfBoundsInvalidPattern() throws GameValidationException {
+        when(ui.getTextInput(anyString())).thenReturn(
+                "1","1", // menu
+                "1 1", "1 2", // moves
+                "1 1", // fields taken
+                "1 3", // move
+                "1 5", // out of bounds
+                "k", // invalid pattern
+                null // null - game is finished as NULL_INPUT error is thrown
+        );
+
+        injectDeps();
+
+        try {
+            game.start();
+            fail("Expected GameValidationException to be thrown");
+        } catch (GameValidationException e) {
+            assertEquals("NULL_INPUT", e.getMessage());
+        }
+
+        InOrder o = inOrder(ui);
+
+        // just one message about draw is enough
+        o.verify(ui).showMessage("The field you selected is already taken. Try again.");
+        o.verify(ui).showMessage("Your selection is out of the range. Try again.");
+        o.verify(ui).showMessage("Invalid pattern. Try again.");
     }
 
     @Test

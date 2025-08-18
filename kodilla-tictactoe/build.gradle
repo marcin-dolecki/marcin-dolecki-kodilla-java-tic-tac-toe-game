@@ -1,8 +1,11 @@
 plugins {
 	id 'java'
 	id 'application'
-	id 'org.springframework.boot' version '3.4.5'
+//	id 'org.springframework.boot' version '3.4.5'
+	id 'org.springframework.boot' version '3.5.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+//	id 'org.openjfx.javafxplugin' version '0.0.13'
+	id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 group = 'com.kodilla'
@@ -18,6 +21,11 @@ repositories {
 	mavenCentral()
 }
 
+javafx {
+	version = "21.0.5"
+	modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -29,7 +37,8 @@ dependencies {
 }
 
 application {
-	mainClass = 'com.kodilla.tictactoe.core.Main'
+//	mainClass = 'com.kodilla.tictactoe.core.Main'
+	mainClass = 'com.kodilla.tictactoe.TicTacToeApplication'
 }
 
 tasks.named('test') {

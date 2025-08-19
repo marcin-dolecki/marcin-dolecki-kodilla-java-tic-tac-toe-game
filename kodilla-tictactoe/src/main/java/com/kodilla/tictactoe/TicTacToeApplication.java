@@ -3,11 +3,15 @@ package com.kodilla.tictactoe;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class TicTacToeApplication extends Application {
+
+    private Image imageback = new Image("file:src/main/resources/static/images/old_paper.jpg");
 
     public static void main(String[] args) {
         launch(args);
@@ -15,13 +19,15 @@ public class TicTacToeApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Group root = new Group();
-        Scene scene = new Scene(root, 300, 300, Color.BLACK);
+        BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, true, false);
+        BackgroundImage backgroundImage = new BackgroundImage(imageback, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+        Background background = new Background(backgroundImage);
 
-        Rectangle rectangle = new Rectangle(25, 25, 250, 250);
-        rectangle.setFill(Color.BLUE);
+        GridPane grid = new GridPane();
+        grid.setBackground(background);
 
-        root.getChildren().add(rectangle);
+        Scene scene = new Scene(grid, 1600, 900, Color.BLACK);
+
         stage.setTitle("TicTacToe");
         stage.setScene(scene);
         stage.show();

@@ -1,6 +1,7 @@
 package com.kodilla.tictactoe.ui;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -18,5 +19,8 @@ public class TicTacToeController {
     public void renderMainMenu(JavaFxDisplay ui) {
         HBox box = new HBox(10);
         box.setAlignment(Pos.CENTER);
+
+        Button pvp = new Button("Player vs Player");
+        pvp.setOnAction(event -> ui.provideInput("1"));
     }
 }

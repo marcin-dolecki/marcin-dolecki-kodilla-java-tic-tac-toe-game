@@ -23,6 +23,17 @@ public class TicTacToeController {
 
         Button pvp = new Button("Player vs Player");
         pvp.setOnAction(event -> ui.provideInput("1"));
+
+        Button pvc = new Button("Player vs Computer");
+        pvc.setOnAction(event -> ui.provideInput("2"));
+
+        Button size3 = new Button("Board 3x3");
+        size3.setOnAction(event -> ui.provideInput("1"));
+
+        Button size10 = new Button("Board 10x10");
+        size10.setOnAction(event -> ui.provideInput("2"));
+
+        box.getChildren().addAll(pvp, pvc, size3, size10);
     }
 
     // BOARD
@@ -44,6 +55,18 @@ public class TicTacToeController {
         }
 
         // Control panel (restart and quit)
-        
+        HBox controls = new HBox(10);
+        controls.setAlignment(Pos.CENTER);
+
+        Button restart = new Button("Restart");
+        restart.setOnAction(event -> ui.provideInput("r"));
+
+        Button quit = new Button("Quit");
+        quit.setOnAction(event -> ui.provideInput("q"));
+
+        controls.getChildren().addAll(restart, quit);
+
+        root.setTop(controls);
+        root.setCenter(restart);
     }
 }

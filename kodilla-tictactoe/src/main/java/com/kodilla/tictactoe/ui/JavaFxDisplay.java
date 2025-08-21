@@ -24,18 +24,30 @@ public class JavaFxDisplay implements UserInterface {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
-            alert.setContentText(board.toString());
+            alert.setContentText(message);
+            alert.showAndWait();
         });
     }
 
     @Override
     public String getTextInput(String prompt) {
-        return "";
+        // In JavaFX prompt is only information. We use buttons.
+        try {
+            return nextInput.get();
+        } catch (Exception e) {
+            return "";
+        } finally {
+            nextInput = new CompletableFuture<>();
+        }
     }
 
     public void provideInput(String value) {
         if (!nextInput.isDone()) {
             nextInput.complete(value);
         }
+    }
+
+    public void showMainMenu() {
+        Platform.runLater(() -> controller.renderMainMenu(this));
     }
 }

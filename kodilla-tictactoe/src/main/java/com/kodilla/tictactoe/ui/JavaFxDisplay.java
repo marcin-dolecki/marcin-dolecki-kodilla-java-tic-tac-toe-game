@@ -40,6 +40,10 @@ public class JavaFxDisplay implements UserInterface {
         if (!nextInput.isDone()) {
             nextInput.complete(value);
         }
+
+        if ("r".equals(value)) {
+            Platform.runLater(this::showMainMenu);
+        }
     }
 
     public void showMainMenu() {

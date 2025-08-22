@@ -1,6 +1,7 @@
 package com.kodilla.tictactoe.ui;
 
 import com.kodilla.tictactoe.model.Board;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -79,7 +80,10 @@ public class TicTacToeController {
         restart.setOnAction(event -> ui.provideInput("r"));
 
         Button quit = new Button("Quit");
-        quit.setOnAction(event -> ui.provideInput("q"));
+        quit.setOnAction(event -> {
+            ui.provideInput("q");
+            Platform.exit();
+        });
 
         controls.getChildren().addAll(restart, quit);
 

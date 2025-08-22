@@ -23,14 +23,13 @@ public class JavaFxDisplay implements UserInterface {
 
     @Override
     public void showMessage(String message) {
-        String hint = "(Type 'q' to quit, 'r' to restart)";
+        if (!shouldDisplay(message)) return;
 
-        if ("(Type 'q' to quit, 'r' to restart)".equals(message)) {
-            return;
-        }
+        String hint = "(Type 'q' to quit, 'r' to restart)";
+        boolean showHint = !message.equals("Main menu");
 
         if (message.contains("Congratulations") || message.contains("Draw")) {
-            Platform.runLater(() -> controller.setStatus(message, hint));
+            Platform.runLater(() -> controller.setStatus(message, showHint ? hint : ""));
 
             try {
                 Thread.sleep(2000);
@@ -41,7 +40,7 @@ public class JavaFxDisplay implements UserInterface {
         } else if ("(Do you want to play again? Type 'r' to play, 'q' to quit)".equals(message)) {
             Platform.runLater(() -> controller.setStatus(message, ""));
         } else {
-            Platform.runLater(() -> controller.setStatus(message, hint));
+            Platform.runLater(() -> controller.setStatus(message, showHint ? hint : ""));
         }
     }
 
@@ -69,5 +68,13 @@ public class JavaFxDisplay implements UserInterface {
 
     public void showMainMenu() {
         Platform.runLater(() -> controller.renderMainMenu(this));
+    }
+
+    private boolean shouldDisplay(String message) {
+        if ("(Type 'q' to quit, 'r' to restart)".equals(message)) return false;
+
+        if ("1 - Player vs player".equals(message) || "2 - Player vs computer".equals(message)) return false;
+
+        return true;
     }
 }

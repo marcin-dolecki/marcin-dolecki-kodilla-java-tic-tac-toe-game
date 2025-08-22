@@ -15,18 +15,24 @@ public class TicTacToeController {
     private final GridPane grid;
 
     private final Label statusLabel = new Label("");
+    private final Label hintLabel = new Label("");
 
     public TicTacToeController(BorderPane root, GridPane grid) {
         this.root = root;
         this.grid = grid;
 
-        HBox statusBar = new HBox(statusLabel);
+        VBox statusBar = new VBox(5, statusLabel, hintLabel);
         statusBar.setAlignment(Pos.CENTER);
         root.setBottom(statusBar);
     }
 
     public void setStatus(String message) {
         statusLabel.setText(message);
+    }
+
+    public void setStatus(String message, String hint) {
+        statusLabel.setText(message);
+        hintLabel.setText(hint);
     }
 
     // MAIN MENU
@@ -91,6 +97,5 @@ public class TicTacToeController {
         wrapper.setAlignment(Pos.CENTER);
 
         root.setCenter(wrapper);
-        setStatus("Your turn");
     }
 }

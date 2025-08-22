@@ -1,8 +1,10 @@
 package com.kodilla.tictactoe.ui;
 
 import com.kodilla.tictactoe.model.Board;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.util.Duration;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -21,8 +23,14 @@ public class JavaFxDisplay implements UserInterface {
 
     @Override
     public void showMessage(String message) {
+        String hint = "(Type 'q' to quit, 'r' to restart)";
+
+        if ("(Type 'q' to quit, 'r' to restart)".equals(message)) {
+            return;
+        }
+
         if (message.contains("Congratulations") || message.contains("Draw")) {
-            Platform.runLater(() -> controller.setStatus(message));
+            Platform.runLater(() -> controller.setStatus(message, hint));
 
             try {
                 Thread.sleep(2000);
@@ -30,8 +38,10 @@ public class JavaFxDisplay implements UserInterface {
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
+        } else if ("(Do you want to play again? Type 'r' to play, 'q' to quit)".equals(message)) {
+            Platform.runLater(() -> controller.setStatus(message, ""));
         } else {
-            Platform.runLater(() -> controller.setStatus(message));
+            Platform.runLater(() -> controller.setStatus(message, hint));
         }
     }
 

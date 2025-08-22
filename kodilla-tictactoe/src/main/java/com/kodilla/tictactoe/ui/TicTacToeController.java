@@ -83,9 +83,10 @@ public class TicTacToeController {
 
         controls.getChildren().addAll(restart, quit);
 
-        root.setTop(controls);
-        root.setCenter(restart);
+        VBox wrapper = new VBox(15, grid, controls);
+        wrapper.setAlignment(Pos.CENTER);
 
+        root.setCenter(wrapper);
         setStatus("Your turn");
     }
 }

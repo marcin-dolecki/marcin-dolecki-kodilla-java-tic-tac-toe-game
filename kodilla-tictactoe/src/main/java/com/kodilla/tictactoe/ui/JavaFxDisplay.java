@@ -21,17 +21,12 @@ public class JavaFxDisplay implements UserInterface {
 
     @Override
     public void showMessage(String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        });
+        Platform.runLater(() -> controller.setStatus(message));
     }
 
     @Override
     public String getTextInput(String prompt) {
-        // In JavaFX prompt is only information. We use buttons.
+
         try {
             return nextInput.get();
         } catch (Exception e) {

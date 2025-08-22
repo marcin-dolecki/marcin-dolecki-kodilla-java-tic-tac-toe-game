@@ -3,37 +3,54 @@ package com.kodilla.tictactoe.ui;
 import com.kodilla.tictactoe.model.Board;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class TicTacToeController {
     private final BorderPane root;
     private final GridPane grid;
 
+    private final Label statusLabel = new Label("");
+
     public TicTacToeController(BorderPane root, GridPane grid) {
         this.root = root;
         this.grid = grid;
+
+        HBox statusBar = new HBox(statusLabel);
+        statusBar.setAlignment(Pos.CENTER);
+        root.setBottom(statusBar);
+    }
+
+    public void setStatus(String message) {
+        statusLabel.setText(message);
     }
 
     // MAIN MENU
     public void renderMainMenu(JavaFxDisplay ui) {
-        HBox box = new HBox(10);
-        box.setAlignment(Pos.CENTER);
+        VBox menu = new VBox(15);
+        menu.setAlignment(Pos.CENTER);
 
+        Label gameMode = new Label("Select the game mode:");
         Button pvp = new Button("Player vs Player");
         pvp.setOnAction(event -> ui.provideInput("1"));
 
         Button pvc = new Button("Player vs Computer");
         pvc.setOnAction(event -> ui.provideInput("2"));
 
+        Label sizeLabel = new Label("Select the board size:");
         Button size3 = new Button("Board 3x3");
         size3.setOnAction(event -> ui.provideInput("1"));
 
         Button size10 = new Button("Board 10x10");
         size10.setOnAction(event -> ui.provideInput("2"));
 
-        box.getChildren().addAll(pvp, pvc, size3, size10);
+        menu.getChildren().addAll(gameMode, pvp, pvc, sizeLabel, size3, size10);
+        root.setCenter(menu);
+
+        setStatus("Main menu");
     }
 
     // BOARD
@@ -68,5 +85,7 @@ public class TicTacToeController {
 
         root.setTop(controls);
         root.setCenter(restart);
+
+        setStatus("Your turn");
     }
 }

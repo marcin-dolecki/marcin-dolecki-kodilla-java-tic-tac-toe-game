@@ -28,9 +28,11 @@ public class FxApp extends Application {
         stage.setTitle("Tic Tac Toe");
         stage.show();
 
+        ui.showMainMenu();
+
         new Thread(() -> {
             try {
-                ui.showMainMenu();
+//                ui.showMainMenu();
                 game.start();
             } catch (ExitRequestedException ignored) {
                 // do nothing

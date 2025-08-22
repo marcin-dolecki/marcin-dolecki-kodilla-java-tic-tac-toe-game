@@ -38,7 +38,8 @@ dependencies {
 
 application {
 //	mainClass = 'com.kodilla.tictactoe.core.Main'
-	mainClass = 'com.kodilla.tictactoe.TicTacToeApplication'
+//	mainClass = 'com.kodilla.tictactoe.TicTacToeApplication'
+	mainClass = 'com.kodilla.tictactoe.GuiMain'
 }
 
 tasks.named('test') {

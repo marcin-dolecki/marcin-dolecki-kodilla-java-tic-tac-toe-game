@@ -21,7 +21,18 @@ public class JavaFxDisplay implements UserInterface {
 
     @Override
     public void showMessage(String message) {
-        Platform.runLater(() -> controller.setStatus(message));
+        if (message.contains("Congratulations") || message.contains("Draw")) {
+            Platform.runLater(() -> controller.setStatus(message));
+
+            try {
+                Thread.sleep(2000);
+
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            Platform.runLater(() -> controller.setStatus(message));
+        }
     }
 
     @Override

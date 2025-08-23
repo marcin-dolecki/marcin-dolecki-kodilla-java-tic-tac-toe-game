@@ -14,24 +14,41 @@ public class TicTacToeController {
     private final BorderPane root;
     private final GridPane grid;
 
-    private final Label statusLabel = new Label("");
+    private final Label messageLabel = new Label("");
+    private final Label promptLabel = new Label("");
     private final Label hintLabel = new Label("");
 
     public TicTacToeController(BorderPane root, GridPane grid) {
         this.root = root;
         this.grid = grid;
 
-        VBox statusBar = new VBox(5, statusLabel, hintLabel);
-        statusBar.setAlignment(Pos.CENTER);
-        root.setBottom(statusBar);
+        HBox messageBar = new HBox(messageLabel);
+        messageBar.setAlignment(Pos.CENTER);
+        messageBar.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 5;");
+
+        HBox promptBar = new HBox(promptLabel);
+        promptBar.setAlignment(Pos.CENTER);
+        promptBar.setStyle("-fx-background-color: #e0e0ff; -fx-padding: 5;");
+
+        HBox hintBar = new HBox(hintLabel);
+        hintBar.setAlignment(Pos.CENTER);
+        hintBar.setStyle("-fx-background-color: #ffe0e0; -fx-padding: 5;");
+
+        VBox statusBars = new VBox(5, messageBar, promptBar, hintBar);
+        statusBars.setAlignment(Pos.CENTER);
+
+        root.setBottom(statusBars);
     }
 
-    public void setStatus(String message) {
-        statusLabel.setText(message);
+    public void setMessageLabel(String message) {
+        messageLabel.setText(message);
     }
 
-    public void setStatus(String message, String hint) {
-        statusLabel.setText(message);
+    public void setPromptLabel(String prompt) {
+        promptLabel.setText(prompt);
+    }
+
+    public void setHintLabel(String hint) {
         hintLabel.setText(hint);
     }
 
@@ -56,8 +73,6 @@ public class TicTacToeController {
 
         menu.getChildren().addAll(gameMode, pvp, pvc, sizeLabel, size3, size10);
         root.setCenter(menu);
-
-//        setStatus("Main menu");
     }
 
     // BOARD

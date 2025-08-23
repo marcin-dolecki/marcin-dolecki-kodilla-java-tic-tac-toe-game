@@ -27,10 +27,12 @@ public class JavaFxDisplay implements UserInterface {
         if (!shouldDisplay(message)) return;
 
         String hint = "(Type 'q' to quit, 'r' to restart)";
-        boolean showHint = !message.equals("Main menu");
+        boolean disableHint = message.equals("Select the game mode:") || message.equals("Select the board size:");
 
         if (message.contains("Congratulations") || message.contains("Draw")) {
-            Platform.runLater(() -> controller.setStatus(message, showHint ? hint : ""));
+            Platform.runLater(() -> controller.setMessageLabel(message));
+            Platform.runLater(() -> controller.setPromptLabel(""));
+            Platform.runLater(() -> controller.setHintLabel(hint));
 
             try {
                 Thread.sleep(2000);
@@ -39,17 +41,23 @@ public class JavaFxDisplay implements UserInterface {
                 System.out.println(e.getMessage());
             }
         } else if ("(Do you want to play again? Type 'r' to play, 'q' to quit)".equals(message)) {
-            Platform.runLater(() -> controller.setStatus(message, ""));
+            Platform.runLater(() -> controller.setMessageLabel(message));
+            Platform.runLater(() -> controller.setPromptLabel(""));
+            Platform.runLater(() -> controller.setHintLabel(""));
         } else {
-            Platform.runLater(() -> controller.setStatus(message, showHint ? hint : ""));
+            Platform.runLater(() -> controller.setMessageLabel(message));
+            Platform.runLater(() -> controller.setPromptLabel(""));
+            Platform.runLater(() -> controller.setHintLabel(hint));
         }
     }
 
     @Override
     public String getTextInput(String prompt) {
+        String hint = "(Type 'q' to quit, 'r' to restart)";
 
         if (shouldDisplay(prompt)) {
-            Platform.runLater(() -> controller.setStatus(prompt, "(Type 'q' to quit, 'r' to restart)"));
+            Platform.runLater(() -> controller.setPromptLabel(prompt));
+            Platform.runLater(() -> controller.setHintLabel(hint));
         }
 
         try {

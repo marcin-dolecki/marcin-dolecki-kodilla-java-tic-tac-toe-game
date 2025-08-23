@@ -1,10 +1,7 @@
 package com.kodilla.tictactoe.ui;
 
 import com.kodilla.tictactoe.model.Board;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.util.Duration;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -64,6 +61,15 @@ public class JavaFxDisplay implements UserInterface {
             Platform.runLater(() -> controller.setMessageLabel(message));
             Platform.runLater(() -> controller.setPromptLabel(""));
             Platform.runLater(() -> controller.setHintLabel(""));
+        } else if (message.contains("The computer selects")) {
+            Platform.runLater(() -> controller.setPromptLabel("Computer player's move"));
+
+            try {
+                Thread.sleep(1000);
+
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             Platform.runLater(() -> controller.setMessageLabel(message));
             Platform.runLater(() -> controller.setPromptLabel(""));

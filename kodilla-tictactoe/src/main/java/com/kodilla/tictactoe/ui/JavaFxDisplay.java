@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.util.Duration;
 
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class JavaFxDisplay implements UserInterface {
@@ -47,6 +48,10 @@ public class JavaFxDisplay implements UserInterface {
     @Override
     public String getTextInput(String prompt) {
 
+        if (shouldDisplay(prompt)) {
+            Platform.runLater(() -> controller.setStatus(prompt, "(Type 'q' to quit, 'r' to restart)"));
+        }
+
         try {
             return nextInput.get();
         } catch (Exception e) {
@@ -71,9 +76,22 @@ public class JavaFxDisplay implements UserInterface {
     }
 
     private boolean shouldDisplay(String message) {
-        if ("(Type 'q' to quit, 'r' to restart)".equals(message)) return false;
+        final Set<String> BLOCKED_MESSAGES = Set.of(
+                "(Type 'q' to quit, 'r' to restart)",
+                "Select the game mode:",
+                "1 - Player vs player",
+                "2 - Player vs computer",
+                "Select the board size:",
+                "1 - 3x3 square - classic",
+                "2 - 10x10 square - 5 figures win",
+                "=== TIC TAC TOE ===",
+                "Main menu",
+                "Enter your choice: "
+        );
 
-        if ("1 - Player vs player".equals(message) || "2 - Player vs computer".equals(message)) return false;
+        if (BLOCKED_MESSAGES.contains(message)) {
+            return false;
+        }
 
         return true;
     }

@@ -57,7 +57,7 @@ public class TicTacToeController {
         menu.getChildren().addAll(gameMode, pvp, pvc, sizeLabel, size3, size10);
         root.setCenter(menu);
 
-        setStatus("Main menu");
+//        setStatus("Main menu");
     }
 
     // BOARD

@@ -24,6 +24,13 @@ public class JavaFxDisplay implements UserInterface {
 
     @Override
     public void showMessage(String message) {
+        final Set<String> VALIDATION_MESSAGES = Set.of(
+                "The field you selected is already taken. Try again.",
+                "Your selection is out of the range. Try again.",
+                "Figure is null. Try again.",
+                "Unknown error. Try again."
+        );
+
         if (!shouldDisplay(message)) return;
 
         String hint = "(Type 'q' to quit, 'r' to restart)";
@@ -31,6 +38,16 @@ public class JavaFxDisplay implements UserInterface {
         if (message.contains("Congratulations") || message.contains("Draw")) {
             Platform.runLater(() -> controller.setMessageLabel(message));
             Platform.runLater(() -> controller.setPromptLabel(""));
+            Platform.runLater(() -> controller.setHintLabel(hint));
+
+            try {
+                Thread.sleep(2000);
+
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+        } else if (VALIDATION_MESSAGES.contains(message)) {
+            Platform.runLater(() -> controller.setMessageLabel(message));
             Platform.runLater(() -> controller.setHintLabel(hint));
 
             try {

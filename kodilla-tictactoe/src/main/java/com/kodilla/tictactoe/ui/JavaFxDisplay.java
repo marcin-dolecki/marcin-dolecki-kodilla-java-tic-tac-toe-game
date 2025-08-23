@@ -27,7 +27,6 @@ public class JavaFxDisplay implements UserInterface {
         if (!shouldDisplay(message)) return;
 
         String hint = "(Type 'q' to quit, 'r' to restart)";
-        boolean disableHint = message.equals("Select the game mode:") || message.equals("Select the board size:");
 
         if (message.contains("Congratulations") || message.contains("Draw")) {
             Platform.runLater(() -> controller.setMessageLabel(message));
@@ -40,6 +39,10 @@ public class JavaFxDisplay implements UserInterface {
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
+        } else if (message.equals("Select the game mode:") || message.equals("Select the board size:")) {
+            Platform.runLater(() -> controller.setMessageLabel(message));
+            Platform.runLater(() -> controller.setPromptLabel(""));
+            Platform.runLater(() -> controller.setHintLabel(""));
         } else if ("(Do you want to play again? Type 'r' to play, 'q' to quit)".equals(message)) {
             Platform.runLater(() -> controller.setMessageLabel(message));
             Platform.runLater(() -> controller.setPromptLabel(""));
@@ -56,6 +59,7 @@ public class JavaFxDisplay implements UserInterface {
         String hint = "(Type 'q' to quit, 'r' to restart)";
 
         if (shouldDisplay(prompt)) {
+            Platform.runLater(() -> controller.setMessageLabel(""));
             Platform.runLater(() -> controller.setPromptLabel(prompt));
             Platform.runLater(() -> controller.setHintLabel(hint));
         }
@@ -86,10 +90,8 @@ public class JavaFxDisplay implements UserInterface {
     private boolean shouldDisplay(String message) {
         final Set<String> BLOCKED_MESSAGES = Set.of(
                 "(Type 'q' to quit, 'r' to restart)",
-                "Select the game mode:",
                 "1 - Player vs player",
                 "2 - Player vs computer",
-                "Select the board size:",
                 "1 - 3x3 square - classic",
                 "2 - 10x10 square - 5 figures win",
                 "=== TIC TAC TOE ===",

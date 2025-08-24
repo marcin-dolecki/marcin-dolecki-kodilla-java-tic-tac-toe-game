@@ -129,7 +129,7 @@ public class TicTacToeController {
         });
 
         controls.getChildren().addAll(restart, quit);
-        
+
         root.setTop(controls);
     }
 }

@@ -111,9 +111,13 @@ public class TicTacToeController {
             }
         }
 
+        grid.setAlignment(Pos.CENTER);
+        root.setCenter(grid);
+
         // Control panel (restart and quit)
         HBox controls = new HBox(10);
-        controls.setAlignment(Pos.CENTER);
+        controls.setAlignment(Pos.TOP_RIGHT);
+        controls.setStyle("-fx-padding: 10;");
 
         Button restart = new Button("Restart");
         restart.setOnAction(event -> ui.provideInput("r"));
@@ -125,10 +129,7 @@ public class TicTacToeController {
         });
 
         controls.getChildren().addAll(restart, quit);
-
-        VBox wrapper = new VBox(15, grid, controls);
-        wrapper.setAlignment(Pos.CENTER);
-
-        root.setCenter(wrapper);
+        
+        root.setTop(controls);
     }
 }

@@ -54,15 +54,33 @@ public class TicTacToeController {
 
     // MAIN MENU
     public void renderMainMenu(JavaFxDisplay ui) {
+        renderGameModeMenu(ui);
+    }
+
+    private void renderGameModeMenu(JavaFxDisplay ui) {
         VBox menu = new VBox(15);
         menu.setAlignment(Pos.CENTER);
 
         Label gameMode = new Label("Select the game mode:");
         Button pvp = new Button("Player vs Player");
-        pvp.setOnAction(event -> ui.provideInput("1"));
+        pvp.setOnAction(event -> {
+            ui.provideInput("1");
+            renderBoardSizeMenu(ui);
+        });
 
         Button pvc = new Button("Player vs Computer");
-        pvc.setOnAction(event -> ui.provideInput("2"));
+        pvc.setOnAction(event -> {
+            ui.provideInput("2");
+            renderBoardSizeMenu(ui);
+        });
+
+        menu.getChildren().addAll(gameMode, pvp, pvc);
+        root.setCenter(menu);
+    }
+
+    private void renderBoardSizeMenu(JavaFxDisplay ui) {
+        VBox menu = new VBox(15);
+        menu.setAlignment(Pos.CENTER);
 
         Label sizeLabel = new Label("Select the board size:");
         Button size3 = new Button("Board 3x3");
@@ -71,7 +89,7 @@ public class TicTacToeController {
         Button size10 = new Button("Board 10x10");
         size10.setOnAction(event -> ui.provideInput("2"));
 
-        menu.getChildren().addAll(gameMode, pvp, pvc, sizeLabel, size3, size10);
+        menu.getChildren().addAll(sizeLabel, size3, size10);
         root.setCenter(menu);
     }
 

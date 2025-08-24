@@ -30,7 +30,9 @@ public class JavaFxDisplay implements UserInterface {
 
         if (!shouldDisplay(message)) return;
 
-        String hint = "(Type 'q' to quit, 'r' to restart)";
+//        String hint = "(Type 'q' to quit, 'r' to restart)";
+//        String hint = "(Click 'quit' to exit or 'restart' to start again)";
+        String hint = "";
 
         if (message.contains("Congratulations") || message.contains("Draw")) {
             Platform.runLater(() -> controller.setMessageLabel(message));
@@ -58,7 +60,8 @@ public class JavaFxDisplay implements UserInterface {
             Platform.runLater(() -> controller.setPromptLabel(""));
             Platform.runLater(() -> controller.setHintLabel(""));
         } else if ("(Do you want to play again? Type 'r' to play, 'q' to quit)".equals(message)) {
-            Platform.runLater(() -> controller.setMessageLabel(message));
+            String messageFx = "(Do you want to play again? Click 'Restart'. Otherwise, click 'Quit'.)";
+            Platform.runLater(() -> controller.setMessageLabel(messageFx));
             Platform.runLater(() -> controller.setPromptLabel(""));
             Platform.runLater(() -> controller.setHintLabel(""));
         } else if (message.contains("The computer selects")) {
@@ -79,7 +82,9 @@ public class JavaFxDisplay implements UserInterface {
 
     @Override
     public String getTextInput(String prompt) {
-        String hint = "(Type 'q' to quit, 'r' to restart)";
+//        String hint = "(Type 'q' to quit, 'r' to restart)";
+//        String hint = "(Click 'quit' to exit or 'restart' to start again)";
+        String hint = "";
         String promptFx;
 
         if (shouldDisplay(prompt)) {

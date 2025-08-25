@@ -3,12 +3,12 @@ package com.kodilla.tictactoe.ui;
 import com.kodilla.tictactoe.model.Board;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class TicTacToeController {
     private final BorderPane root;
@@ -21,6 +21,13 @@ public class TicTacToeController {
     public TicTacToeController(BorderPane root, GridPane grid) {
         this.root = root;
         this.grid = grid;
+
+        root.setStyle(
+                "-fx-background-image: url('static/images/old_paper_2.jpg');" +
+                "-fx-background-size: cover;" +
+                "-fx-background-position: center center;" +
+                "-fx-background-repeat: no-repeat;"
+        );
 
         HBox messageBar = new HBox(messageLabel);
         messageBar.setAlignment(Pos.CENTER);
@@ -98,21 +105,21 @@ public class TicTacToeController {
         grid.getChildren().clear();
         int size = board.getBoardSideSize();
 
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                String value = board.getValue(row, col).toString();
-                Button btn = new Button(value.equals("EMPTY") ? " " : value);
-                btn.setMinSize(50, 50);
+        Canvas canvas = new Canvas();
+        GraphicsContext gc = canvas.getGraphicsContext2D();
 
-                int r = row + 1, c = col + 1;
-                btn.setOnAction(event -> ui.provideInput(r + " " + c));
+        StackPane boardView = new StackPane(canvas, grid);
+        boardView.setAlignment(Pos.CENTER);
 
-                grid.add(btn, col, row);
-            }
-        }
+        canvas.widthProperty().bind(root.widthProperty().multiply(0.75));
+        canvas.heightProperty().bind(root.heightProperty().multiply(0.75));
 
-        grid.setAlignment(Pos.CENTER);
-        root.setCenter(grid);
+        canvas.widthProperty().addListener((observable, oldValue, newValue) -> {
+            drawBoard(gc, size, canvas.getWidth(), canvas.getHeight());
+        });
+        canvas.heightProperty().addListener((observable, oldValue, newValue) -> {
+            drawBoard(gc, size, canvas.getWidth(), canvas.getHeight());
+        });
 
         // Control panel (restart and quit)
         HBox controls = new HBox(10);
@@ -131,5 +138,26 @@ public class TicTacToeController {
         controls.getChildren().addAll(restart, quit);
 
         root.setTop(controls);
+        root.setCenter(boardView);
+    }
+
+    private void drawBoard(GraphicsContext gc, int size, double width, double height) {
+        gc.clearRect(0, 0, width, height);
+
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(5);
+
+        double cellWidth = width / size;
+        double cellHeight = height / size;
+
+        for (int i = 1; i < size; i++) {
+            double x = i * cellWidth;
+            gc.strokeLine(x, 20, x, height - 20);
+        }
+
+        for (int i = 1; i < size; i++) {
+            double y = i * cellHeight;
+            gc.strokeLine(20, y, width - 20, y);
+        }
     }
 }

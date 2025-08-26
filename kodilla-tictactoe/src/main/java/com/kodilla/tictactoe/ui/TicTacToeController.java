@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class TicTacToeController {
     private final BorderPane root;
@@ -136,13 +137,16 @@ public class TicTacToeController {
 
         int size = board.getBoardSideSize();
 
+        // Canvas - kwadratowy, skaluje się z oknem
         Canvas canvas = new Canvas();
         canvas.widthProperty().bind(root.widthProperty().multiply(0.75));
         canvas.heightProperty().bind(root.heightProperty().multiply(0.75));
 
+        // Rysowanie po zmianie rozmiaru
         canvas.widthProperty().addListener((obs, oldVal, newVal) -> drawBoardLines(canvas, size));
         canvas.heightProperty().addListener((obs, oldVal, newVal) -> drawBoardLines(canvas, size));
 
+        // Overlay z przyciskami
         GridPane overlay = new GridPane();
         overlay.setAlignment(Pos.CENTER);
 
@@ -167,6 +171,7 @@ public class TicTacToeController {
             }
         }
 
+        // proporcje w gridzie
         for (int i = 0; i < size; i++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setPercentWidth(100.0 / size);
@@ -181,6 +186,7 @@ public class TicTacToeController {
         stack.setAlignment(Pos.CENTER);
         root.setCenter(stack);
 
+        // górne przyciski
         HBox controls = new HBox(15);
         controls.setAlignment(Pos.TOP_RIGHT);
         controls.setStyle("-fx-padding: 10;");
@@ -202,23 +208,23 @@ public class TicTacToeController {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        double w = canvas.getWidth();
-        double h = canvas.getHeight();
+        double canvasSize = Math.min(canvas.getWidth(), canvas.getHeight());
+        double cellSize = canvasSize / size;
+        double gap = cellSize * 0.1; // margines linii, np. 10% kratki
 
-        double cellW = w / size;
-        double cellH = h / size;
-
-        gc.setStroke(javafx.scene.paint.Color.BLACK);
+        gc.setStroke(Color.BLACK);
         gc.setLineWidth(4);
 
+        // pionowe linie
         for (int i = 1; i < size; i++) {
-            double x = i * cellW;
-            gc.strokeLine(x, cellH * 0.2, x, h - cellH * 0.2);
+            double x = i * cellSize;
+            gc.strokeLine(x, gap, x, canvasSize - gap);
         }
 
+        // poziome linie
         for (int i = 1; i < size; i++) {
-            double y = i * cellH;
-            gc.strokeLine(cellW * 0.2, y, w - cellW * 0.2, y);
+            double y = i * cellSize;
+            gc.strokeLine(gap, y, canvasSize - gap, y);
         }
     }
 

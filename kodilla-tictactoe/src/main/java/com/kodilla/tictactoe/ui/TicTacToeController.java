@@ -7,8 +7,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 public class TicTacToeController {
     private final BorderPane root;
@@ -18,16 +19,21 @@ public class TicTacToeController {
     private final Label promptLabel = new Label("");
     private final Label hintLabel = new Label("");
 
+    private final Image xImage = new Image(getClass().getResource("/static/images/x_figure.png").toExternalForm());
+    private final Image oImage = new Image(getClass().getResource("/static/images/o_figure.png").toExternalForm());
+
+    private final Background background;
+
     public TicTacToeController(BorderPane root, GridPane grid) {
         this.root = root;
         this.grid = grid;
 
-        root.setStyle(
-                "-fx-background-image: url('static/images/old_paper_2.jpg');" +
-                "-fx-background-size: cover;" +
-                "-fx-background-position: center center;" +
-                "-fx-background-repeat: no-repeat;"
-        );
+        Image bgImg = new Image(getClass().getResource("/static/images/old_paper_2.jpg").toExternalForm());
+        BackgroundSize bgSize = new BackgroundSize(100, 100, true, true, true, true);
+        this.background = new Background(new BackgroundImage(bgImg, BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bgSize));
+
+        root.setBackground(background);
 
         HBox messageBar = new HBox(messageLabel);
         messageBar.setAlignment(Pos.CENTER);
@@ -59,23 +65,26 @@ public class TicTacToeController {
         hintLabel.setText(hint);
     }
 
-    // MAIN MENU
+    // ==================== MAIN MENU =====================
     public void renderMainMenu(JavaFxDisplay ui) {
         renderGameModeMenu(ui);
     }
 
     private void renderGameModeMenu(JavaFxDisplay ui) {
-        VBox menu = new VBox(15);
+        VBox menu = new VBox(20);
         menu.setAlignment(Pos.CENTER);
+        menu.setBackground(background);
 
         Label gameMode = new Label("Select the game mode:");
-        Button pvp = new Button("Player vs Player");
+        gameMode.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
+
+        Button pvp = createMenuButton("Player vs Player");
         pvp.setOnAction(event -> {
             ui.provideInput("1");
             renderBoardSizeMenu(ui);
         });
 
-        Button pvc = new Button("Player vs Computer");
+        Button pvc = createMenuButton("Player vs Computer");
         pvc.setOnAction(event -> {
             ui.provideInput("2");
             renderBoardSizeMenu(ui);
@@ -86,78 +95,140 @@ public class TicTacToeController {
     }
 
     private void renderBoardSizeMenu(JavaFxDisplay ui) {
-        VBox menu = new VBox(15);
+        VBox menu = new VBox(20);
         menu.setAlignment(Pos.CENTER);
+        menu.setBackground(background);
 
         Label sizeLabel = new Label("Select the board size:");
-        Button size3 = new Button("Board 3x3");
+        sizeLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
+
+        Button size3 = createMenuButton("Board 3x3");
         size3.setOnAction(event -> ui.provideInput("1"));
 
-        Button size10 = new Button("Board 10x10");
+        Button size10 = createMenuButton("Board 10x10");
         size10.setOnAction(event -> ui.provideInput("2"));
 
         menu.getChildren().addAll(sizeLabel, size3, size10);
         root.setCenter(menu);
     }
 
-    // BOARD
+    private Button createMenuButton(String text) {
+        Button btn = new Button(text);
+        btn.setStyle(
+                "-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 10;" +
+                        "-fx-background-color: linear-gradient(to bottom, #4facfe, #00f2fe);" +
+                        "-fx-text-fill: white; -fx-font-weight: bold;");
+        btn.setOnMouseEntered(e -> btn.setStyle(
+                "-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 10;" +
+                        "-fx-background-color: linear-gradient(to bottom, #43e97b, #38f9d7);" +
+                        "-fx-text-fill: white; -fx-font-weight: bold;"));
+        btn.setOnMouseExited(e -> btn.setStyle(
+                "-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 10;" +
+                        "-fx-background-color: linear-gradient(to bottom, #4facfe, #00f2fe);" +
+                        "-fx-text-fill: white; -fx-font-weight: bold;"));
+        return btn;
+    }
+
+    // ==================== BOARD =====================
     public void renderBoard(Board board, JavaFxDisplay ui) {
         grid.getChildren().clear();
+        root.setBackground(background);
+
         int size = board.getBoardSideSize();
 
         Canvas canvas = new Canvas();
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        StackPane boardView = new StackPane(canvas, grid);
-        boardView.setAlignment(Pos.CENTER);
-
         canvas.widthProperty().bind(root.widthProperty().multiply(0.75));
         canvas.heightProperty().bind(root.heightProperty().multiply(0.75));
 
-        canvas.widthProperty().addListener((observable, oldValue, newValue) -> {
-            drawBoard(gc, size, canvas.getWidth(), canvas.getHeight());
-        });
-        canvas.heightProperty().addListener((observable, oldValue, newValue) -> {
-            drawBoard(gc, size, canvas.getWidth(), canvas.getHeight());
-        });
+        canvas.widthProperty().addListener((obs, oldVal, newVal) -> drawBoardLines(canvas, size));
+        canvas.heightProperty().addListener((obs, oldVal, newVal) -> drawBoardLines(canvas, size));
 
-        // Control panel (restart and quit)
-        HBox controls = new HBox(10);
+        GridPane overlay = new GridPane();
+        overlay.setAlignment(Pos.CENTER);
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                Button btn = new Button();
+                btn.setStyle("-fx-background-color: transparent;");
+                btn.setMinSize(0, 0);
+                btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+                int r = row + 1, c = col + 1;
+                btn.setOnAction(event -> ui.provideInput(r + " " + c));
+
+                String value = board.getValue(row, col).toString();
+                if (value.equals("X")) {
+                    setButtonImage(btn, xImage);
+                } else if (value.equals("O")) {
+                    setButtonImage(btn, oImage);
+                }
+
+                overlay.add(btn, col, row);
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setPercentWidth(100.0 / size);
+            overlay.getColumnConstraints().add(cc);
+
+            RowConstraints rc = new RowConstraints();
+            rc.setPercentHeight(100.0 / size);
+            overlay.getRowConstraints().add(rc);
+        }
+
+        StackPane stack = new StackPane(canvas, overlay);
+        stack.setAlignment(Pos.CENTER);
+        root.setCenter(stack);
+
+        HBox controls = new HBox(15);
         controls.setAlignment(Pos.TOP_RIGHT);
         controls.setStyle("-fx-padding: 10;");
 
-        Button restart = new Button("Restart");
+        Button restart = createMenuButton("Restart");
         restart.setOnAction(event -> ui.provideInput("r"));
 
-        Button quit = new Button("Quit");
+        Button quit = createMenuButton("Quit");
         quit.setOnAction(event -> {
             ui.provideInput("q");
             Platform.exit();
         });
 
         controls.getChildren().addAll(restart, quit);
-
         root.setTop(controls);
-        root.setCenter(boardView);
     }
 
-    private void drawBoard(GraphicsContext gc, int size, double width, double height) {
-        gc.clearRect(0, 0, width, height);
+    private void drawBoardLines(Canvas canvas, int size) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(5);
+        double w = canvas.getWidth();
+        double h = canvas.getHeight();
 
-        double cellWidth = width / size;
-        double cellHeight = height / size;
+        double cellW = w / size;
+        double cellH = h / size;
+
+        gc.setStroke(javafx.scene.paint.Color.BLACK);
+        gc.setLineWidth(4);
 
         for (int i = 1; i < size; i++) {
-            double x = i * cellWidth;
-            gc.strokeLine(x, 20, x, height - 20);
+            double x = i * cellW;
+            gc.strokeLine(x, cellH * 0.2, x, h - cellH * 0.2);
         }
 
         for (int i = 1; i < size; i++) {
-            double y = i * cellHeight;
-            gc.strokeLine(20, y, width - 20, y);
+            double y = i * cellH;
+            gc.strokeLine(cellW * 0.2, y, w - cellW * 0.2, y);
         }
+    }
+
+    private void setButtonImage(Button btn, Image img) {
+        ImageView iv = new ImageView(img);
+        iv.setPreserveRatio(true);
+
+        iv.fitWidthProperty().bind(btn.widthProperty().multiply(0.8));
+        iv.fitHeightProperty().bind(btn.heightProperty().multiply(0.8));
+
+        btn.setGraphic(iv);
     }
 }

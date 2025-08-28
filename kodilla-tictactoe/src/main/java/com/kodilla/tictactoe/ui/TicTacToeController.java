@@ -2,6 +2,8 @@ package com.kodilla.tictactoe.ui;
 
 import com.kodilla.tictactoe.model.Board;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -30,9 +32,16 @@ public class TicTacToeController {
         this.grid = grid;
 
         Image bgImg = new Image(getClass().getResource("/static/images/old_paper_2.jpg").toExternalForm());
-        BackgroundSize bgSize = new BackgroundSize(100, 100, true, true, true, true);
-        this.background = new Background(new BackgroundImage(bgImg, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bgSize));
+        BackgroundSize bgSize = new BackgroundSize(
+                BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true
+        );
+        this.background = new Background(new BackgroundImage(
+                bgImg,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                bgSize
+        ));
 
         root.setBackground(background);
 
@@ -76,6 +85,8 @@ public class TicTacToeController {
         menu.setAlignment(Pos.CENTER);
         menu.setBackground(background);
 
+        root.setTop(null);
+
         Label gameMode = new Label("Select the game mode:");
         gameMode.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
 
@@ -99,6 +110,8 @@ public class TicTacToeController {
         VBox menu = new VBox(20);
         menu.setAlignment(Pos.CENTER);
         menu.setBackground(background);
+
+        root.setTop(null);
 
         Label sizeLabel = new Label("Select the board size:");
         sizeLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
@@ -137,18 +150,29 @@ public class TicTacToeController {
 
         int size = board.getBoardSideSize();
 
-        // Canvas - kwadratowy, skaluje się z oknem
-        Canvas canvas = new Canvas();
-        canvas.widthProperty().bind(root.widthProperty().multiply(0.75));
-        canvas.heightProperty().bind(root.heightProperty().multiply(0.75));
+        // wspólny binding dla canvas + overlay
+        DoubleBinding boardSizeBinding = Bindings.createDoubleBinding(
+                () -> Math.min(root.getWidth(), root.getHeight()) * 0.75,
+                root.widthProperty(), root.heightProperty()
+        );
 
-        // Rysowanie po zmianie rozmiaru
+        // Canvas
+        Canvas canvas = new Canvas();
+        canvas.widthProperty().bind(boardSizeBinding);
+        canvas.heightProperty().bind(boardSizeBinding);
+
         canvas.widthProperty().addListener((obs, oldVal, newVal) -> drawBoardLines(canvas, size));
         canvas.heightProperty().addListener((obs, oldVal, newVal) -> drawBoardLines(canvas, size));
+
+        drawBoardLines(canvas, size);
 
         // Overlay z przyciskami
         GridPane overlay = new GridPane();
         overlay.setAlignment(Pos.CENTER);
+        overlay.maxWidthProperty().bind(canvas.widthProperty());
+        overlay.maxHeightProperty().bind(canvas.heightProperty());
+        overlay.prefWidthProperty().bind(canvas.widthProperty());
+        overlay.prefHeightProperty().bind(canvas.heightProperty());
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -210,21 +234,20 @@ public class TicTacToeController {
 
         double canvasSize = Math.min(canvas.getWidth(), canvas.getHeight());
         double cellSize = canvasSize / size;
-        double gap = cellSize * 0.1; // margines linii, np. 10% kratki
 
         gc.setStroke(Color.BLACK);
-        gc.setLineWidth(4);
+        gc.setLineWidth(3);
 
-        // pionowe linie
+        // pionowe
         for (int i = 1; i < size; i++) {
             double x = i * cellSize;
-            gc.strokeLine(x, gap, x, canvasSize - gap);
+            gc.strokeLine(x, 0, x, canvasSize);
         }
 
-        // poziome linie
+        // poziome
         for (int i = 1; i < size; i++) {
             double y = i * cellSize;
-            gc.strokeLine(gap, y, canvasSize - gap, y);
+            gc.strokeLine(0, y, canvasSize, y);
         }
     }
 

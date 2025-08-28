@@ -47,15 +47,15 @@ public class TicTacToeController {
 
         HBox messageBar = new HBox(messageLabel);
         messageBar.setAlignment(Pos.CENTER);
-        messageBar.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 5;");
+        messageBar.setStyle("-fx-font-size: 20px; -fx-padding: 5; -fx-font-weight: bold;");
 
         HBox promptBar = new HBox(promptLabel);
         promptBar.setAlignment(Pos.CENTER);
-        promptBar.setStyle("-fx-background-color: #e0e0ff; -fx-padding: 5;");
+        promptBar.setStyle("-fx-font-size: 20px; -fx-padding: 5; -fx-font-weight: bold;");
 
         HBox hintBar = new HBox(hintLabel);
         hintBar.setAlignment(Pos.CENTER);
-        hintBar.setStyle("-fx-background-color: #ffe0e0; -fx-padding: 5;");
+        hintBar.setStyle("-fx-padding: 5;");
 
         VBox statusBars = new VBox(5, messageBar, promptBar, hintBar);
         statusBars.setAlignment(Pos.CENTER);

@@ -88,7 +88,7 @@ public class TicTacToeController {
         root.setTop(null);
 
         Label gameMode = new Label("Select the game mode:");
-        gameMode.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
+        gameMode.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
 
         Button pvp = createMenuButton("Player vs Player");
         pvp.setOnAction(event -> {
@@ -114,7 +114,7 @@ public class TicTacToeController {
         root.setTop(null);
 
         Label sizeLabel = new Label("Select the board size:");
-        sizeLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: white;");
+        sizeLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
 
         Button size3 = createMenuButton("Board 3x3");
         size3.setOnAction(event -> ui.provideInput("1"));
@@ -130,16 +130,16 @@ public class TicTacToeController {
         Button btn = new Button(text);
         btn.setStyle(
                 "-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 10;" +
-                        "-fx-background-color: linear-gradient(to bottom, #4facfe, #00f2fe);" +
-                        "-fx-text-fill: white; -fx-font-weight: bold;");
+                        "-fx-background-color: linear-gradient(to bottom, #f5deb3, #d2b48c);" +
+                        "-fx-text-fill: black;");
         btn.setOnMouseEntered(e -> btn.setStyle(
                 "-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 10;" +
-                        "-fx-background-color: linear-gradient(to bottom, #43e97b, #38f9d7);" +
-                        "-fx-text-fill: white; -fx-font-weight: bold;"));
+                        "-fx-background-color: linear-gradient(to bottom, #e6d0a3, #bfa76f);" +
+                        "-fx-text-fill: black; -fx-font-weight: bold;"));
         btn.setOnMouseExited(e -> btn.setStyle(
                 "-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 10;" +
-                        "-fx-background-color: linear-gradient(to bottom, #4facfe, #00f2fe);" +
-                        "-fx-text-fill: white; -fx-font-weight: bold;"));
+                        "-fx-background-color: linear-gradient(to bottom, #f5deb3, #d2b48c);" +
+                        "-fx-text-fill: black;"));
         return btn;
     }
 
@@ -150,13 +150,11 @@ public class TicTacToeController {
 
         int size = board.getBoardSideSize();
 
-        // wspólny binding dla canvas + overlay
         DoubleBinding boardSizeBinding = Bindings.createDoubleBinding(
                 () -> Math.min(root.getWidth(), root.getHeight()) * 0.75,
                 root.widthProperty(), root.heightProperty()
         );
 
-        // Canvas
         Canvas canvas = new Canvas();
         canvas.widthProperty().bind(boardSizeBinding);
         canvas.heightProperty().bind(boardSizeBinding);
@@ -166,7 +164,6 @@ public class TicTacToeController {
 
         drawBoardLines(canvas, size);
 
-        // Overlay z przyciskami
         GridPane overlay = new GridPane();
         overlay.setAlignment(Pos.CENTER);
         overlay.maxWidthProperty().bind(canvas.widthProperty());
@@ -195,7 +192,6 @@ public class TicTacToeController {
             }
         }
 
-        // proporcje w gridzie
         for (int i = 0; i < size; i++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setPercentWidth(100.0 / size);
@@ -210,7 +206,6 @@ public class TicTacToeController {
         stack.setAlignment(Pos.CENTER);
         root.setCenter(stack);
 
-        // górne przyciski
         HBox controls = new HBox(15);
         controls.setAlignment(Pos.TOP_RIGHT);
         controls.setStyle("-fx-padding: 10;");
@@ -238,13 +233,11 @@ public class TicTacToeController {
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(3);
 
-        // pionowe
         for (int i = 1; i < size; i++) {
             double x = i * cellSize;
             gc.strokeLine(x, 0, x, canvasSize);
         }
 
-        // poziome
         for (int i = 1; i < size; i++) {
             double y = i * cellSize;
             gc.strokeLine(0, y, canvasSize, y);

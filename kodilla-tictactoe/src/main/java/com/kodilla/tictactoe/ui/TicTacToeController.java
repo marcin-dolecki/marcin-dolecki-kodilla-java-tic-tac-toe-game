@@ -231,7 +231,7 @@ public class TicTacToeController {
         double cellSize = canvasSize / size;
 
         gc.setStroke(Color.BLACK);
-        gc.setLineWidth(3);
+        gc.setLineWidth(10);
 
         for (int i = 1; i < size; i++) {
             double x = i * cellSize;

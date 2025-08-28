@@ -29,7 +29,7 @@ public class JavaFxDisplay implements UserInterface {
         );
 
         if (!shouldDisplay(message)) return;
-        
+
         String hint = "(Click 'quit' to exit or 'restart' to start again)";
 
         if (message.contains("Congratulations") || message.contains("Draw")) {

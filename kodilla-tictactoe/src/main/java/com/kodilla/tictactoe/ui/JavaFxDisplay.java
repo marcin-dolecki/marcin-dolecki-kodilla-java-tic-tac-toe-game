@@ -53,7 +53,12 @@ public class JavaFxDisplay implements UserInterface {
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
-        } else if (message.equals("Select the game mode:") || message.equals("Select the board size:")) {
+        } else if (message.equals("Select the game mode:")) {
+            showMainMenu();
+            Platform.runLater(() -> controller.setMessageLabel(""));
+            Platform.runLater(() -> controller.setPromptLabel(""));
+            Platform.runLater(() -> controller.setHintLabel(""));
+        } else if (message.equals("Select the board size:")) {
             Platform.runLater(() -> controller.setMessageLabel(""));
             Platform.runLater(() -> controller.setPromptLabel(""));
             Platform.runLater(() -> controller.setHintLabel(""));

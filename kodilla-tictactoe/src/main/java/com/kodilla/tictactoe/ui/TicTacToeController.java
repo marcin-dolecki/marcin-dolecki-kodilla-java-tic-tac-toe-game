@@ -99,10 +99,42 @@ public class TicTacToeController {
         Button pvc = createMenuButton("Player vs Computer");
         pvc.setOnAction(event -> {
             ui.provideInput("2");
-            renderBoardSizeMenu(ui);
+            renderDifficultyLevelMenu(ui);
         });
 
         menu.getChildren().addAll(gameMode, pvp, pvc);
+        root.setCenter(menu);
+    }
+
+    private void renderDifficultyLevelMenu(JavaFxDisplay ui) {
+        VBox menu = new VBox(20);
+        menu.setAlignment(Pos.CENTER);
+        menu.setBackground(background);
+
+        root.setTop(null);
+
+        Label difficultyMode = new Label("Select difficulty level:");
+        difficultyMode.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
+
+        Button easy = createMenuButton("EASY");
+        easy.setOnAction(event -> {
+            ui.provideInput("1");
+            renderBoardSizeMenu(ui);
+        });
+
+        Button medium = createMenuButton("MEDIUM");
+        medium.setOnAction(event -> {
+            ui.provideInput("2");
+            renderBoardSizeMenu(ui);
+        });
+
+        Button hard = createMenuButton("HARD");
+        hard.setOnAction(event -> {
+            ui.provideInput("3");
+            renderBoardSizeMenu(ui);
+        });
+
+        menu.getChildren().addAll(difficultyMode, easy, medium, hard);
         root.setCenter(menu);
     }
 

@@ -10,8 +10,7 @@ import com.kodilla.tictactoe.ui.UserInterface;
 public class ConsoleMain {
     public static void main(String[] args) {
         UserInterface ui = new ConsoleDisplay();
-        ComputerPlayerInterface computerPlayerInterface = new RandomMove();
-        Game game = new Game(ui, computerPlayerInterface);
+        Game game = new Game(ui);
 
         try {
             game.start();

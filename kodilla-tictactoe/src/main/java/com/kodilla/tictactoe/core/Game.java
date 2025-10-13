@@ -5,25 +5,24 @@ import com.kodilla.tictactoe.model.Board;
 import com.kodilla.tictactoe.model.DifficultyLevel;
 import com.kodilla.tictactoe.model.Figure;
 import com.kodilla.tictactoe.model.Player;
+import com.kodilla.tictactoe.ui.ComputerPlayerFactory;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.UserInterface;
 
 public final class Game {
     private Board board;
-    private DifficultyLevel difficultyLevel;
+    private ComputerPlayerInterface computerPlayerInterface;
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private final UserInterface ui;
-    private final ComputerPlayerInterface computerPlayerInterface;
     private boolean againstComputer = false;
     private int boardSideSize, winMoveLength;
     private boolean directRestart;
     private static final String QUIT = "q";
     private static final String RESTART = "r";
 
-    public Game(UserInterface ui, ComputerPlayerInterface computerPlayerInterface) {
+    public Game(UserInterface ui) {
         this.ui = ui;
-        this.computerPlayerInterface = computerPlayerInterface;
     }
 
     public void start() {
@@ -44,6 +43,9 @@ public final class Game {
     private void showMainMenu() {
         ui.showMessage("=== TIC TAC TOE ===");
         selectGameMode();
+        if (againstComputer) {
+            selectDifficultyLevel();
+        }
         selectBoardSize();
         board = new Board(boardSideSize);
         gameLogic = new GameLogic(board, winMoveLength);
@@ -64,6 +66,36 @@ public final class Game {
                     return;
                 case "2":
                     againstComputer = true;
+                    return;
+                default:
+                    ui.showMessage("Invalid choice. Try again.");
+            }
+        }
+    }
+
+    private void selectDifficultyLevel() {
+        DifficultyLevel difficultyLevel;
+
+        while (true) {
+            ui.showMessage("Select difficulty level:");
+            ui.showMessage("1 - Easy");
+            ui.showMessage("2 - Medium");
+            ui.showMessage("3 - Hard");
+
+            String input = ui.getTextInput("Enter your choice: ");
+
+            switch (input) {
+                case "1":
+                    difficultyLevel = DifficultyLevel.EASY;
+                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel);
+                    return;
+                case "2":
+                    difficultyLevel = DifficultyLevel.MEDIUM;
+                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel);
+                    return;
+                case "3":
+                    difficultyLevel = DifficultyLevel.HARD;
+                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel);
                     return;
                 default:
                     ui.showMessage("Invalid choice. Try again.");

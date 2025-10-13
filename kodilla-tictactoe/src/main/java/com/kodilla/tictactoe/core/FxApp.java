@@ -19,9 +19,8 @@ public class FxApp extends Application {
 
         TicTacToeController controller = new TicTacToeController(root, grid);
         JavaFxDisplay ui = new JavaFxDisplay(controller);
-        ComputerPlayerInterface computerPlayer = new RandomMove();
 
-        Game game = new Game(ui, computerPlayer);
+        Game game = new Game(ui);
 
         Scene scene = new Scene(root, 800, 800);
         stage.setScene(scene);

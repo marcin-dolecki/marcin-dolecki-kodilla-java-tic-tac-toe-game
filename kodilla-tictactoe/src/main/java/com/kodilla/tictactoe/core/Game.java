@@ -2,6 +2,7 @@ package com.kodilla.tictactoe.core;
 
 import com.kodilla.tictactoe.logic.*;
 import com.kodilla.tictactoe.model.Board;
+import com.kodilla.tictactoe.model.DifficultyLevel;
 import com.kodilla.tictactoe.model.Figure;
 import com.kodilla.tictactoe.model.Player;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
@@ -9,6 +10,7 @@ import com.kodilla.tictactoe.ui.UserInterface;
 
 public final class Game {
     private Board board;
+    private DifficultyLevel difficultyLevel;
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private final UserInterface ui;

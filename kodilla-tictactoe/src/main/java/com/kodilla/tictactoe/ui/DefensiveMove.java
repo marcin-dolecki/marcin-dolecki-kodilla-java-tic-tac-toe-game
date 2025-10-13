@@ -13,10 +13,12 @@ public class DefensiveMove implements ComputerPlayerInterface {
 
     private final Figure computerFigure;
     private final Figure playerFigure;
+    private final int winMoveLength;
 
-    public DefensiveMove(Figure computerFigure, Figure playerFigure) {
+    public DefensiveMove(Figure computerFigure, Figure playerFigure, int winMoveLength) {
         this.computerFigure = computerFigure;
         this.playerFigure = playerFigure;
+        this.winMoveLength = winMoveLength;
     }
 
     /*

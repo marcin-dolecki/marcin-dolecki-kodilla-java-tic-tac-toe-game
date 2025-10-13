@@ -87,15 +87,15 @@ public final class Game {
             switch (input) {
                 case "1":
                     difficultyLevel = DifficultyLevel.EASY;
-                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel);
+                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, winMoveLength);
                     return;
                 case "2":
                     difficultyLevel = DifficultyLevel.MEDIUM;
-                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel);
+                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, winMoveLength);
                     return;
                 case "3":
                     difficultyLevel = DifficultyLevel.HARD;
-                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel);
+                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, winMoveLength);
                     return;
                 default:
                     ui.showMessage("Invalid choice. Try again.");

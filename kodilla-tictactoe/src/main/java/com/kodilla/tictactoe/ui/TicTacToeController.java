@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 public class TicTacToeController {
     private final BorderPane root;
     private final GridPane grid;
+    private boolean isAgainstComputer = false;
 
     private final Label messageLabel = new Label("");
     private final Label promptLabel = new Label("");
@@ -99,10 +100,41 @@ public class TicTacToeController {
         Button pvc = createMenuButton("Player vs Computer");
         pvc.setOnAction(event -> {
             ui.provideInput("2");
-            renderDifficultyLevelMenu(ui);
+            isAgainstComputer = true;
+            renderBoardSizeMenu(ui);
         });
 
         menu.getChildren().addAll(gameMode, pvp, pvc);
+        root.setCenter(menu);
+    }
+
+    private void renderBoardSizeMenu(JavaFxDisplay ui) {
+        VBox menu = new VBox(20);
+        menu.setAlignment(Pos.CENTER);
+        menu.setBackground(background);
+
+        root.setTop(null);
+
+        Label sizeLabel = new Label("Select the board size:");
+        sizeLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
+
+        Button size3 = createMenuButton("Board 3x3");
+        size3.setOnAction(event -> {
+            ui.provideInput("1");
+            if (isAgainstComputer) {
+                renderDifficultyLevelMenu(ui);
+            }
+        });
+
+        Button size10 = createMenuButton("Board 10x10");
+        size10.setOnAction(event -> {
+            ui.provideInput("2");
+            if (isAgainstComputer) {
+                renderDifficultyLevelMenu(ui);
+            }
+        });
+
+        menu.getChildren().addAll(sizeLabel, size3, size10);
         root.setCenter(menu);
     }
 
@@ -119,42 +151,19 @@ public class TicTacToeController {
         Button easy = createMenuButton("EASY");
         easy.setOnAction(event -> {
             ui.provideInput("1");
-            renderBoardSizeMenu(ui);
         });
 
         Button medium = createMenuButton("MEDIUM");
         medium.setOnAction(event -> {
             ui.provideInput("2");
-            renderBoardSizeMenu(ui);
         });
 
         Button hard = createMenuButton("HARD");
         hard.setOnAction(event -> {
             ui.provideInput("3");
-            renderBoardSizeMenu(ui);
         });
 
         menu.getChildren().addAll(difficultyMode, easy, medium, hard);
-        root.setCenter(menu);
-    }
-
-    private void renderBoardSizeMenu(JavaFxDisplay ui) {
-        VBox menu = new VBox(20);
-        menu.setAlignment(Pos.CENTER);
-        menu.setBackground(background);
-
-        root.setTop(null);
-
-        Label sizeLabel = new Label("Select the board size:");
-        sizeLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
-
-        Button size3 = createMenuButton("Board 3x3");
-        size3.setOnAction(event -> ui.provideInput("1"));
-
-        Button size10 = createMenuButton("Board 10x10");
-        size10.setOnAction(event -> ui.provideInput("2"));
-
-        menu.getChildren().addAll(sizeLabel, size3, size10);
         root.setCenter(menu);
     }
 

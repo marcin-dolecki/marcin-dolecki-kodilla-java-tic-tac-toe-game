@@ -43,10 +43,10 @@ public final class Game {
     private void showMainMenu() {
         ui.showMessage("=== TIC TAC TOE ===");
         selectGameMode();
+        selectBoardSize();
         if (againstComputer) {
             selectDifficultyLevel();
         }
-        selectBoardSize();
         board = new Board(boardSideSize);
         gameLogic = new GameLogic(board, winMoveLength);
         initializePlayers();
@@ -66,6 +66,29 @@ public final class Game {
                     return;
                 case "2":
                     againstComputer = true;
+                    return;
+                default:
+                    ui.showMessage("Invalid choice. Try again.");
+            }
+        }
+    }
+
+    private void selectBoardSize() {
+        while (true) {
+            ui.showMessage("Select the board size:");
+            ui.showMessage("1 - 3x3 square - classic");
+            ui.showMessage("2 - 10x10 square - 5 figures win");
+
+            String input = ui.getTextInput("Enter your choice: ");
+
+            switch (input) {
+                case "1":
+                    boardSideSize = 3;
+                    winMoveLength = 3;
+                    return;
+                case "2":
+                    boardSideSize = 10;
+                    winMoveLength = 5;
                     return;
                 default:
                     ui.showMessage("Invalid choice. Try again.");
@@ -96,29 +119,6 @@ public final class Game {
                 case "3":
                     difficultyLevel = DifficultyLevel.HARD;
                     computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, winMoveLength);
-                    return;
-                default:
-                    ui.showMessage("Invalid choice. Try again.");
-            }
-        }
-    }
-
-    private void selectBoardSize() {
-        while (true) {
-            ui.showMessage("Select the board size:");
-            ui.showMessage("1 - 3x3 square - classic");
-            ui.showMessage("2 - 10x10 square - 5 figures win");
-
-            String input = ui.getTextInput("Enter your choice: ");
-
-            switch (input) {
-                case "1":
-                    boardSideSize = 3;
-                    winMoveLength = 3;
-                    return;
-                case "2":
-                    boardSideSize = 10;
-                    winMoveLength = 5;
                     return;
                 default:
                     ui.showMessage("Invalid choice. Try again.");

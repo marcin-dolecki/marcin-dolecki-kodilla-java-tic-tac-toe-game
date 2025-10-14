@@ -1,6 +1,7 @@
 package com.kodilla.tictactoe.ui;
 
 import com.kodilla.tictactoe.logic.ErrorReason;
+import com.kodilla.tictactoe.logic.GameLogic;
 import com.kodilla.tictactoe.logic.GameValidationException;
 import com.kodilla.tictactoe.model.Board;
 import com.kodilla.tictactoe.model.Figure;
@@ -13,12 +14,12 @@ public class OffensiveMove implements ComputerPlayerInterface {
 
     private final Figure computerFigure;
     private final Figure playerFigure;
-    private final int winMoveLength;
+    private final GameLogic gameLogic;
 
-    public OffensiveMove(Figure computerFigure, Figure playerFigure, int winMoveLength) {
+    public OffensiveMove(Figure computerFigure, Figure playerFigure, GameLogic gameLogic) {
         this.computerFigure = computerFigure;
         this.playerFigure = playerFigure;
-        this.winMoveLength = winMoveLength;
+        this.gameLogic = gameLogic;
     }
 
     /*

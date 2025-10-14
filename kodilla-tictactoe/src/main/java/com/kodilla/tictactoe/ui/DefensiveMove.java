@@ -37,14 +37,14 @@ public class DefensiveMove implements ComputerPlayerInterface {
         return getRandomMove(board, boardSideSize);
     }
 
-    private Optional<int[]> findWinningMove(Board board, Figure playerFigure, GameLogic gameLogic) {
+    private Optional<int[]> findWinningMove(Board board, Figure figure, GameLogic gameLogic) {
         int size = board.getBoardSideSize();
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 if (board.getValue(row, col) == Figure.EMPTY) {
-                    board.setValue(row, col, playerFigure);
-                    boolean win = gameLogic.isWin(row, col, Figure.X);
+                    board.setValue(row, col, figure);
+                    boolean win = gameLogic.isWin(row, col, figure);
                     board.undoSetValue(row, col);
                     if (win) return Optional.of(new int[]{row, col});
                 }

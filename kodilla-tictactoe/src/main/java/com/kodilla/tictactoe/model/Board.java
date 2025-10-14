@@ -67,6 +67,19 @@ public final class Board {
     }
 
     /**
+     * Undo sets the value of a field on the board.
+     * Validates that the coordinates are within bounds
+     * @param row row index (0-based)
+     * @param col column index (0-based)
+     * @throws GameValidationException if the coordinates are out of bounds
+     */
+    public void undoSetValue(int row, int col) {
+        validateCoords(row, col);
+        moveCount--;
+        board[row][col] = Figure.EMPTY;
+    }
+
+    /**
      * Checks whether the specified field on the board is empty.
      * @param row row index (0-based)
      * @param col column index (0-based)

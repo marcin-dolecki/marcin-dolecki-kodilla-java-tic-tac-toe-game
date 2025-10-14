@@ -19,6 +19,10 @@ public class RandomMove implements ComputerPlayerInterface {
             throw new GameValidationException(ErrorReason.BOARD_FULL);
         }
 
+        return getRandomMove(board, boardSideSize);
+    }
+
+    private int[] getRandomMove(Board board, int boardSideSize) {
         int row, col;
         do {
             row = ThreadLocalRandom.current().nextInt(boardSideSize);

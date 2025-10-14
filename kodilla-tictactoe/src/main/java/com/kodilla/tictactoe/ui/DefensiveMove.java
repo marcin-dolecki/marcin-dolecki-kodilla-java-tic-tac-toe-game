@@ -6,25 +6,20 @@ import com.kodilla.tictactoe.logic.GameValidationException;
 import com.kodilla.tictactoe.model.Board;
 import com.kodilla.tictactoe.model.Figure;
 
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
 public class DefensiveMove implements ComputerPlayerInterface {
 
-    private final Figure computerFigure;
     private final Figure playerFigure;
     private final GameLogic gameLogic;
 
-    public DefensiveMove(Figure computerFigure, Figure playerFigure, GameLogic gameLogic) {
-        this.computerFigure = computerFigure;
+    public DefensiveMove(Figure playerFigure, GameLogic gameLogic) {
         this.playerFigure = playerFigure;
         this.gameLogic = gameLogic;
     }
-
-    /*
-    FOR NOW THE SAME AS RANDOM MOVE
-    */
 
     @Override
     public int[] getMove(Board board, int boardSideSize) {
@@ -34,6 +29,31 @@ public class DefensiveMove implements ComputerPlayerInterface {
             throw new GameValidationException(ErrorReason.BOARD_FULL);
         }
 
+        Optional<int[]> blockingMove = findWinningMove(board, playerFigure, gameLogic);
+        if (blockingMove.isPresent()) {
+            return blockingMove.get();
+        }
+
+        return getRandomMove(board, boardSideSize);
+    }
+
+    private Optional<int[]> findWinningMove(Board board, Figure playerFigure, GameLogic gameLogic) {
+        int size = board.getBoardSideSize();
+
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (board.getValue(row, col) == Figure.EMPTY) {
+                    board.setValue(row, col, playerFigure);
+                    boolean win = gameLogic.isWin(row, col, Figure.X);
+                    board.undoSetValue(row, col);
+                    if (win) return Optional.of(new int[]{row, col});
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    private int[] getRandomMove(Board board, int boardSideSize) {
         int row, col;
         do {
             row = ThreadLocalRandom.current().nextInt(boardSideSize);
@@ -42,4 +62,5 @@ public class DefensiveMove implements ComputerPlayerInterface {
 
         return new int[]{row, col};
     }
+
 }

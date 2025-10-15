@@ -131,6 +131,10 @@ public class JavaFxDisplay implements UserInterface {
                 "2 - Player vs computer",
                 "1 - 3x3 square - classic",
                 "2 - 10x10 square - 5 figures win",
+                "Select difficulty level:",
+                "1 - Easy",
+                "2 - Medium",
+                "3 - Hard",
                 "=== TIC TAC TOE ===",
                 "Main menu",
                 "Enter your choice: "

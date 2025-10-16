@@ -167,6 +167,35 @@ public class TicTacToeController {
         root.setCenter(menu);
     }
 
+    private void renderNameInput(JavaFxDisplay ui) {
+        VBox menu = new VBox(20);
+        menu.setAlignment(Pos.CENTER);
+        menu.setBackground(background);
+
+        root.setTop(null);
+
+        Label prompt = new Label("Enter your name: ");
+        prompt.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
+
+//        Button easy = createMenuButton("EASY");
+//        easy.setOnAction(event -> {
+//            ui.provideInput("1");
+//        });
+//
+//        Button medium = createMenuButton("MEDIUM");
+//        medium.setOnAction(event -> {
+//            ui.provideInput("2");
+//        });
+//
+//        Button hard = createMenuButton("HARD");
+//        hard.setOnAction(event -> {
+//            ui.provideInput("3");
+//        });
+
+//        menu.getChildren().addAll(difficultyMode, easy, medium, hard);
+//        root.setCenter(menu);
+    }
+
     private Button createMenuButton(String text) {
         Button btn = new Button(text);
         btn.setStyle(

@@ -127,8 +127,14 @@ public final class Game {
     }
 
     private void initializePlayers() {
-        player1 = new Player(Figure.X);
-        player2 = new Player(Figure.O, true);
+        String nameXInput = ui.getTextInput("Enter your name player X: ");
+        String nameX = nameXInput.isEmpty() ? "Player X" : nameXInput;
+
+        String nameOInput = againstComputer ? "Computer" : ui.getTextInput("Enter your name player O: ");
+        String nameO = nameOInput.isEmpty() ? "Player O" : nameOInput;
+
+        player1 = new Player(Figure.X, nameX);
+        player2 = new Player(Figure.O, nameO, true);
         currentPlayer = player1;
     }
 
@@ -166,7 +172,7 @@ public final class Game {
             ui.displayBoard(board);
             ui.showMessage("(Type 'q' to quit, 'r' to restart)");
 
-            String input = ui.getTextInput("Player " + currentPlayer.getFigure().toString() + " - provide row and column number: ");
+            String input = ui.getTextInput(currentPlayer.getName() + " - provide row and column number: ");
 
             InputValidationReturn validation = InputValidator.validateInput(input);
 
@@ -228,7 +234,7 @@ public final class Game {
     private boolean isGameOver(int row, int col) {
         if (gameLogic.isWin(row, col, currentPlayer.getFigure())) {
             ui.displayBoard(board);
-            ui.showMessage("Congratulations! Player " + currentPlayer.getFigure().toString() + " has won!");
+            ui.showMessage("Congratulations! " + currentPlayer.getName() + " has won!");
             return true;
         }
 

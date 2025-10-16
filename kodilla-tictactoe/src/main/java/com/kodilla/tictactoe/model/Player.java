@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public final class Player {
     private final Figure figure;
+    private final String name;
     private final boolean isComputerPlayer;
 
     /**
@@ -22,14 +23,23 @@ public final class Player {
      * @param isComputerPlayer true if the player is controlled by the computer, false otherwise
      * @throws GameValidationException if the figure is null
      */
-    public Player(final Figure figure, final boolean isComputerPlayer) {
+    public Player(final Figure figure, final String name, final boolean isComputerPlayer) {
         requireNonNull(figure, ErrorReason.NULL_FIGURE);
         this.figure = figure;
+        this.name = name;
         this.isComputerPlayer = isComputerPlayer;
     }
 
+    public Player(Figure figure, String name) {
+        this(figure, name, false);
+    }
+
     public Player(Figure figure) {
-        this(figure, false);
+        this(figure,"", false);
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Figure getFigure() {

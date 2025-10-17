@@ -9,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -167,33 +168,31 @@ public class TicTacToeController {
         root.setCenter(menu);
     }
 
-    private void renderNameInput(JavaFxDisplay ui) {
+    public void renderNameInput(JavaFxDisplay ui, String message) {
         VBox menu = new VBox(20);
         menu.setAlignment(Pos.CENTER);
         menu.setBackground(background);
 
         root.setTop(null);
 
-        Label prompt = new Label("Enter your name: ");
+        Label prompt = new Label(message);
         prompt.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
 
-//        Button easy = createMenuButton("EASY");
-//        easy.setOnAction(event -> {
-//            ui.provideInput("1");
-//        });
-//
-//        Button medium = createMenuButton("MEDIUM");
-//        medium.setOnAction(event -> {
-//            ui.provideInput("2");
-//        });
-//
-//        Button hard = createMenuButton("HARD");
-//        hard.setOnAction(event -> {
-//            ui.provideInput("3");
-//        });
+        TextField nameInput = new TextField();
+        nameInput.setPromptText("Your name");
+        nameInput.setMaxWidth(200);
+        nameInput.setStyle("-fx-font-size: 16px; -fx-background-radius: 8; -fx-padding: 8;" +
+                "-fx-background-color: #fffaf0; -fx-border-color: #d2b48c; -fx-border-radius: 8;");
 
-//        menu.getChildren().addAll(difficultyMode, easy, medium, hard);
-//        root.setCenter(menu);
+        Button confirmButton = createMenuButton("Ok");
+        confirmButton.setOnAction(event -> {
+            String name = nameInput.getText().trim();
+
+            ui.provideInput(name);
+        });
+
+        menu.getChildren().addAll(prompt, nameInput, confirmButton);
+        root.setCenter(menu);
     }
 
     private Button createMenuButton(String text) {

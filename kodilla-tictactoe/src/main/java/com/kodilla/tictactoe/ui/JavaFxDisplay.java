@@ -85,16 +85,27 @@ public class JavaFxDisplay implements UserInterface {
 
     @Override
     public String getTextInput(String prompt) {
-        String hint = "(Click 'quit' to exit or 'restart' to start again)";
+        String hint;
         String promptFx;
 
         if (shouldDisplay(prompt)) {
             if (prompt.equals("Player X - provide row and column number: ")) {
                 promptFx = "Player X - select a field";
+                hint = "(Click 'quit' to exit or 'restart' to start again)";
             } else if (prompt.equals("Player O - provide row and column number: ")) {
                 promptFx = "Player 0 - select a field";
+                hint = "(Click 'quit' to exit or 'restart' to start again)";
+            } else if (prompt.equals("Enter your name player X: ")) {
+                promptFx = "";
+                hint = "";
+                Platform.runLater(() -> controller.renderNameInput(this, prompt));
+            } else if (prompt.equals("Enter your name player O: ")) {
+                promptFx = "";
+                hint = "";
+                Platform.runLater(() -> controller.renderNameInput(this, prompt));
             } else {
                 promptFx = prompt;
+                hint = "(Click 'quit' to exit or 'restart' to start again)";
             }
             Platform.runLater(() -> controller.setMessageLabel(""));
             Platform.runLater(() -> controller.setPromptLabel(promptFx));

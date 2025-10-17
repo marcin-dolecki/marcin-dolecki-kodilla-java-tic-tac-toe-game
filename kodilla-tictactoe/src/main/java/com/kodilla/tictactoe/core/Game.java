@@ -57,6 +57,7 @@ public final class Game {
             ui.showMessage("Select the game mode:");
             ui.showMessage("1 - Player vs player");
             ui.showMessage("2 - Player vs computer");
+            ui.showMessage("3 - Show scores");
 
             String input = ui.getTextInput("Enter your choice: ");
 
@@ -67,10 +68,21 @@ public final class Game {
                 case "2":
                     againstComputer = true;
                     return;
+                case "3":
+                    showScores();
+                    return;
                 default:
                     ui.showMessage("Invalid choice. Try again.");
             }
         }
+    }
+
+    private void showScores() {
+        List<Score> scores = ScoreFileHandler.loadScores();
+        for (Score score : scores) {
+            ui.showMessage(score.toString());
+        }
+        selectGameMode();
     }
 
     private void selectBoardSize() {

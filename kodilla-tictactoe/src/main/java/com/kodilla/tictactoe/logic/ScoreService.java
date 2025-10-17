@@ -4,6 +4,7 @@ import com.kodilla.tictactoe.model.GameResult;
 import com.kodilla.tictactoe.model.Score;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,5 +20,11 @@ public class ScoreService {
         } else {
             scores.add(new Score(username, result, LocalDate.now()));
         }
+
+        scores.sort(
+            Comparator.<Score>comparingInt(Score::getGamesWon).reversed()
+                .thenComparing(Comparator.comparingInt(Score::getGamesLost))
+                .thenComparing(Comparator.comparingInt(Score::getGamesDrawn).reversed())
+        );
     }
 }

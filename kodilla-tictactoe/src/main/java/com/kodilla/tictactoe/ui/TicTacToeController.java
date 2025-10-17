@@ -1,19 +1,28 @@
 package com.kodilla.tictactoe.ui;
 
 import com.kodilla.tictactoe.model.Board;
+import com.kodilla.tictactoe.model.Score;
+import com.kodilla.tictactoe.util.ScoreFileHandler;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.util.List;
 
 public class TicTacToeController {
     private final BorderPane root;
@@ -105,7 +114,12 @@ public class TicTacToeController {
             renderBoardSizeMenu(ui);
         });
 
-        menu.getChildren().addAll(gameMode, pvp, pvc);
+        Button score = createMenuButton("Show scores");
+        score.setOnAction(event -> {
+            showScoresWindow(ui);
+        });
+
+        menu.getChildren().addAll(gameMode, pvp, pvc, score);
         root.setCenter(menu);
     }
 
@@ -193,6 +207,68 @@ public class TicTacToeController {
 
         menu.getChildren().addAll(prompt, nameInput, confirmButton);
         root.setCenter(menu);
+    }
+
+    public void showScoresWindow(JavaFxDisplay ui) {
+        List<Score> scores = ScoreFileHandler.loadScores();
+
+        Stage scoreStage = new Stage();
+        scoreStage.setTitle("Leaderboard");
+
+        VBox scoreBox = new VBox(10);
+        scoreBox.setPadding(new Insets(15));
+        scoreBox.setStyle("-fx-background-color: #fffaf0;");
+
+        Label header = new Label("🏆 SCOREBOARD 🏆");
+        header.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #8b4513;");
+        scoreBox.getChildren().add(header);
+
+        if (scores.isEmpty()) {
+            Label empty = new Label("No scores yet!");
+            empty.setStyle("-fx-font-size: 16px;");
+            scoreBox.getChildren().add(empty);
+        } else {
+            for (Score score : scores) {
+                Label label = new Label(formatScore(score));
+                label.setStyle("-fx-font-size: 16px; -fx-text-fill: #000;");
+                scoreBox.getChildren().add(label);
+            }
+        }
+
+        Button backButton = createMenuButton("Back to Menu");
+        backButton.setStyle(
+                "-fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 10;" +
+                        "-fx-background-color: linear-gradient(to bottom, #f5deb3, #d2b48c);" +
+                        "-fx-text-fill: black; -fx-font-weight: bold;"
+        );
+        backButton.setOnAction(event -> {
+            scoreStage.close();
+        });
+
+        VBox mainBox = new VBox(15);
+        mainBox.setAlignment(Pos.CENTER);
+        mainBox.getChildren().addAll(scoreBox, backButton);
+        mainBox.setPadding(new Insets(10));
+
+        ScrollPane scrollPane = new ScrollPane(mainBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefViewportHeight(400);
+        scrollPane.setPrefViewportWidth(700);
+        scrollPane.setStyle("-fx-background-color: transparent;");
+
+        Scene scene = new Scene(scrollPane);
+        scoreStage.setScene(scene);
+        scoreStage.initModality(Modality.APPLICATION_MODAL);
+
+        scoreStage.setOnShown(event -> {
+            Platform.runLater(() -> scrollPane.setVvalue(0.0));
+        });
+        scoreStage.showAndWait();
+    }
+
+    private String formatScore(Score score) {
+        return String.format("%-10s | Played: %-2d | Wins: %-2d | Losses: %-2d | Draws: %-2d | Date: %s",
+                score.getUsername(), score.getGamesPlayed(), score.getGamesWon(), score.getGamesLost(), score.getGamesDrawn(), score.getLastUpdated());
     }
 
     private Button createMenuButton(String text) {

@@ -235,26 +235,38 @@ public final class Game {
         if (gameLogic.isWin(row, col, currentPlayer.getFigure())) {
             ui.displayBoard(board);
             ui.showMessage("Congratulations! " + currentPlayer.getName() + " has won!");
-            List<Score> scores = ScoreFileHandler.loadScores();
-            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.WIN);
-            switchPlayer();
-            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.LOST);
-            ScoreFileHandler.saveScores(scores);
+            saveScore(GameResult.WIN);
             return true;
         }
 
         if (gameLogic.isDraw()) {
             ui.displayBoard(board);
             ui.showMessage("Draw! Better luck next time!");
-            List<Score> scores = ScoreFileHandler.loadScores();
-            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.DRAW);
-            switchPlayer();
-            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.DRAW);
-            ScoreFileHandler.saveScores(scores);
+            saveScore(GameResult.DRAW);
             return true;
         }
 
         return false;
+    }
+
+    private void saveScore(GameResult result) {
+        List<Score> scores = ScoreFileHandler.loadScores();
+
+        switch (result) {
+            case WIN:
+                ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.WIN);
+                switchPlayer();
+                ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.LOST);
+                break;
+            case DRAW:
+                ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.DRAW);
+                switchPlayer();
+                ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.DRAW);
+                break;
+            default:
+                break;
+        }
+        ScoreFileHandler.saveScores(scores);
     }
 
     private void switchPlayer() {

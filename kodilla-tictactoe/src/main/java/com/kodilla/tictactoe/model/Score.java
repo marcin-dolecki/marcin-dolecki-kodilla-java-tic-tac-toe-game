@@ -19,6 +19,16 @@ public class Score {
         this.lastUpdated = lastUpdated;
     }
 
+    public Score(String username, GameResult result, LocalDate lastUpdated) {
+        this.username = username;
+        this.gamesPlayed = 0;
+        this.gamesWon = 0;
+        this.gamesLost = 0;
+        this.gamesDrawn = 0;
+        this.lastUpdated = lastUpdated;
+        addGame(result);
+    }
+
     public void addGame(GameResult result) {
         this.gamesPlayed++;
         this.lastUpdated = LocalDate.now();
@@ -36,7 +46,7 @@ public class Score {
                 break;
         }
     }
-    
+
     @Override
     public String toString() {
         return username + "|" + gamesPlayed + "|" + gamesWon + "|" + gamesLost + "|" + gamesDrawn + "|" + lastUpdated;

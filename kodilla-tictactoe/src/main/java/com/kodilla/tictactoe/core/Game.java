@@ -1,13 +1,13 @@
 package com.kodilla.tictactoe.core;
 
 import com.kodilla.tictactoe.logic.*;
-import com.kodilla.tictactoe.model.Board;
-import com.kodilla.tictactoe.model.DifficultyLevel;
-import com.kodilla.tictactoe.model.Figure;
-import com.kodilla.tictactoe.model.Player;
+import com.kodilla.tictactoe.model.*;
 import com.kodilla.tictactoe.ui.ComputerPlayerFactory;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.UserInterface;
+import com.kodilla.tictactoe.util.ScoreFileHandler;
+
+import java.util.List;
 
 public final class Game {
     private Board board;
@@ -235,12 +235,22 @@ public final class Game {
         if (gameLogic.isWin(row, col, currentPlayer.getFigure())) {
             ui.displayBoard(board);
             ui.showMessage("Congratulations! " + currentPlayer.getName() + " has won!");
+            List<Score> scores = ScoreFileHandler.loadScores();
+            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.WIN);
+            switchPlayer();
+            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.LOST);
+            ScoreFileHandler.saveScores(scores);
             return true;
         }
 
         if (gameLogic.isDraw()) {
             ui.displayBoard(board);
             ui.showMessage("Draw! Better luck next time!");
+            List<Score> scores = ScoreFileHandler.loadScores();
+            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.DRAW);
+            switchPlayer();
+            ScoreService.addOrUpdateScore(scores, currentPlayer.getName(), GameResult.DRAW);
+            ScoreFileHandler.saveScores(scores);
             return true;
         }
 

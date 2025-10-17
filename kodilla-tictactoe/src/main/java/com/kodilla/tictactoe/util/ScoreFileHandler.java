@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ScoreFileHandler {
-    private static final Path FILE_PATH = Paths.get("kodilla-tictactoe/src/main/resources/static/textFiles/scores.txt");
+
+    private static final Path FILE_PATH = getScoreFilePath();
 
     public static List<Score> loadScores() {
         if (!Files.exists(FILE_PATH)) return new ArrayList<>();
@@ -34,6 +35,15 @@ public class ScoreFileHandler {
             }
         } catch (IOException e) {
             System.out.println("Write error: " + e.getMessage());
+        }
+    }
+
+    private static Path getScoreFilePath() {
+        Path currentDir = Paths.get(System.getProperty("user.dir"));
+        if (currentDir.endsWith("kodilla-tictactoe")) {
+            return currentDir.resolve("scores.txt");
+        } else {
+            return currentDir.resolve("kodilla-tictactoe/scores.txt");
         }
     }
 }

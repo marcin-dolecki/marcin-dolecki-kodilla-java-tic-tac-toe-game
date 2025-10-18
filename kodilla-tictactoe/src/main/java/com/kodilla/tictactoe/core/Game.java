@@ -12,6 +12,7 @@ import java.util.List;
 public final class Game {
     private Board board;
     private ComputerPlayerInterface computerPlayerInterface;
+    private DifficultyLevel difficultyLevel;
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private final UserInterface ui;
@@ -109,7 +110,6 @@ public final class Game {
     }
 
     private void selectDifficultyLevel() {
-        DifficultyLevel difficultyLevel;
 
         while (true) {
             ui.showMessage("Select difficulty level:");
@@ -122,19 +122,20 @@ public final class Game {
             switch (input) {
                 case "1":
                     difficultyLevel = DifficultyLevel.EASY;
-                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, gameLogic);
-                    return;
+                    break;
                 case "2":
                     difficultyLevel = DifficultyLevel.MEDIUM;
-                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, gameLogic);
-                    return;
+                    break;
                 case "3":
                     difficultyLevel = DifficultyLevel.HARD;
-                    computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, gameLogic);
-                    return;
+                    break;
                 default:
                     ui.showMessage("Invalid choice. Try again.");
+                    continue;
             }
+
+            computerPlayerInterface = ComputerPlayerFactory.create(difficultyLevel, gameLogic);
+            return;
         }
     }
 

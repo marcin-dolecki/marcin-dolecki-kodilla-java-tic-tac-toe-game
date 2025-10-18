@@ -151,6 +151,48 @@ public final class Game {
         currentPlayer = player1;
     }
 
+//    private final Board board;
+//    private final ComputerPlayerInterface computerPlayerInterface;
+//    private final DifficultyLevel difficultyLevel;
+//    private final GameLogic gameLogic;
+//    private final Player player1;
+//    private final Player player2;
+//    private final Player currentPlayer;
+//    private final boolean againstComputer;
+//    private final int boardSideSize;
+//    private final int winMoveLength;
+
+
+    private GameState createGameState() {
+        return new GameState(
+                board,
+                computerPlayerInterface,
+                difficultyLevel,
+                gameLogic,
+                player1,
+                player2,
+                currentPlayer,
+                againstComputer,
+                boardSideSize,
+                winMoveLength
+        );
+    }
+
+    private void loadFromState(GameState state) {
+        this.board = state.getBoard();
+        this.computerPlayerInterface = state.getComputerPlayerInterface();
+        this.difficultyLevel = state.getDifficultyLevel();
+        this.gameLogic = state.getGameLogic();
+        this.player1 = state.getPlayer1();
+        this.player2 = state.getPlayer2();
+        this.currentPlayer = state.getCurrentPlayer();
+        this.againstComputer = state.isAgainstComputer();
+        this.boardSideSize = state.getBoardSideSize();
+        this.winMoveLength = state.getWinMoveLength();
+
+        ui.showMessage("Game loaded. Back to the game!");
+    }
+
     private void playGame() throws ExitRequestedException {
         ui.showMessage("=== TIC TAC TOE ===");
 

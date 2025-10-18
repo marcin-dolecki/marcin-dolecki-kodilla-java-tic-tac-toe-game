@@ -1,33 +1,65 @@
 package com.kodilla.tictactoe.core;
 
+import com.kodilla.tictactoe.logic.GameLogic;
 import com.kodilla.tictactoe.model.Board;
 import com.kodilla.tictactoe.model.DifficultyLevel;
-import com.kodilla.tictactoe.model.Figure;
+import com.kodilla.tictactoe.model.Player;
+import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 
 import java.io.Serializable;
 
 public class GameState implements Serializable {
     private final Board board;
-    private final Figure currentPlayer;
+    private final ComputerPlayerInterface computerPlayerInterface;
+    private final DifficultyLevel difficultyLevel;
+    private final GameLogic gameLogic;
+    private final Player player1;
+    private final Player player2;
+    private final Player currentPlayer;
     private final boolean againstComputer;
     private final int boardSideSize;
     private final int winMoveLength;
-    private final DifficultyLevel difficultyLevel;
 
-    public GameState(Board board, Figure currentPlayer, boolean againstComputer, int boardSideSize, int winMoveLength, DifficultyLevel difficultyLevel) {
+    public GameState(Board board, ComputerPlayerInterface computerPlayerInterface, DifficultyLevel difficultyLevel,
+                     GameLogic gameLogic, Player player1, Player player2, Player currentPlayer, boolean againstComputer,
+                     int boardSideSize, int winMoveLength) {
         this.board = board;
+        this.computerPlayerInterface = computerPlayerInterface;
+        this.difficultyLevel = difficultyLevel;
+        this.gameLogic = gameLogic;
+        this.player1 = player1;
+        this.player2 = player2;
         this.currentPlayer = currentPlayer;
         this.againstComputer = againstComputer;
         this.boardSideSize = boardSideSize;
         this.winMoveLength = winMoveLength;
-        this.difficultyLevel = difficultyLevel;
     }
 
     public Board getBoard() {
         return board;
     }
 
-    public Figure getCurrentPlayer() {
+    public ComputerPlayerInterface getComputerPlayerInterface() {
+        return computerPlayerInterface;
+    }
+
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public GameLogic getGameLogic() {
+        return gameLogic;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
@@ -41,9 +73,5 @@ public class GameState implements Serializable {
 
     public int getWinMoveLength() {
         return winMoveLength;
-    }
-
-    public DifficultyLevel getDifficultyLevel() {
-        return difficultyLevel;
     }
 }

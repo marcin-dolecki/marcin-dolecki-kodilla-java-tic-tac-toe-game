@@ -149,7 +149,8 @@ public class JavaFxDisplay implements UserInterface {
                 "=== TIC TAC TOE ===",
                 "Main menu",
                 "Enter your choice: ",
-                "3 - Show scores"
+                "3 - Show scores",
+                "Game loaded. Back to the game!"
         );
 
         if (BLOCKED_MESSAGES.contains(message)) {

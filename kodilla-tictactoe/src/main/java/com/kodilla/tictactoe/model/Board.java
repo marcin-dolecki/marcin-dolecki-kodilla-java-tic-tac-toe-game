@@ -4,6 +4,7 @@ import com.kodilla.tictactoe.logic.ErrorReason;
 import com.kodilla.tictactoe.logic.GameValidationException;
 import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
  * Represents a tic-tac-toe board of any size.
  * The internal representation uses 0-based indices (i.e. [0..size-1]).
  */
-public final class Board {
+public final class Board implements Serializable {
     private final Figure[][] board;
     private final int boardSideSize;
     private int moveCount;

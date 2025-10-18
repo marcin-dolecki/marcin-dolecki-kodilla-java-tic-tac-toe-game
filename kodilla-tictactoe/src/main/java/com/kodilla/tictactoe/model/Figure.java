@@ -1,6 +1,8 @@
 package com.kodilla.tictactoe.model;
 
-public enum Figure {
+import java.io.Serializable;
+
+public enum Figure implements Serializable {
     EMPTY,
     X,
     O;

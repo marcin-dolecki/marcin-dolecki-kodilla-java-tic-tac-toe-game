@@ -5,6 +5,7 @@ import com.kodilla.tictactoe.logic.GameValidationException;
 
 import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Objects;
  * A player is associated with a {@link Figure} (X or O)
  * and may be a human or a computer-controlled player.
  */
-public final class Player {
+public final class Player implements Serializable {
     private final Figure figure;
     private final String name;
     private final boolean isComputerPlayer;

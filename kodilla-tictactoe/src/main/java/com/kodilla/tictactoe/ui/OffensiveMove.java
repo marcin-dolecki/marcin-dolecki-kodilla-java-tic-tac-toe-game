@@ -6,12 +6,13 @@ import com.kodilla.tictactoe.logic.GameValidationException;
 import com.kodilla.tictactoe.model.Board;
 import com.kodilla.tictactoe.model.Figure;
 
+import java.io.Serializable;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
-public class OffensiveMove implements ComputerPlayerInterface {
+public class OffensiveMove implements ComputerPlayerInterface, Serializable {
 
     private final Figure computerFigure;
     private final Figure playerFigure;

@@ -5,11 +5,12 @@ import com.kodilla.tictactoe.logic.GameValidationException;
 import com.kodilla.tictactoe.model.Figure;
 import com.kodilla.tictactoe.model.Board;
 
+import java.io.Serializable;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
-public class RandomMove implements ComputerPlayerInterface {
+public class RandomMove implements ComputerPlayerInterface, Serializable {
 
     @Override
     public int[] getMove(Board board, int boardSideSize) {

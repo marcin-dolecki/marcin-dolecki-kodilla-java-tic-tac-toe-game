@@ -3,9 +3,12 @@ package com.kodilla.tictactoe.logic;
 import com.kodilla.tictactoe.model.Figure;
 import com.kodilla.tictactoe.model.Board;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 import static com.kodilla.tictactoe.util.ValidationUtils.requireNonNull;
 
-public final class GameLogic {
+public final class GameLogic implements Serializable {
     private final Board board;
     private final int boardSideSize;
     private final int winMoveLength;

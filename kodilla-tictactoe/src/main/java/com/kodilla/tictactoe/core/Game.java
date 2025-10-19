@@ -16,11 +16,13 @@ public final class Game {
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private final UserInterface ui;
+    private GameState gameState;
     private boolean againstComputer = false;
     private int boardSideSize, winMoveLength;
     private boolean directRestart;
     private static final String QUIT = "q";
     private static final String RESTART = "r";
+    private static final String SAVE = "s";
 
     public Game(UserInterface ui) {
         this.ui = ui;
@@ -151,16 +153,6 @@ public final class Game {
         currentPlayer = player1;
     }
 
-//    private final Board board;
-//    private final ComputerPlayerInterface computerPlayerInterface;
-//    private final DifficultyLevel difficultyLevel;
-//    private final GameLogic gameLogic;
-//    private final Player player1;
-//    private final Player player2;
-//    private final Player currentPlayer;
-//    private final boolean againstComputer;
-//    private final int boardSideSize;
-//    private final int winMoveLength;
 
 
     private GameState createGameState() {
@@ -225,7 +217,7 @@ public final class Game {
     private InputAction getHumanAction() {
         while (true) {
             ui.displayBoard(board);
-            ui.showMessage("(Type 'q' to quit, 'r' to restart)");
+            ui.showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
 
             String input = ui.getTextInput(currentPlayer.getName() + " - provide row and column number: ");
 
@@ -237,6 +229,12 @@ public final class Game {
 
             if (input.equalsIgnoreCase(RESTART)) {
                 return InputAction.restart();
+            }
+
+            if (input.equalsIgnoreCase(SAVE)) {
+                gameState = createGameState();
+                SaveGameManager.saveGame(gameState);
+                continue;
             }
 
 //            InputValidationReturn validation = InputValidator.validateInput(input);

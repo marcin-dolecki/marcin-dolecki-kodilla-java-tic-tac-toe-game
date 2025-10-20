@@ -266,6 +266,30 @@ public class TicTacToeController {
         scoreStage.showAndWait();
     }
 
+    public void foundSavedGame(JavaFxDisplay ui) {
+        VBox menu = new VBox(20);
+        menu.setAlignment(Pos.CENTER);
+        menu.setBackground(background);
+
+        root.setTop(null);
+
+        Label savedGame = new Label("Game save found. Would you like to load it?");
+        savedGame.setStyle("-fx-font-size: 20px; -fx-text-fill: black; -fx-font-weight: bold;");
+
+        Button yes = createMenuButton("Yes");
+        yes.setOnAction(event -> {
+            ui.provideInput("y");
+        });
+
+        Button no = createMenuButton("No");
+        no.setOnAction(event -> {
+            ui.provideInput("n");
+        });
+
+        menu.getChildren().addAll(savedGame, yes, no);
+        root.setCenter(menu);
+    }
+
     private String formatScore(Score score) {
         return String.format("%-10s | Played: %-2d | Wins: %-2d | Losses: %-2d | Draws: %-2d | Date: %s",
                 score.getUsername(), score.getGamesPlayed(), score.getGamesWon(), score.getGamesLost(), score.getGamesDrawn(), score.getLastUpdated());
@@ -364,7 +388,10 @@ public class TicTacToeController {
             Platform.exit();
         });
 
-        controls.getChildren().addAll(restart, quit);
+        Button save = createMenuButton("Save");
+        save.setOnAction(event -> ui.provideInput("s"));
+
+        controls.getChildren().addAll(restart, quit, save);
         root.setTop(controls);
     }
 

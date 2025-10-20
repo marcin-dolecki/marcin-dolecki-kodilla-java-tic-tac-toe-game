@@ -76,6 +76,11 @@ public class JavaFxDisplay implements UserInterface {
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
+        } else if (message.contains("Game save found. Would you like to load it?")) {
+            Platform.runLater(() -> controller.foundSavedGame(this));
+            Platform.runLater(() -> controller.setMessageLabel(""));
+            Platform.runLater(() -> controller.setPromptLabel(""));
+            Platform.runLater(() -> controller.setHintLabel(""));
         } else {
             Platform.runLater(() -> controller.setMessageLabel(message));
             Platform.runLater(() -> controller.setPromptLabel(""));
@@ -150,7 +155,8 @@ public class JavaFxDisplay implements UserInterface {
                 "Main menu",
                 "Enter your choice: ",
                 "3 - Show scores",
-                "Game loaded. Back to the game!"
+                "Game loaded. Back to the game!",
+                "Enter 'y' (yes) or 'n' (no): "
         );
 
         if (BLOCKED_MESSAGES.contains(message)) {

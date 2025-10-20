@@ -9,7 +9,6 @@ public class SaveGameManager {
     public static void saveGame(GameState state) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(GAME_FILE))) {
             oos.writeObject(state);
-            System.out.println("Game state saved");
         } catch (Exception e) {
             System.out.println("Error saving game state: " + e.getMessage());
         }

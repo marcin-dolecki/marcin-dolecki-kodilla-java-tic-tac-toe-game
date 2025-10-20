@@ -8,6 +8,7 @@ import com.kodilla.tictactoe.ui.UserInterface;
 import com.kodilla.tictactoe.util.ScoreFileHandler;
 
 import java.util.List;
+import java.util.Optional;
 
 public final class Game {
     private Board board;
@@ -23,12 +24,23 @@ public final class Game {
     private static final String QUIT = "q";
     private static final String RESTART = "r";
     private static final String SAVE = "s";
+    private static final String YES = "y";
 
     public Game(UserInterface ui) {
         this.ui = ui;
     }
 
     public void start() {
+        Optional<GameState> loadedState = SaveGameManager.loadGame();
+        if (loadedState.isPresent()) {
+            ui.showMessage("Game save found. Would you like to load it?");
+            String answer = ui.getTextInput("Enter 'y' (yes) or 'n' (no): ");
+            if (answer.equalsIgnoreCase(YES)) {
+                loadFromState(loadedState.get());
+                playGame();
+            }
+        }
+
         while (true) {
             directRestart = false;
             showMainMenu();
@@ -153,8 +165,6 @@ public final class Game {
         currentPlayer = player1;
     }
 
-
-
     private GameState createGameState() {
         return new GameState(
                 board,
@@ -234,6 +244,7 @@ public final class Game {
             if (input.equalsIgnoreCase(SAVE)) {
                 gameState = createGameState();
                 SaveGameManager.saveGame(gameState);
+                ui.showMessage("Game saved");
                 continue;
             }
 
@@ -254,7 +265,6 @@ public final class Game {
 
     private InputAction getComputerAction() {
         ui.displayBoard(board);
-        ui.showMessage("(Type 'q' to quit, 'r' to restart)");
         
         int[] move = computerPlayerInterface.getMove(board, boardSideSize);
         ui.showMessage("The computer selects " + move[0] + " " + move[1]);

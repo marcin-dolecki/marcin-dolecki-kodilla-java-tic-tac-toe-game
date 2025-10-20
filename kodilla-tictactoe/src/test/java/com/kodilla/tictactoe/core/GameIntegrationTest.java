@@ -29,7 +29,7 @@ class GameIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        game = new Game(ui, computerPlayerInterface);
+        game = new Game(ui);
     }
 
     private void injectDeps() {

@@ -137,7 +137,7 @@ public class JavaFxDisplay implements UserInterface {
 
     private boolean shouldDisplay(String message) {
         final Set<String> BLOCKED_MESSAGES = Set.of(
-                "(Type 'q' to quit, 'r' to restart)",
+                "(Type 'q' to quit, 'r' to restart, 's' to save)",
                 "1 - Player vs player",
                 "2 - Player vs computer",
                 "1 - 3x3 square - classic",

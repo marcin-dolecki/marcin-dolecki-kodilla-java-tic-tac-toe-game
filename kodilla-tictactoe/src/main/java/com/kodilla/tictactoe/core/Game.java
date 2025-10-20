@@ -217,6 +217,7 @@ public final class Game {
                         continue;
                     }
                     if (isGameOver(row, col)) {
+                        SaveGameManager.deleteSave();
                         return;
                     }
                     switchPlayer();

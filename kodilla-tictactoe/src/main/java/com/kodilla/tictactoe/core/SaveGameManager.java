@@ -24,6 +24,20 @@ public class SaveGameManager {
         }
     }
 
+    public static void deleteSave() {
+        try {
+            if (GAME_FILE.exists()) {
+                if (GAME_FILE.delete()) {
+                    // nothing
+                } else {
+                    System.out.println("Failed to delete save file.");
+                }
+            }
+        } catch (SecurityException e) {
+            System.out.println("Error deleting save file: " + e.getMessage());
+        }
+    }
+
     private static File getGameFile() {
         File currentDir = new File(System.getProperty("user.dir"));
         if (currentDir.getName().equals("kodilla-tictactoe")) {

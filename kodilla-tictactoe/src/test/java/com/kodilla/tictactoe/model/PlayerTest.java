@@ -25,7 +25,7 @@ class PlayerTest {
 
     @Test
     void shouldReturnIsComputerPlayerCorrectly() {
-        Player player1 = new Player(Figure.O, true);
+        Player player1 = new Player(Figure.O, "",true);
         Player player2 = new Player(Figure.O);
 
         assertTrue(player1.isComputerPlayer());
@@ -43,7 +43,7 @@ class PlayerTest {
     @Test
     void playersWithSameFiguresWhenOneMarkedIsNotComputerPlayerAreEqual() {
         Player player1 = new Player(Figure.O);
-        Player player2 = new Player(Figure.O, false);
+        Player player2 = new Player(Figure.O, "",false);
 
         assertEquals(player1, player2);
     }
@@ -51,7 +51,7 @@ class PlayerTest {
     @Test
     void playersWithSameFiguresWhenOneIsComputerPlayerAreNotEqual() {
         Player player1 = new Player(Figure.X);
-        Player player2 = new Player(Figure.X, true);
+        Player player2 = new Player(Figure.X, "", true);
 
         assertNotEquals(player1, player2);
     }

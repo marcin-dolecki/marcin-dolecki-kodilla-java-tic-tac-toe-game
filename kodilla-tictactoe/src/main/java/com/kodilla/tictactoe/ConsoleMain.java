@@ -16,6 +16,8 @@ public class ConsoleMain {
             game.start();
         } catch (ExitRequestedException ignored) {
             // user requested exit - nothing to do
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             ui.shutdown();
         }

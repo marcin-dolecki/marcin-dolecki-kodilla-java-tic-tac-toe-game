@@ -32,6 +32,8 @@ public class FxApp extends Application {
                 game.start();
             } catch (ExitRequestedException ignored) {
                 // do nothing
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }).start();
     }

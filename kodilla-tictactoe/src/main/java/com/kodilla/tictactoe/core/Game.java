@@ -30,7 +30,7 @@ public final class Game {
         this.ui = ui;
     }
 
-    public void start() {
+    public void start() throws InterruptedException {
         Optional<GameState> loadedState = SaveGameManager.loadGame();
         if (loadedState.isPresent()) {
             ui.showMessage("Game save found. Would you like to load it?");
@@ -195,7 +195,7 @@ public final class Game {
         ui.showMessage("Game loaded. Back to the game!");
     }
 
-    private void playGame() throws ExitRequestedException {
+    private void playGame() throws ExitRequestedException, InterruptedException {
         ui.showMessage("=== TIC TAC TOE ===");
 
         while (true) {
@@ -225,7 +225,7 @@ public final class Game {
         }
     }
 
-    private InputAction getHumanAction() {
+    private InputAction getHumanAction() throws InterruptedException {
         while (true) {
             ui.displayBoard(board);
             ui.showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
@@ -246,6 +246,7 @@ public final class Game {
                 gameState = createGameState();
                 SaveGameManager.saveGame(gameState);
                 ui.showMessage("Game saved");
+                Thread.sleep(2000);
                 continue;
             }
 

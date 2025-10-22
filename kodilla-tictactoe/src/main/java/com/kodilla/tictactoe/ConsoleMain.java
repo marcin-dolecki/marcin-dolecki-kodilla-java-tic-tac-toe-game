@@ -1,6 +1,7 @@
 package com.kodilla.tictactoe;
 
 import com.kodilla.tictactoe.core.Game;
+import com.kodilla.tictactoe.core.SaveGameManager;
 import com.kodilla.tictactoe.logic.ExitRequestedException;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.ConsoleDisplay;
@@ -10,7 +11,8 @@ import com.kodilla.tictactoe.ui.UserInterface;
 public class ConsoleMain {
     public static void main(String[] args) {
         UserInterface ui = new ConsoleDisplay();
-        Game game = new Game(ui);
+        SaveGameManager saveGameManager = new SaveGameManager();
+        Game game = new Game(ui, saveGameManager);
 
         try {
             game.start();

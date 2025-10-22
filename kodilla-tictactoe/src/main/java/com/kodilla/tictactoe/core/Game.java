@@ -27,9 +27,9 @@ public final class Game {
     private static final String SAVE = "s";
     private static final String YES = "y";
 
-    public Game(UserInterface ui) {
+    public Game(UserInterface ui, SaveGameManager saveGameManager) {
         this.ui = ui;
-        this.saveGameManager = new SaveGameManager();
+        this.saveGameManager = saveGameManager;
     }
 
     public void start() throws InterruptedException {

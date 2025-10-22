@@ -9,6 +9,8 @@ import com.kodilla.tictactoe.ui.UserInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Fail.fail;
@@ -27,13 +30,14 @@ import static org.mockito.Mockito.*;
 class GameIntegrationTest {
     @Mock private UserInterface ui;
     @Mock private ComputerPlayerInterface computerPlayerInterface;
+    @Mock private SaveGameManager saveGameManager;
     @Spy private Board realBoard = new Board(3);
     @Spy private GameLogic realLogic = new GameLogic(realBoard, 3);
     private Game game;
 
     @BeforeEach
     void setUp() {
-        game = new Game(ui);
+        game = new Game(ui, saveGameManager);
     }
 
     private void injectDeps() {
@@ -51,8 +55,11 @@ class GameIntegrationTest {
         }
     }
 
-    @Test
-    void shouldPlayPvPAndWin() throws ExitRequestedException {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    void shouldPlayPvPAndWin(boolean hasSave) throws ExitRequestedException {
+
+        when(saveGameManager.loadGame()).thenReturn(hasSave ? Optional.of(mock(GameState.class)) : Optional.empty());
 
         doAnswer(invocation -> {
             String msg = invocation.getArgument(0, String.class);
@@ -61,8 +68,9 @@ class GameIntegrationTest {
         }).when(ui).showMessage(anyString());
 
         List<String> answers = new ArrayList<>();
-
-        answers.add("n");
+        if (hasSave) {
+            answers.add("n");
+        }
         answers.add("1");
         answers.add("1");
         answers.add("Marcin");
@@ -97,8 +105,10 @@ class GameIntegrationTest {
         InOrder o = inOrder(ui);
 
         // all checks at least in one test to have better overview
-        o.verify(ui).showMessage("Game save found. Would you like to load it?");
-        o.verify(ui).getTextInput("Enter 'y' (yes) or 'n' (no): ");
+        if (hasSave) {
+            o.verify(ui).showMessage("Game save found. Would you like to load it?");
+            o.verify(ui).getTextInput("Enter 'y' (yes) or 'n' (no): ");
+        }
         o.verify(ui).showMessage("=== TIC TAC TOE ===");
         o.verify(ui).showMessage("Select the game mode:");
         o.verify(ui).showMessage("1 - Player vs player");

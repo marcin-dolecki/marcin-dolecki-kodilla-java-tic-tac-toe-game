@@ -19,8 +19,9 @@ public class FxApp extends Application {
 
         TicTacToeController controller = new TicTacToeController(root, grid);
         JavaFxDisplay ui = new JavaFxDisplay(controller);
+        SaveGameManager saveGameManager = new SaveGameManager();
 
-        Game game = new Game(ui);
+        Game game = new Game(ui, saveGameManager);
 
         Scene scene = new Scene(root, 800, 800);
         stage.setScene(scene);

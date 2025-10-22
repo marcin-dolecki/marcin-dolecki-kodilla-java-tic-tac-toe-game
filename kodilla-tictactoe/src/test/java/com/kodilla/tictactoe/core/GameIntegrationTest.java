@@ -45,8 +45,7 @@ class GameIntegrationTest {
             // board size and win length
             var sf = Game.class.getDeclaredField("boardSideSize"); sf.setAccessible(true); sf.setInt(game, 3);
             var wf = Game.class.getDeclaredField("winMoveLength"); wf.setAccessible(true); wf.setInt(game, 3);
-            // players
-            var init = Game.class.getDeclaredMethod("initializePlayers"); init.setAccessible(true); init.invoke(game);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -54,7 +53,7 @@ class GameIntegrationTest {
 
     @Test
     void shouldPlayPvPAndWin() throws ExitRequestedException {
-//        when(ui.getTextInput(anyString()))
+
         doAnswer(invocation -> {
             String msg = invocation.getArgument(0, String.class);
             System.out.println("[GAME MESSAGE] " + msg);

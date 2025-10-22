@@ -67,6 +67,11 @@ class GameIntegrationTest {
         answers.add("1");
         answers.add("Marcin");
         answers.add("Radek");
+        answers.add("1 1");
+        answers.add("2 1");
+        answers.add("1 2");
+        answers.add("2 2");
+        answers.add("1 3");
         answers.add("q");
 
         AtomicInteger counter = new AtomicInteger(0);
@@ -78,24 +83,6 @@ class GameIntegrationTest {
             System.out.println("[MOCK INPUT REQUEST] " + prompt + " -> " + answer);
             return answer;
         });
-
-//        when(ui.getTextInput(anyString())).thenAnswer(invocation -> {
-//                    String prompt = invocation.getArgument(0, String.class);
-//                    System.out.println("[MOCK INPUT REQUEST] " + prompt);
-//                    return null;
-//                })
-//                .thenReturn("n")
-//                // menu
-//                .thenReturn("1").thenReturn("1")
-//                .thenReturn("Marcin").thenReturn("Radek")
-//                // moves
-////                .thenReturn("1 1")
-////                .thenReturn("2 1")
-////                .thenReturn("1 2")
-////                .thenReturn("2 2")
-////                .thenReturn("1 3")
-//                // quit after win
-//                .thenReturn("q");
 
         injectDeps();
 
@@ -128,23 +115,23 @@ class GameIntegrationTest {
         o.verify(ui).displayBoard(any(Board.class));
         o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
         o.verify(ui).getTextInput("Marcin - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
-//        o.verify(ui).getTextInput("Player O - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
-//        o.verify(ui).getTextInput("Player X - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
-//        o.verify(ui).getTextInput("Player O - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
-//        o.verify(ui).getTextInput("Player X - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("Congratulations! Player X has won!");
-//        o.verify(ui).showMessage("(Do you want to play again? Type 'r' to play, 'q' to quit)");
-//        o.verify(ui).getTextInput("Enter your choice: ");
-//        o.verify(ui).showMessage("Game finished. See you soon!");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
+        o.verify(ui).getTextInput("Radek - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
+        o.verify(ui).getTextInput("Marcin - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
+        o.verify(ui).getTextInput("Radek - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
+        o.verify(ui).getTextInput("Marcin - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Congratulations! Marcin has won!");
+        o.verify(ui).showMessage("(Do you want to play again? Type 'r' to play, 'q' to quit)");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("Game finished. See you soon!");
         verifyNoMoreInteractions(ui);
     }
 
@@ -369,19 +356,19 @@ class GameIntegrationTest {
 //        o.verify(ui).getTextInput("Enter your choice: ");
 //        o.verify(ui).showMessage("=== TIC TAC TOE ===");
 //        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
 //        o.verify(ui).getTextInput("Player X - provide row and column number: ");
 //        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
 //        o.verify(ui).showMessage("The computer selects 2 1");
 //        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
 //        o.verify(ui).getTextInput("Player X - provide row and column number: ");
 //        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
 //        o.verify(ui).showMessage("The computer selects 2 2");
 //        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart)");
+//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
 //        o.verify(ui).getTextInput("Player X - provide row and column number: ");
 //        o.verify(ui).displayBoard(any(Board.class));
 //        o.verify(ui).showMessage("Congratulations! Player X has won!");

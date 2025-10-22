@@ -6,7 +6,7 @@ import java.util.Optional;
 public class SaveGameManager {
     private static final File GAME_FILE = getGameFile();
 
-    public static void saveGame(GameState state) {
+    public void saveGame(GameState state) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(GAME_FILE))) {
             oos.writeObject(state);
         } catch (Exception e) {
@@ -14,7 +14,7 @@ public class SaveGameManager {
         }
     }
 
-    public static Optional<GameState> loadGame() {
+    public Optional<GameState> loadGame() {
         if (!GAME_FILE.exists()) return Optional.empty();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(GAME_FILE))) {
             return Optional.of((GameState) ois.readObject());
@@ -24,7 +24,7 @@ public class SaveGameManager {
         }
     }
 
-    public static void deleteSave() {
+    public void deleteSave() {
         try {
             if (GAME_FILE.exists()) {
                 if (GAME_FILE.delete()) {

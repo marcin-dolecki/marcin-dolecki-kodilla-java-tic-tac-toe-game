@@ -17,6 +17,7 @@ public final class Game {
     private GameLogic gameLogic;
     private Player player1, player2, currentPlayer;
     private final UserInterface ui;
+    private final SaveGameManager saveGameManager;
     private GameState gameState;
     private boolean againstComputer = false;
     private int boardSideSize, winMoveLength;
@@ -28,10 +29,11 @@ public final class Game {
 
     public Game(UserInterface ui) {
         this.ui = ui;
+        this.saveGameManager = new SaveGameManager();
     }
 
     public void start() throws InterruptedException {
-        Optional<GameState> loadedState = SaveGameManager.loadGame();
+        Optional<GameState> loadedState = saveGameManager.loadGame();
         if (loadedState.isPresent()) {
             ui.showMessage("Game save found. Would you like to load it?");
             String answer = ui.getTextInput("Enter 'y' (yes) or 'n' (no): ");
@@ -217,7 +219,7 @@ public final class Game {
                         continue;
                     }
                     if (isGameOver(row, col)) {
-                        SaveGameManager.deleteSave();
+                        saveGameManager.deleteSave();
                         return;
                     }
                     switchPlayer();
@@ -244,7 +246,7 @@ public final class Game {
 
             if (input.equalsIgnoreCase(SAVE)) {
                 gameState = createGameState();
-                SaveGameManager.saveGame(gameState);
+                saveGameManager.saveGame(gameState);
                 ui.showMessage("Game saved");
                 Thread.sleep(2000);
                 continue;

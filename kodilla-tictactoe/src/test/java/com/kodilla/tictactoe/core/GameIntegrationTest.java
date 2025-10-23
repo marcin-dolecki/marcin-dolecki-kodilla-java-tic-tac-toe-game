@@ -36,7 +36,7 @@ class GameIntegrationTest {
     private AtomicInteger counter;
     private Game game;
     private InOrder o;
-    
+
     @BeforeEach
     void setUp() {
         game = new Game(ui, saveGameManager);
@@ -152,51 +152,43 @@ class GameIntegrationTest {
         verifyNoMoreInteractions(ui);
     }
 
-//    @Test
-//    void shouldPlayPvPWinRestartAndQuit() throws ExitRequestedException {
-//
-//
-//
-//
-//        when(ui.getTextInput(anyString()))
-//                // menu
-//                .thenReturn("1").thenReturn("1")
-//                // moves
-//                .thenReturn("1 1")
-//                .thenReturn("2 1")
-//                .thenReturn("1 2")
-//                .thenReturn("2 2")
-//                .thenReturn("1 3")
-//                // restart after win
-//                .thenReturn("r")
-//                // menu
-//                .thenReturn("1").thenReturn("1")
-//                // moves
-//                .thenReturn("1 1")
-//                .thenReturn("2 1")
-//                // quit
-//                .thenReturn("q");
-//
-//        injectDeps();
-//
-//        try {
-//            game.start();
-//            fail("Expected ExitRequestedException to be thrown");
-//        } catch (ExitRequestedException e) {
-//            // expected behaviour - user clicked q
-//            assertEquals("Exit requested by the user", e.getMessage());
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        InOrder o = inOrder(ui);
-//
-//        // a few checks to verify if won, restart and quit work properly
-//        o.verify(ui).showMessage("Select the game mode:");
-//        o.verify(ui).showMessage("Congratulations! Player X has won!");
-//        o.verify(ui).showMessage("Select the game mode:");
-//        o.verify(ui).showMessage("Game stopped. See you soon!");
-//    }
+    @Test
+    void shouldPlayPvPWinRestartAndQuit() throws ExitRequestedException {
+        when(saveGameManager.loadGame()).thenReturn(Optional.empty());
+
+        List<String> answers = new ArrayList<>();
+        // menu
+        answers.add("1");
+        answers.add("1");
+        answers.add("");
+        answers.add("");
+        // moves
+        answers.add("1 1");
+        answers.add("2 1");
+        answers.add("1 2");
+        answers.add("2 2");
+        answers.add("1 3");
+        // restart + menu
+        answers.add("r");
+        answers.add("1");
+        answers.add("1");
+        answers.add("");
+        answers.add("");
+        // moves
+        answers.add("1 1");
+        answers.add("2 1");
+        // quit
+
+        whenTextInputThenAnswer(answers);
+
+        runGame();
+
+        // a few checks to verify if won, restart and quit work properly
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("Congratulations! Player X has won!");
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("Game stopped. See you soon!");
+    }
 //
 //    @Test
 //    void shouldPlayPvPAndDraw() throws ExitRequestedException{

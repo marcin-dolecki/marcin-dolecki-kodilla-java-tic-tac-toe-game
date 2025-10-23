@@ -189,30 +189,26 @@ class GameIntegrationTest {
         o.verify(ui).showMessage("Select the game mode:");
         o.verify(ui).showMessage("Game stopped. See you soon!");
     }
-//
-//    @Test
-//    void shouldPlayPvPAndDraw() throws ExitRequestedException{
-//        when(ui.getTextInput(anyString())).thenReturn(
-//                "1","1", // menu
-//                "1 1", "1 2", "2 1", "2 2", "3 2", "3 1", "1 3", "2 3", "3 3", // moves
-//                "q" // quit
-//        );
-//
-//        injectDeps();
-//
-//        try {
-//            game.start();
-//        } catch (ExitRequestedException e) {
-//            // unexpected behavior as game should finish without throwing exception
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        InOrder o = inOrder(ui);
-//
-//        // just one message about draw is enough
-//        o.verify(ui).showMessage("Draw! Better luck next time!");
-//    }
+
+    @Test
+    void shouldPlayPvPAndDraw() throws ExitRequestedException{
+        when(saveGameManager.loadGame()).thenReturn(Optional.empty());
+
+        List<String> answers = new ArrayList<>();
+
+        answers.addAll(List.of(
+                "1", "1", "", "", // menu
+                "1 1", "1 2", "2 1", "2 2", "3 2", "3 1", "1 3", "2 3", "3 3", // moves
+                "q" // quit
+        ));
+
+        whenTextInputThenAnswer(answers);
+
+        runGame();
+
+        // just one message about draw is enough
+        o.verify(ui).showMessage("Draw! Better luck next time!");
+    }
 //
 //    @Test
 //    void shouldPlayPvPDrawRestartAndQuit() throws ExitRequestedException {

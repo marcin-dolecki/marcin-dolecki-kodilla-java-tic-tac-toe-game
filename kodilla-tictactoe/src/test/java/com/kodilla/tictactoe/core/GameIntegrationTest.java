@@ -33,11 +33,21 @@ class GameIntegrationTest {
     @Mock private SaveGameManager saveGameManager;
     @Spy private Board realBoard = new Board(3);
     @Spy private GameLogic realLogic = new GameLogic(realBoard, 3);
+    private AtomicInteger counter;
     private Game game;
-
+    private InOrder o;
+    
     @BeforeEach
     void setUp() {
         game = new Game(ui, saveGameManager);
+        counter = new AtomicInteger(0);
+        o = inOrder(ui);
+
+        doAnswer(invocation -> {
+            String msg = invocation.getArgument(0, String.class);
+            System.out.println("[GAME MESSAGE] " + msg);
+            return null;
+        }).when(ui).showMessage(anyString());
     }
 
     private void injectDeps() {
@@ -55,17 +65,32 @@ class GameIntegrationTest {
         }
     }
 
+    private void whenTextInputThenAnswer(List<String> answers) {
+        when(ui.getTextInput(anyString())).thenAnswer(invocation -> {
+            String prompt = invocation.getArgument(0, String.class);
+            int i = counter.getAndIncrement();
+            String answer = i < answers.size() ? answers.get(i) : "q";
+            System.out.println("[MOCK INPUT REQUEST] " + prompt + " -> " + answer);
+            return answer;
+        });
+    }
+
+    private void runGame() {
+        injectDeps();
+
+        try {
+            game.start();
+        } catch (ExitRequestedException e) {
+            // unexpected behavior as game should finish without throwing exception
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     void shouldPlayPvPAndWin(boolean hasSave) throws ExitRequestedException {
-
         when(saveGameManager.loadGame()).thenReturn(hasSave ? Optional.of(mock(GameState.class)) : Optional.empty());
-
-        doAnswer(invocation -> {
-            String msg = invocation.getArgument(0, String.class);
-            System.out.println("[GAME MESSAGE] " + msg);
-            return null;
-        }).when(ui).showMessage(anyString());
 
         List<String> answers = new ArrayList<>();
         if (hasSave) {
@@ -82,27 +107,9 @@ class GameIntegrationTest {
         answers.add("1 3");
         answers.add("q");
 
-        AtomicInteger counter = new AtomicInteger(0);
+        whenTextInputThenAnswer(answers);
 
-        when(ui.getTextInput(anyString())).thenAnswer(invocation -> {
-            String prompt = invocation.getArgument(0, String.class);
-            int i = counter.getAndIncrement();
-            String answer = i < answers.size() ? answers.get(i) : "q";
-            System.out.println("[MOCK INPUT REQUEST] " + prompt + " -> " + answer);
-            return answer;
-        });
-
-        injectDeps();
-
-        try {
-            game.start();
-        } catch (ExitRequestedException e) {
-            // unexpected behavior as game should finish without throwing exception
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        InOrder o = inOrder(ui);
+        runGame();
 
         // all checks at least in one test to have better overview
         if (hasSave) {
@@ -147,6 +154,10 @@ class GameIntegrationTest {
 
 //    @Test
 //    void shouldPlayPvPWinRestartAndQuit() throws ExitRequestedException {
+//
+//
+//
+//
 //        when(ui.getTextInput(anyString()))
 //                // menu
 //                .thenReturn("1").thenReturn("1")

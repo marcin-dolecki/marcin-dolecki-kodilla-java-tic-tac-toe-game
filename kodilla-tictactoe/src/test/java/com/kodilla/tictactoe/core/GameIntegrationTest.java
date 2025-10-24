@@ -263,37 +263,39 @@ class GameIntegrationTest {
         o.verify(ui).showMessage("Game stopped. See you soon!");
     }
 
-//    @Test
-//    void shouldPlayPvPFieldTakenOutOfBoundsInvalidPattern() throws GameValidationException {
-//        when(ui.getTextInput(anyString())).thenReturn(
-//                "1","1", // menu
-//                "1 1", "1 2", // moves
-//                "1 1", // fields taken
-//                "1 3", // move
-//                "1 5", // out of bounds
-//                "k", // invalid pattern
-//                null // null - game is finished as NULL_INPUT error is thrown
-//        );
-//
-//        injectDeps();
-//
-//        try {
-//            game.start();
-//            fail("Expected GameValidationException to be thrown");
-//        } catch (GameValidationException e) {
-//            assertEquals("NULL_INPUT", e.getMessage());
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        InOrder o = inOrder(ui);
-//
-//        // just one message about draw is enough
-//        o.verify(ui).showMessage("The field you selected is already taken. Try again.");
-//        o.verify(ui).showMessage("Your selection is out of the range. Try again.");
-//        o.verify(ui).showMessage("Invalid pattern. Try again.");
-//    }
-//
+    @Test
+    void shouldPlayPvPFieldTakenOutOfBoundsInvalidPattern() throws GameValidationException {
+        when(saveGameManager.loadGame()).thenReturn(Optional.empty());
+
+        List<String> answers = new ArrayList<>();
+
+        answers.addAll(List.of(
+                "1", "1", "", "", // menu
+                "1 1", "1 2", // moves
+                "1 1", // fields taken
+                "1 3", // move
+                "1 5", // out of bounds
+                "k" // invalid pattern
+        ));
+        answers.add(null);
+
+        whenTextInputThenAnswer(answers);
+
+        try {
+            game.start();
+            fail("Expected GameValidationException to be thrown");
+        } catch (GameValidationException e) {
+            assertEquals("NULL_INPUT", e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        // just one message about draw is enough
+        o.verify(ui).showMessage("The field you selected is already taken. Try again.");
+        o.verify(ui).showMessage("Your selection is out of the range. Try again.");
+        o.verify(ui).showMessage("Invalid pattern. Try again.");
+    }
+
 //    @Test
 //    void shouldPlayPvCAndWin() throws ExitRequestedException {
 //        when(ui.getTextInput(anyString())).thenReturn(

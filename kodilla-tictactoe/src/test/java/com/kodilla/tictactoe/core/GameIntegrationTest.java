@@ -4,6 +4,7 @@ import com.kodilla.tictactoe.logic.ExitRequestedException;
 import com.kodilla.tictactoe.logic.GameLogic;
 import com.kodilla.tictactoe.logic.GameValidationException;
 import com.kodilla.tictactoe.model.Board;
+import com.kodilla.tictactoe.ui.ComputerPlayerFactory;
 import com.kodilla.tictactoe.ui.ComputerPlayerInterface;
 import com.kodilla.tictactoe.ui.UserInterface;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -59,6 +61,7 @@ class GameIntegrationTest {
             // board size and win length
             var sf = Game.class.getDeclaredField("boardSideSize"); sf.setAccessible(true); sf.setInt(game, 3);
             var wf = Game.class.getDeclaredField("winMoveLength"); wf.setAccessible(true); wf.setInt(game, 3);
+            var cf = Game.class.getDeclaredField("computerPlayerInterface"); cf.setAccessible(true); cf.set(game, computerPlayerInterface);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -296,61 +299,67 @@ class GameIntegrationTest {
         o.verify(ui).showMessage("Invalid pattern. Try again.");
     }
 
-//    @Test
-//    void shouldPlayPvCAndWin() throws ExitRequestedException {
-//        when(ui.getTextInput(anyString())).thenReturn(
-//                "2","1", // menu
-//                "1 1", "1 2", "1 3", // moves
-//                "q" // quit after win
-//        );
-//
-//        when(computerPlayerInterface.getMove(any(), eq(3))).thenReturn(
-//                new int[]{2,1}, new int[]{2,2} // moves
-//        );
-//
-//        injectDeps();
-//
-//        try {
-//            game.start();
-//        } catch (ExitRequestedException e) {
-//            // unexpected behavior as game should finish without throwing exception
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        InOrder o = inOrder(ui);
-//
-//        // all checks to have better overview
-//        o.verify(ui).showMessage("=== TIC TAC TOE ===");
-//        o.verify(ui).showMessage("Select the game mode:");
-//        o.verify(ui).showMessage("1 - Player vs player");
-//        o.verify(ui).showMessage("2 - Player vs computer");
-//        o.verify(ui).getTextInput("Enter your choice: ");
-//        o.verify(ui).showMessage("Select the board size:");
-//        o.verify(ui).showMessage("1 - 3x3 square - classic");
-//        o.verify(ui).showMessage("2 - 10x10 square - 5 figures win");
-//        o.verify(ui).getTextInput("Enter your choice: ");
-//        o.verify(ui).showMessage("=== TIC TAC TOE ===");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
-//        o.verify(ui).getTextInput("Player X - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
-//        o.verify(ui).showMessage("The computer selects 2 1");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
-//        o.verify(ui).getTextInput("Player X - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
-//        o.verify(ui).showMessage("The computer selects 2 2");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
-//        o.verify(ui).getTextInput("Player X - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("Congratulations! Player X has won!");
-//        o.verify(ui).showMessage("(Do you want to play again? Type 'r' to play, 'q' to quit)");
-//        o.verify(ui).getTextInput("Enter your choice: ");
-//        o.verify(ui).showMessage("Game finished. See you soon!");
-//        verifyNoMoreInteractions(ui);
-//    }
+    @Test
+    void shouldPlayPvCAndWin() throws ExitRequestedException {
+        when(saveGameManager.loadGame()).thenReturn(Optional.empty());
+
+        List<String> answers = new ArrayList<>();
+
+        answers.addAll(List.of(
+                "2", "1", "2", "", // menu
+                "1 1", "1 2", "1 3", // moves
+                "q" // quit after win
+        ));
+
+        when(computerPlayerInterface.getMove(any(), eq(3))).thenReturn(
+                new int[]{2,1}, new int[]{2,2} // moves
+        );
+
+        whenTextInputThenAnswer(answers);
+
+        try (MockedStatic<ComputerPlayerFactory> factoryMock = mockStatic(ComputerPlayerFactory.class)) {
+            factoryMock.when(() -> ComputerPlayerFactory.create(any(), any()))
+                    .thenReturn(computerPlayerInterface);
+
+            runGame();
+        }
+
+        // all checks to have better overview
+        o.verify(ui).showMessage("=== TIC TAC TOE ===");
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).showMessage("1 - Player vs player");
+        o.verify(ui).showMessage("2 - Player vs computer");
+        o.verify(ui).showMessage("3 - Show scores");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("Select the board size:");
+        o.verify(ui).showMessage("1 - 3x3 square - classic");
+        o.verify(ui).showMessage("2 - 10x10 square - 5 figures win");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("Select difficulty level:");
+        o.verify(ui).showMessage("1 - Easy");
+        o.verify(ui).showMessage("2 - Medium");
+        o.verify(ui).showMessage("3 - Hard");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).getTextInput("Enter your name player X: ");
+        o.verify(ui).showMessage("=== TIC TAC TOE ===");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("The computer selects 2 1");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("The computer selects 2 2");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("(Type 'q' to quit, 'r' to restart, 's' to save)");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Congratulations! Player X has won!");
+        o.verify(ui).showMessage("(Do you want to play again? Type 'r' to play, 'q' to quit)");
+        o.verify(ui).getTextInput("Enter your choice: ");
+        o.verify(ui).showMessage("Game finished. See you soon!");
+        verifyNoMoreInteractions(ui);
+    }
 }

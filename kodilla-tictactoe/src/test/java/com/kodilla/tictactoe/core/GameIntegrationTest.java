@@ -234,49 +234,35 @@ class GameIntegrationTest {
         o.verify(ui).showMessage("Select the game mode:");
         o.verify(ui).showMessage("Game stopped. See you soon!");
     }
-//
-//    @Test
-//    void shouldPlayPvPDoRestartAndQuit() throws ExitRequestedException {
-//        when(ui.getTextInput(anyString()))
-//                // menu
-//                .thenReturn("1").thenReturn("1")
-//                // moves
-//                .thenReturn("1 1")
-//                .thenReturn("1 2")
-//                // restart
-//                .thenReturn("r")
-//                // menu
-//                .thenReturn("1").thenReturn("1")
-//                // moves
-//                .thenReturn("1 1")
-//                .thenReturn("1 2")
-//                // quit
-//                .thenReturn("q");
-//
-//        injectDeps();
-//
-//        try {
-//            game.start();
-//            fail("Expected ExitRequestedException to be thrown");
-//        } catch (ExitRequestedException e) {
-//            // expected behaviour - user clicked q
-//            assertEquals("Exit requested by the user", e.getMessage());
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        InOrder o = inOrder(ui);
-//
-//        // a few checks to verify if restart and quit work properly
-//        o.verify(ui).showMessage("Select the game mode:");
-//        o.verify(ui).getTextInput("Player X - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("Select the game mode:");
-//        o.verify(ui).getTextInput("Player X - provide row and column number: ");
-//        o.verify(ui).displayBoard(any(Board.class));
-//        o.verify(ui).showMessage("Game stopped. See you soon!");
-//    }
-//
+
+    @Test
+    void shouldPlayPvPDoRestartAndQuit() throws ExitRequestedException {
+        when(saveGameManager.loadGame()).thenReturn(Optional.empty());
+
+        List<String> answers = new ArrayList<>();
+
+        answers.addAll(List.of(
+                "1", "1", "", "", // menu
+                "1 1", "1 2", // moves
+                "r", "1", "1", "", "", // restart + menu
+                "1 1", "1 2", // moves
+                "q" // quit
+        ));
+
+        whenTextInputThenAnswer(answers);
+
+        runGame();
+
+        // a few checks to verify if restart and quit work properly
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Select the game mode:");
+        o.verify(ui).getTextInput("Player X - provide row and column number: ");
+        o.verify(ui).displayBoard(any(Board.class));
+        o.verify(ui).showMessage("Game stopped. See you soon!");
+    }
+
 //    @Test
 //    void shouldPlayPvPFieldTakenOutOfBoundsInvalidPattern() throws GameValidationException {
 //        when(ui.getTextInput(anyString())).thenReturn(
